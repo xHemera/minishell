@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:07:39 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/05 18:14:16 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/05 20:12:09 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ static int	get_total_len(char **env)
 			len++;
 			j++;
 		}
+		len++;
 		i++;
 	}
 	return (len);
@@ -37,27 +38,27 @@ static int	get_total_len(char **env)
 
 char	*copy_env(char **env)
 {
-	int		i;
-	int		j;
-	int		k;
+	int		i, j, k;
 	char	*result;
 
 	result = malloc(sizeof(char) * (get_total_len(env) + 1));
-	if (!result)
-		return (NULL);
 	i = 0;
 	k = 0;
 	while (env[i])
 	{
 		j = 0;
 		while (env[i][j])
-		{
 			result[k++] = env[i][j++];
-		}
+		result[k++] = '\n';
 		i++;
 	}
 	result[k] = '\0';
 	return (result);
+}
+
+void	print_env(t_shell *data)
+{
+	write(1, data->env.str, strlen(data->env.str));
 }
 
 int	main(int argc, char **argv, char **env)
@@ -76,7 +77,7 @@ int	main(int argc, char **argv, char **env)
 			break ;
 		add_history(line);
 		if (strncmp(line, "env", 3) == 0)
-			printf("%s\n", data->env.str);
+			print_env(data);
 		free(line);
 	}
 	return (0);
