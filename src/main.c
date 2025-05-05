@@ -6,7 +6,7 @@
 /*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:07:39 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/05 20:12:09 by hemera           ###   ########.fr       */
+/*   Updated: 2025/05/05 21:07:13 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int	main(int argc, char **argv, char **env)
 			print_env(data);
 		free(line);
 	}
+	free(data);
 	return (0);
 }
 
