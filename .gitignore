@@ -1,0 +1,17 @@
+# == Minishell compilee ==
+minishell
+
+# == Fichiers objets ==
+*.o 
+
+# == Librairie ==
+libft.a
+
+# == Dossiers de compilation ==
+obj/
+
+# == Config de VS CODE ==
+.vscode/
+
+# == VIM ==
+*.swp
