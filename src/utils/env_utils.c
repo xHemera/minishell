@@ -57,3 +57,8 @@ char	*copy_env(char **env)
 	result[k] = '\0';
 	return (result);
 }
+
+void	print_env(t_shell *data)
+{
+	write(1, data->env.str, strlen(data->env.str));
+}
