@@ -1,34 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 16:12:47 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/05 17:51:33 by tobesnar         ###   ########.fr       */
+/*   Created: 2025/05/05 17:58:47 by tlize             #+#    #+#             */
+/*   Updated: 2025/05/06 15:34:13 by tlize            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-# include <stdio.h>
-# include <stdbool.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include "libft/includes/libft.h"
-
-typedef struct s_env
+//wip tout caca
+void    callecho(char *str)
 {
-	char			*str;
-	struct s_env	*prev;
-	struct s_env	*next;
-}					t_env;
+    if (ft_strnstr(str, "echo", 5))
+    {
+        if ()
+    }
+}
 
-typedef struct s_shell
+void    echo(char *str, bool newline)
 {
-	t_env	env;
-}			t_shell;
-
-#endif
+    ft_printf(str);
+    if (newline)
+        ft_putchar_fd("\n", 1);
+}
