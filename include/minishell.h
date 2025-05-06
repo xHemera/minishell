@@ -40,5 +40,6 @@ typedef struct s_shell
 // env_utils.c
 int		get_total_len(char **env);
 char	*copy_env(char **env);
+void	print_env(t_shell *data);
 
 #endif
