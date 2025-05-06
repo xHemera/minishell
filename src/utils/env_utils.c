@@ -6,7 +6,7 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:53:21 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/06 16:54:48 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/06 17:13:14 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	get_total_len(char **env)
 			len++;
 			j++;
 		}
+		len++; // pour le '\n'
 		i++;
 	}
 	return (len);
@@ -49,9 +50,8 @@ char	*copy_env(char **env)
 	{
 		j = 0;
 		while (env[i][j])
-		{
 			result[k++] = env[i][j++];
-		}
+		result[k++] = '\n';
 		i++;
 	}
 	result[k] = '\0';
