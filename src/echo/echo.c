@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 16:12:47 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/06 15:29:01 by tlize            ###   ########.fr       */
+/*   Created: 2025/05/05 17:58:47 by tlize             #+#    #+#             */
+/*   Updated: 2025/05/06 15:34:13 by tlize            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-# include <stdio.h>
-# include <stdbool.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include "../libft/libft.h"
+//wip tout caca
+void    callecho(char *str)
+{
+    if (ft_strnstr(str, "echo", 5))
+    {
+        if ()
+    }
+}
 
-#endif
+void    echo(char *str, bool newline)
+{
+    ft_printf(str);
+    if (newline)
+        ft_putchar_fd("\n", 1);
+}
