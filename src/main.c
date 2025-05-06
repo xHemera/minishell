@@ -12,53 +12,6 @@
 
 #include "../include/minishell.h"
 
-static int	get_total_len(char **env)
-{
-	int	i;
-	int	j;
-	int	len;
-
-	i = 0;
-	len = 0;
-	while (env[i])
-	{
-		j = 0;
-		while (env[i][j])
-		{
-			len++;
-			j++;
-		}
-		len++;
-		i++;
-	}
-	return (len);
-}
-
-char	*copy_env(char **env)
-{
-	int		i, j, k;
-	char	*result;
-
-	result = malloc(sizeof(char) * (get_total_len(env) + 1));
-	i = 0;
-	k = 0;
-	while (env[i])
-	{
-		j = 0;
-		while (env[i][j])
-			result[k++] = env[i][j++];
-		result[k++] = '\n';
-		i++;
-	}
-	result[k] = '\0';
-	return (result);
-}
-
-void	print_env(t_shell *data)
-{
-	write(1, data->env.str, strlen(data->env.str));
-}
-
 int	main(int argc, char **argv, char **env)
 {
 	t_shell	*data;
