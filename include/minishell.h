@@ -6,7 +6,7 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:12:47 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/06 17:01:42 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/06 19:04:16 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@ typedef struct s_env
 	struct s_env	*prev;
 	struct s_env	*next;
 }					t_env;
+
+typedef struct s_token
+{
+
+}				t_token;
 
 typedef struct s_shell
 {

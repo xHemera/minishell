@@ -6,7 +6,7 @@
 #    By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/05 16:24:53 by tobesnar          #+#    #+#              #
-#    Updated: 2025/05/06 16:57:39 by tobesnar         ###   ########.fr        #
+#    Updated: 2025/05/06 18:03:38 by tobesnar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ LDFLAGS     = -lreadline
 SRC         = \
 	src/main.c \
 	src/utils/env_utils.c \
+	src/utils/get_command.c \
 
 OBJ         = $(SRC:.c=.o)
 
