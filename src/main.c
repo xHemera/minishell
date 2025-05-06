@@ -12,10 +12,6 @@
 
 #include "../include/minishell.h"
 
-<<<<<<< HEAD
-=======
-#include <stdlib.h>
-
 static int	get_total_len(char **env)
 {
 	int	i;
@@ -63,7 +59,6 @@ void	print_env(t_shell *data)
 	write(1, data->env.str, strlen(data->env.str));
 }
 
->>>>>>> dcd2226f1f15db38c50a248722c5293b93f2a693
 int	main(int argc, char **argv, char **env)
 {
 	t_shell	*data;
