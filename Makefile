@@ -6,10 +6,11 @@ LIBFT = -Linclude/libft -lft -lreadline
 SRC_DIR = src
 OBJ_DIR = obj
 
-SRCS = $(SRC_DIR)/main.c \
+SRCS = \
+	$(SRC_DIR)/main.c \
 	$(SRC_DIR)/echo/echo.c \
 	$(SRC_DIR)/utils/env_utils.c \
-	$(SRC_DIR)/utils/get_command.c
+	$(SRC_DIR)/utils/tokenize.c \
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 

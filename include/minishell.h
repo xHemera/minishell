@@ -6,7 +6,7 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:12:47 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/08 15:34:14 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/08 16:52:55 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,8 @@ typedef struct s_shell
 int		get_total_len(char **env);
 char	*copy_env(char **env);
 void	print_env(t_shell *data);
+
+// tokenize.c
+t_token	tokenize_line(char *input);
 
 #endif
