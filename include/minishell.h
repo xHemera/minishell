@@ -6,7 +6,7 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:12:47 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/08 16:52:55 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/09 15:52:09 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,17 @@ typedef struct s_token
 	struct s_token	*next;
 }				t_token;
 
+typedef struct s_cmd
+{
+	char			**args;
+	char			*infile;
+	char			*outfile;
+	int				append;
+	struct s_cmd	*prev;
+	struct s_cmd	*next;
+}				t_cmd;
+
+
 typedef struct s_shell
 {
 	t_env	env;
@@ -53,5 +64,11 @@ void	print_env(t_shell *data);
 
 // tokenize.c
 t_token	tokenize_line(char *input);
+
+// tokenize_utils.c
+char	*extract_word(const char *start, int len);
+void	advance_to_word_end(const char *input, int *i);
+void	process_quoted_word(const char *input, int *i, int *start, int *len);
+void	process_normal_word(const char *input, int *i, int *start, int *len);
 
 #endif

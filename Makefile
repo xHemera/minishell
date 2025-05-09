@@ -11,6 +11,7 @@ SRCS = \
 	$(SRC_DIR)/echo/echo.c \
 	$(SRC_DIR)/utils/env_utils.c \
 	$(SRC_DIR)/utils/tokenize.c \
+	$(SRC_DIR)/utils/tokenize_utils.c \
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 

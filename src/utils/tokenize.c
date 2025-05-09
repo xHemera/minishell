@@ -43,44 +43,6 @@ static int	count_words(const char *str)
 	return (count);
 }
 
-static char	*extract_word(const char *start, int len)
-{
-	char	*word;
-
-	word = malloc(len + 1);
-	if (!word)
-		return (NULL);
-	strncpy(word, start, len);
-	word[len] = '\0';
-	return (word);
-}
-
-static void	advance_to_word_end(const char *input, int *i)
-{
-	while (input[*i] && !is_whitespace(input[*i]))
-		(*i)++;
-}
-
-static void	process_quoted_word(const char *input, int *i, int *start, int *len)
-{
-	char	quote_char;
-
-	quote_char = input[(*i)++];
-	*start = *i;
-	while (input[*i] && input[*i] != quote_char)
-		(*i)++;
-	*len = *i - *start;
-	if (input[*i] == quote_char)
-		(*i)++;
-}
-
-static void	process_normal_word(const char *input, int *i, int *start, int *len)
-{
-	*start = *i;
-	advance_to_word_end(input, i);
-	*len = *i - *start;
-}
-
 t_token	tokenize_line(char *input)
 {
 	t_token	token;
