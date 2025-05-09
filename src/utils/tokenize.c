@@ -14,9 +14,9 @@
 
 static int	count_words(const char *str)
 {
-	int	count = 0;
-	int	in_word = 0;
-	int	in_quotes = 0;
+	int 	count = 0;
+	int		in_word = 0;
+	int		in_quotes = 0;
 	char	quote_char = '\0';
 
 	while (*str)
