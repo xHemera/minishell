@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:07:39 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/06 16:57:09 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/12 13:17:22 by tlize            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	main(int argc, char **argv, char **env)
 
 	data = malloc(sizeof(t_shell));
 	data->env.str = copy_env(env);
-	while ("Minishell gooning")
+	while ("Minishell ethical gooning")
 	{
 		line = readline("minishell> ");
 		if (!line) //CTRL+D Renvoie NULL

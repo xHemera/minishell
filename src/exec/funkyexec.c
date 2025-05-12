@@ -6,18 +6,42 @@
 /*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:25:00 by tlize             #+#    #+#             */
-/*   Updated: 2025/05/06 17:52:44 by tlize            ###   ########.fr       */
+/*   Updated: 2025/05/12 15:16:03 by tlize            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void    prepare_fonc(char *cmd, char *in, char out, t_shell data)
+int   exec_commande(t_cmd *cmd, char **envp)
 {
-    int filenin;
-}
+    pid_t   pid;
+    int     status;
 
-void    exec_fonc(char *cmd, char in, char out, t_shell data)
-{
-    
+	pid = fork();
+	if (pid < 0)
+	{
+		ft_putstr_fd("erreur de fork", 2);
+		return (1);
+	}
+	if (pid == 0)
+	{
+		if (execve(cmd->path, cmd ->argv, envp) == -1)
+		{
+			ft_putstr_fd("erreur de execve", 2);
+			exit(127);
+		}
+	}
+	else
+	{
+		if (waitpid(pid, &status, 0) == -1)
+		{
+			ft_putstr_fd("erreur de waitpid", 2);
+			return (1);
+		}
+		if (WIFEXITED(status))
+            return (WEXITSTATUS(status));
+        else if (WIFSIGNALED(status))
+            return (128 + WTERMSIG(status));
+	}
+	return (1);
 }
