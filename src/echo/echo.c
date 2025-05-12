@@ -3,27 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:58:47 by tlize             #+#    #+#             */
-/*   Updated: 2025/05/08 16:03:57 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/12 17:43:03 by tlize            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//wip tout caca
-// void    callecho(char *str)
-// {
-//     if (ft_strnstr(str, "echo", 5))
-//     {
-//         if ()
-//     }
-// }
-
-// void    echo(char *str, bool newline)
-// {
-//     ft_printf(str);
-//     if (newline)
-//         ft_putchar_fd("\n", 1);
-// }
+//Toujours mettre i et newline a 1 , j a 2
+int	ft_echo(char **args, int i, int j, int newline)
+{
+	while (args[i] && !ft_strncmp(args[i], "-n", 2))
+	{
+		while (args[i][j] == 'n')
+			j ++;
+		if (args[i][j] != '\0')
+			break;
+		newline = 0;
+		i ++;
+	}
+	while (args[i])
+	{
+		write(1, args[i], ft_strlen(args[i]));
+		if (args[i + 1])
+			write(1, " ", 1);
+		i++;
+	}
+	if (newline)
+		write(1, "\n", 1);
+	return (0);
+}
