@@ -6,7 +6,7 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:07:39 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/12 17:49:14 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/12 17:50:22 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ static void	print_token(t_token *token)
 	while (tmp)
 	{
 		i = 0;
-		printf("Words count: %d\n", tmp->count);
-
 		while (i < tmp->count && tmp->words)
 		{
 			printf("  Word[%d]: %s\n", i, tmp->words[i]);
