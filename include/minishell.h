@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:12:47 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/08 15:34:14 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/12 15:15:36 by tlize            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <unistd.h>
+# include <sys/wait.h>
 # include "libft/include/libft.h"
 
 typedef struct s_env
@@ -41,6 +42,13 @@ typedef struct s_shell
 {
 	t_env	env;
 }			t_shell;
+
+typedef struct s_cmd
+{
+	char 	**argv;
+	char 	*path;
+	int		is_builtin;
+}				t_cmd;
 
 // ##################### //
 //       Fonctions       //
