@@ -6,7 +6,7 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:17:11 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/13 11:20:58 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/13 11:39:03 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ static char	*search_cmd_path(char *cmd, char **paths)
 t_cmd	get_command(t_token token, char **envp)
 {
 	t_cmd	cmd;
+	char	**paths;
 
 	cmd.argv = NULL;
 	cmd.path = NULL;
@@ -108,7 +109,7 @@ t_cmd	get_command(t_token token, char **envp)
 	cmd.is_builtin = is_builtin_cmd(cmd.argv[0]);
 	if (!cmd.is_builtin)
 	{
-		char **paths = get_paths(envp);
+		paths = get_paths(envp);
 		cmd.path = search_cmd_path(cmd.argv[0], paths);
 	}
 	return (cmd);

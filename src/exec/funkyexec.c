@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   funkyexec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:25:00 by tlize             #+#    #+#             */
-/*   Updated: 2025/05/12 15:16:03 by tlize            ###   ########.fr       */
+/*   Updated: 2025/05/13 12:01:02 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int   exec_commande(t_cmd *cmd, char **envp)
+int	exec_commande(t_cmd *cmd, char **envp)
 {
-    pid_t   pid;
-    int     status;
+	pid_t	pid;
+	int		status;
 
 	pid = fork();
 	if (pid < 0)
@@ -39,9 +39,9 @@ int   exec_commande(t_cmd *cmd, char **envp)
 			return (1);
 		}
 		if (WIFEXITED(status))
-            return (WEXITSTATUS(status));
-        else if (WIFSIGNALED(status))
-            return (128 + WTERMSIG(status));
+			return (WEXITSTATUS(status));
+		else if (WIFSIGNALED(status))
+			return (128 + WTERMSIG(status));
 	}
 	return (1);
 }

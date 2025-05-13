@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:58:47 by tlize             #+#    #+#             */
-/*   Updated: 2025/05/12 17:43:03 by tlize            ###   ########.fr       */
+/*   Updated: 2025/05/13 11:59:45 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ft_echo(char **args, int i, int j, int newline)
 		while (args[i][j] == 'n')
 			j ++;
 		if (args[i][j] != '\0')
-			break;
+			break ;
 		newline = 0;
 		i ++;
 	}

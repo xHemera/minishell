@@ -11,7 +11,8 @@ SRCS = $(SRC_DIR)/main.c \
 	$(SRC_DIR)/utils/env_utils.c \
 	$(SRC_DIR)/utils/tokenize.c \
 	$(SRC_DIR)/utils/get_command.c \
-	$(SRC_DIR)/utils/free_cmd.c
+	$(SRC_DIR)/utils/free_cmd.c \
+	$(SRC_DIR)/utils/prompt.c
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 

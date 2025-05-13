@@ -6,7 +6,7 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:03:20 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/13 11:37:44 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/13 11:59:01 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 static int	count_words(const char *str)
 {
-	int count = 0;
-	int in_word = 0;
+	int	count;
+	int	in_word;
 
+	count = 0;
+	in_word = 0;
 	while (*str)
 	{
 		if (is_whitespace(*str))
@@ -33,20 +35,60 @@ static int	count_words(const char *str)
 
 static char	*extract_word(const char *start, int len)
 {
-	char *word;
+	char	*word;
+	int		i;
 
 	word = malloc(len + 1);
 	if (!word)
 		return (NULL);
-	strncpy(word, start, len);
-	word[len] = '\0';
+	i = 0;
+	while (i < len)
+	{
+		word[i] = start[i];
+		i++;
+	}
+	word[i] = '\0';
 	return (word);
+}
+
+static void	skip_whitespace(char *input, int *i)
+{
+	while (input[*i] && is_whitespace(input[*i]))
+		(*i)++;
+}
+
+static int	fill_words(char **words, char *input)
+{
+	int	i;
+	int	start;
+	int	word_len;
+	int	w;
+
+	i = 0;
+	w = 0;
+	while (input[i])
+	{
+		skip_whitespace(input, &i);
+		start = i;
+		while (input[i] && !is_whitespace(input[i]))
+			i++;
+		word_len = i - start;
+		if (word_len > 0)
+		{
+			words[w] = extract_word(&input[start], word_len);
+			if (!words[w])
+				return (0);
+			w++;
+		}
+	}
+	words[w] = NULL;
+	return (1);
 }
 
 t_token	tokenize_line(char *input)
 {
-	t_token token;
-	int		i = 0, start = 0, word_len = 0, w = 0;
+	t_token	token;
+	int		success;
 
 	token.count = count_words(input);
 	token.words = malloc(sizeof(char *) * (token.count + 1));
@@ -55,19 +97,12 @@ t_token	tokenize_line(char *input)
 		token.count = 0;
 		return (token);
 	}
-	while (input[i])
+	success = fill_words(token.words, input);
+	if (!success)
 	{
-		while (is_whitespace(input[i]))
-			i++;
-		start = i;
-		while (input[i] && !is_whitespace(input[i]))
-			i++;
-		word_len = i - start;
-		if (word_len > 0)
-		{
-			token.words[w++] = extract_word(&input[start], word_len);
-		}
+		token.count = 0;
+		free(token.words);
+		token.words = NULL;
 	}
-	token.words[w] = NULL;
 	return (token);
 }
