@@ -6,7 +6,7 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 16:12:47 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/12 17:46:03 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/13 10:49:59 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int		get_total_len(char **env);
 char	*copy_env(char **env);
 void	print_env(t_shell *data);
 
-// get_command.c
+// tokenize.c
 t_token	tokenize_line(char *input);
 
 #endif

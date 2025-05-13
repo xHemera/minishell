@@ -6,7 +6,7 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:03:20 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/08 16:04:31 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/13 10:49:35 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,20 +71,3 @@ t_token	tokenize_line(char *input)
 	token.words[w] = NULL;
 	return (token);
 }
-
-// #include <stdio.h>
-
-// int	main(void)
-// {
-// 	char	input[] = "  Hello   world\tthis is\ta test ";
-// 	t_token	result = tokenize_line(input);
-
-// 	printf("Nombre de mots : %d\n", result.count);
-// 	for (int i = 0; i < result.count; i++)
-// 	{
-// 		printf("Mot %d : \"%s\"\n", i + 1, result.words[i]);
-// 		free(result.words[i]);
-// 	}
-// 	free(result.words);
-// 	return (0);
-// }
