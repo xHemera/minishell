@@ -6,7 +6,7 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:55:46 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/13 11:57:13 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/13 12:32:24 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define GREEN   "\033[32m"
 # define CYAN	"\033[36m"
 # define YELLOW  "\033[33m"
+# define TITLE "[i <3 ethical gooning] "
 
 typedef struct s_env
 {

@@ -6,13 +6,11 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:49:38 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/13 12:30:35 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/13 12:32:07 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-#define TITLE "[i <3 ethical gooning] "
 
 static char	*get_last_dir(char *cwd)
 {
