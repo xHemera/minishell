@@ -6,7 +6,7 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:55:46 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/13 12:32:24 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/13 15:48:46 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,20 +59,6 @@ typedef struct s_cmd
 // ##################### //
 //       Fonctions       //
 // ##################### //
-
-// env_utils.c
-int		get_total_len(char **env);
-char	*copy_env(char **env);
-void	print_env(t_shell *data);
-
-// tokenize.c
-t_token	tokenize_line(char *input);
-
-// free_cmd.c
-void	free_cmd(t_cmd *cmd);
-
-// get_command.c
-t_cmd	get_command(t_token token, char **envp);
 
 // prompt.c
 char	*get_prompt(void);
