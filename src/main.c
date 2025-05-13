@@ -1,38 +1,29 @@
 /* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
-/*   main.c											  :+:	  :+:	:+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: tobesnar <tobesnar@student.42.fr>			+#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2025/05/05 16:07:39 by tobesnar		  #+#	#+#			 */
-/*   Updated: 2025/05/13 12:00:00 by tobesnar		 ###   ########.fr	   */
-/*																			*/
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/13 16:19:54 by tobesnar          #+#    #+#             */
+/*   Updated: 2025/05/13 17:38:57 by tobesnar         ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-// void	handle_input(char *line, char **env)
-// {
-// 	t_token	token;
-// 	t_cmd	cmd;
-
-// 	token = tokenize_line(line);
-// 	if (token.count == 0)
-// 		return ;
-// 	cmd = get_command(token, env);
-// 	print_debug(&cmd);
-// 	ft_free_split(cmd.argv);
-// 	free(cmd.path);
-// }
-
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
 	char	*prompt;
+	t_env	*env;
+	t_cmd	*cmd_list;
 
 	(void)argc;
 	(void)argv;
+	env = env_init(envp);
+	if (!env)
+		return (1);
 	while (1)
 	{
 		prompt = get_prompt();
@@ -41,8 +32,15 @@ int	main(int argc, char **argv)
 		if (!line)
 			break ;
 		add_history(line);
-		// handle_input(line, env);
+		if (!handle_builtin(line, env))
+		{
+			cmd_list = parse_line(line);
+			if (cmd_list)
+				print_cmd(cmd_list);
+			cmd_list_clear(&cmd_list);
+		}
 		free(line);
 	}
+	env_clear(&env);
 	return (0);
 }
