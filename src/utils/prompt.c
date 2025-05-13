@@ -6,48 +6,60 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:49:38 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/13 12:03:28 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/13 12:30:35 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static void	get_time(char *time_str)
-{
-	time_t		t;
-	struct tm	*info;
-
-	time(&t);
-	info = localtime(&t);
-	strftime(time_str, 9, "%H:%M:%S", info);
-}
+#define TITLE "[i <3 ethical gooning] "
 
 static char	*get_last_dir(char *cwd)
 {
 	char	*last_dir;
 
 	getcwd(cwd, 1024);
-	last_dir = strrchr(cwd, '/');
+	last_dir = ft_strrchr(cwd, '/');
 	if (last_dir)
 		return (last_dir + 1);
 	return (cwd);
 }
 
+static size_t	get_prompt_len(char *user, char *last_dir)
+{
+	return (ft_strlen(CYAN) + ft_strlen(TITLE) + ft_strlen(GREEN)
+		+ ft_strlen(user) + ft_strlen("@") + ft_strlen(YELLOW)
+		+ ft_strlen(last_dir) + ft_strlen(RESET) + 2);
+}
+
+static void	build_prompt(char *prompt, char *user, char *last_dir)
+{
+	ft_strlcat(prompt, CYAN, 512);
+	ft_strlcat(prompt, TITLE, 512);
+	ft_strlcat(prompt, GREEN, 512);
+	ft_strlcat(prompt, user, 512);
+	ft_strlcat(prompt, "@", 512);
+	ft_strlcat(prompt, YELLOW, 512);
+	ft_strlcat(prompt, last_dir, 512);
+	ft_strlcat(prompt, RESET, 512);
+	ft_strlcat(prompt, "$ ", 512);
+}
+
 char	*get_prompt(void)
 {
-	char	time_str[9];
 	char	cwd[1024];
 	char	*prompt;
 	char	*user;
 	char	*last_dir;
+	size_t	prompt_len;
 
-	get_time(time_str);
 	user = getenv("USER");
 	last_dir = get_last_dir(cwd);
-	prompt = malloc(512);
+	prompt_len = get_prompt_len(user, last_dir);
+	prompt = malloc(prompt_len + 1);
 	if (!prompt)
 		return (NULL);
-	snprintf(prompt, 512, "%s[%s] %s@%s:%s%s$ %s",
-		CYAN, time_str, GREEN, user, YELLOW, last_dir, RESET);
+	prompt[0] = '\0';
+	build_prompt(prompt, user, last_dir);
 	return (prompt);
 }
