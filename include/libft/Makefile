@@ -58,7 +58,8 @@ LIBFT_SRCS = \
 	./src/libft/ft_substr.c \
 	./src/libft/ft_tolower.c \
 	./src/libft/ft_toupper.c \
-	./src/libft/is_whitespace.c
+	./src/libft/is_whitespace.c \
+	./src/libft/ft_free_split.c
 
 SRCS = $(FT_PRINTF_SRCS) $(GNL_SRCS) $(LIBFT_SRCS)
 OBJS = $(SRCS:.c=.o)
