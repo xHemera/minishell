@@ -6,7 +6,7 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 14:24:42 by tlize             #+#    #+#             */
-/*   Updated: 2025/05/08 15:32:29 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/13 10:58:11 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,6 @@ int		ft_printf(const char *format, ...);
 char	*get_next_line(int fd);
 long	ft_atol(const char *s);
 int		is_whitespace(char c);
+void	ft_free_split(char **tab);
 
 #endif

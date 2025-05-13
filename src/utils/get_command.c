@@ -5,86 +5,112 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/06 18:03:20 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/08 16:04:31 by tobesnar         ###   ########.fr       */
+/*   Created: 2025/05/13 11:17:11 by tobesnar          #+#    #+#             */
+/*   Updated: 2025/05/13 11:39:03 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	count_words(const char *str)
+static int	is_builtin_cmd(char *cmd)
 {
-	int count = 0;
-	int in_word = 0;
-
-	while (*str)
-	{
-		if (is_whitespace(*str))
-			in_word = 0;
-		else if (!in_word)
-		{
-			in_word = 1;
-			count++;
-		}
-		str++;
-	}
-	return (count);
+	if (!cmd)
+		return (0);
+	if (ft_strncmp(cmd, "echo", 5) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "cd", 3) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "pwd", 4) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "export", 7) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "unset", 6) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "env", 4) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "exit", 5) == 0)
+		return (1);
+	return (0);
 }
 
-static char	*extract_word(const char *start, int len)
+static int	create_argv(t_cmd *cmd, t_token token)
 {
-	char *word;
+	int	i;
 
-	word = malloc(len + 1);
-	if (!word)
+	cmd->argv = malloc(sizeof(char *) * (token.count + 1));
+	if (!cmd->argv)
+		return (0);
+	i = 0;
+	while (i < token.count)
+	{
+		cmd->argv[i] = ft_strdup(token.words[i]);
+		if (!cmd->argv[i])
+			return (ft_free_split(cmd->argv), 0);
+		i++;
+	}
+	cmd->argv[i] = NULL;
+	return (1);
+}
+
+static char	**get_paths(char **envp)
+{
+	int		i;
+	char	**paths;
+
+	i = 0;
+	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
+		i++;
+	if (!envp[i])
 		return (NULL);
-	strncpy(word, start, len);
-	word[len] = '\0';
-	return (word);
+	paths = ft_split(envp[i] + 5, ':');
+	return (paths);
 }
 
-t_token	tokenize_line(char *input)
+static char	*search_cmd_path(char *cmd, char **paths)
 {
-	t_token token;
-	int		i = 0, start = 0, word_len = 0, w = 0;
+	char	*full_path;
+	char	*tmp;
+	int		i;
 
-	token.count = count_words(input);
-	token.words = malloc(sizeof(char *) * (token.count + 1));
-	if (!token.words)
+	i = 0;
+	while (paths[i])
 	{
-		token.count = 0;
-		return (token);
-	}
-	while (input[i])
-	{
-		while (is_whitespace(input[i]))
-			i++;
-		start = i;
-		while (input[i] && !is_whitespace(input[i]))
-			i++;
-		word_len = i - start;
-		if (word_len > 0)
+		tmp = ft_strjoin(paths[i], "/");
+		if (!tmp)
+			return (NULL);
+		full_path = ft_strjoin(tmp, cmd);
+		free(tmp);
+		if (!full_path)
+			return (NULL);
+		if (access(full_path, X_OK) == 0)
 		{
-			token.words[w++] = extract_word(&input[start], word_len);
+			ft_free_split(paths);
+			return (full_path);
 		}
+		free(full_path);
+		i++;
 	}
-	token.words[w] = NULL;
-	return (token);
+	ft_free_split(paths);
+	return (NULL);
 }
 
-// #include <stdio.h>
+t_cmd	get_command(t_token token, char **envp)
+{
+	t_cmd	cmd;
+	char	**paths;
 
-// int	main(void)
-// {
-// 	char	input[] = "  Hello   world\tthis is\ta test ";
-// 	t_token	result = tokenize_line(input);
-
-// 	printf("Nombre de mots : %d\n", result.count);
-// 	for (int i = 0; i < result.count; i++)
-// 	{
-// 		printf("Mot %d : \"%s\"\n", i + 1, result.words[i]);
-// 		free(result.words[i]);
-// 	}
-// 	free(result.words);
-// 	return (0);
-// }
+	cmd.argv = NULL;
+	cmd.path = NULL;
+	cmd.is_builtin = 0;
+	if (token.count == 0)
+		return (cmd);
+	if (!create_argv(&cmd, token))
+		return (cmd);
+	cmd.is_builtin = is_builtin_cmd(cmd.argv[0]);
+	if (!cmd.is_builtin)
+	{
+		paths = get_paths(envp);
+		cmd.path = search_cmd_path(cmd.argv[0], paths);
+	}
+	return (cmd);
+}

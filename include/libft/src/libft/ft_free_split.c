@@ -1,37 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   ft_free_split.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 17:58:47 by tlize             #+#    #+#             */
-/*   Updated: 2025/05/13 11:59:45 by tobesnar         ###   ########.fr       */
+/*   Created: 2025/05/13 10:57:06 by tobesnar          #+#    #+#             */
+/*   Updated: 2025/05/13 10:57:27 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-//Toujours mettre i et newline a 1 , j a 2
-int	ft_echo(char **args, int i, int j, int newline)
+void	ft_free_split(char **tab)
 {
-	while (args[i] && !ft_strncmp(args[i], "-n", 2))
+	int	i;
+
+	if (!tab)
+		return ;
+	i = 0;
+	while (tab[i])
 	{
-		while (args[i][j] == 'n')
-			j ++;
-		if (args[i][j] != '\0')
-			break ;
-		newline = 0;
-		i ++;
-	}
-	while (args[i])
-	{
-		write(1, args[i], ft_strlen(args[i]));
-		if (args[i + 1])
-			write(1, " ", 1);
+		free(tab[i]);
 		i++;
 	}
-	if (newline)
-		write(1, "\n", 1);
-	return (0);
+	free(tab);
 }

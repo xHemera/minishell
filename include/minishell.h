@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 16:12:47 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/12 17:46:03 by tobesnar         ###   ########.fr       */
+/*   Created: 2025/05/13 11:55:46 by tobesnar          #+#    #+#             */
+/*   Updated: 2025/05/13 12:32:24 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@
 # include <unistd.h>
 # include <sys/wait.h>
 # include "libft/include/libft.h"
+
+# define RESET   "\033[0m"
+# define GREEN   "\033[32m"
+# define CYAN	"\033[36m"
+# define YELLOW  "\033[33m"
+# define TITLE "[i <3 ethical gooning] "
 
 typedef struct s_env
 {
@@ -45,10 +51,10 @@ typedef struct s_shell
 
 typedef struct s_cmd
 {
-	char 	**argv;
-	char 	*path;
+	char	**argv;
+	char	*path;
 	int		is_builtin;
-}				t_cmd;
+}			t_cmd;
 
 // ##################### //
 //       Fonctions       //
@@ -59,7 +65,16 @@ int		get_total_len(char **env);
 char	*copy_env(char **env);
 void	print_env(t_shell *data);
 
-// get_command.c
+// tokenize.c
 t_token	tokenize_line(char *input);
+
+// free_cmd.c
+void	free_cmd(t_cmd *cmd);
+
+// get_command.c
+t_cmd	get_command(t_token token, char **envp);
+
+// prompt.c
+char	*get_prompt(void);
 
 #endif
