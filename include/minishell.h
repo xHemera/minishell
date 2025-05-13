@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:55:46 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/13 17:37:57 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/13 18:22:55 by tlize            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # define GREEN   "\033[32m"
 # define CYAN	"\033[36m"
 # define YELLOW  "\033[33m"
-# define TITLE "[i <3 ethical gooning] "
+# define TITLE "[J'adore me Dracaufeu le tortipousse] "
 
 // Structure pour l'environnement
 typedef struct s_env
