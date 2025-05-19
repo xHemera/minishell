@@ -6,7 +6,7 @@
 /*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:55:46 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/13 18:22:55 by tlize            ###   ########.fr       */
+/*   Updated: 2025/05/19 16:35:30 by tlize            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # define GREEN   "\033[32m"
 # define CYAN	"\033[36m"
 # define YELLOW  "\033[33m"
-# define TITLE "[J'adore me Dracaufeu le tortipousse] "
+# define TITLE "[Jarvis, nettoie moi le gland] "
 
 // Structure pour l'environnement
 typedef struct s_env
