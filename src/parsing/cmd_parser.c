@@ -6,7 +6,7 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:55:30 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/13 17:07:27 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/22 17:44:24 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,13 @@ static int	count_args(t_token *tokens)
 	return (count);
 }
 
+static void	free_args_on_error(char **args, int i)
+{
+	while (i--)
+		free(args[i]);
+	free(args);
+}
+
 static char	**token_list_to_args(t_token *tokens, int num_args)
 {
 	char	**args;
@@ -39,9 +46,7 @@ static char	**token_list_to_args(t_token *tokens, int num_args)
 		args[i] = ft_strdup(tokens->value);
 		if (!args[i])
 		{
-			while (i--)
-				free(args[i]);
-			free(args);
+			free_args_on_error(args, i);
 			return (NULL);
 		}
 		tokens = tokens->next;
@@ -69,15 +74,22 @@ t_cmd	*parse_cmd(t_token *tokens)
 	t_cmd	*cmd;
 	int		arg_count;
 
-	cmd = malloc(sizeof(t_cmd));
+	cmd = init_cmd();
+	if (!cmd)
+		return (NULL);
+	if (!tokens)
+	{
+		free(cmd);
+		return (NULL);
+	}
 	cmd->name = ft_strdup(tokens->value);
 	if (!cmd->name)
 	{
 		free(cmd);
 		return (NULL);
 	}
-	arg_count = count_args(tokens->next);
-	cmd->args = token_list_to_args(tokens->next, arg_count);
+	arg_count = count_args(tokens);
+	cmd->args = token_list_to_args(tokens, arg_count);
 	if (!cmd->args)
 	{
 		free(cmd->name);
