@@ -6,16 +6,16 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:01:34 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/13 16:03:58 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/22 17:29:19 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <string.h>
 
 static char	*get_key(const char *env)
 {
 	size_t	len;
+	size_t	i;
 	char	*key;
 
 	len = 0;
@@ -24,8 +24,12 @@ static char	*get_key(const char *env)
 	key = malloc(sizeof(char) * (len + 1));
 	if (!key)
 		return (NULL);
-	for (size_t i = 0; i < len; i++)
+	i = 0;
+	while (i < len)
+	{
 		key[i] = env[i];
+		i++;
+	}
 	key[len] = '\0';
 	return (key);
 }

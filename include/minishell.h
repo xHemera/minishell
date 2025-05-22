@@ -6,7 +6,7 @@
 /*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:55:46 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/22 17:41:18 by tlize            ###   ########.fr       */
+/*   Updated: 2025/05/22 17:54:24 by tlize            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,12 @@ typedef struct s_token
 typedef struct s_cmd
 {
 	char			*name;
-	bool			is_builtin;
 	char			**args;
-	int				arg_count;
+	char			*input_file;
+	char			*output_file;
+	int				append;
+	char			*heredoc_delimiter;
+	bool			is_builtin;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -59,37 +62,44 @@ typedef struct s_cmd
 // ##################### //
 
 // prompt.c
-char	*get_prompt(void);
+char		*get_prompt(void);
 
 // env.c
-t_env	*env_init(char **envp);
+t_env		*env_init(char **envp);
 
 // env_utils.c
-t_env	*env_new(char *key, char *value);
-void	env_add_back(t_env **head, t_env *new);
-void	env_clear(t_env **env);
-void	print_env(t_env *env);
+t_env		*env_new(char *key, char *value);
+void		env_add_back(t_env **head, t_env *new);
+void		env_clear(t_env **env);
+void		print_env(t_env *env);
 
 // tokenizer.c
-t_token	*tokenize_input(char *input);
+t_token		*tokenize_input(char *input);
+
+// tokenizer_utils.c
+int			handle_quotes(char *line, int *i, char quote_char);
+char		*process_quoted_content(char *raw_token);
+t_token		*create_new_token(char *token_value);
+t_token		*add_token_to_list(t_token *head, char *token_value);
 
 // builtin_handler.c
-int		handle_builtin(char *line, t_env *env);
+int			handle_builtin(char *line, t_env *env);
 
 // builtins
-int		ft_echo(char **argv, int i, int j, int newline);
-int		ft_export(t_cmd *cmd, t_env *envp);
+int			ft_echo(char **argv, int i, int j, int newline);
+int			ft_export(t_env *envp, int argc);
 
 // cmd_parser.c
-t_cmd	*parse_cmd(t_token *tokens);
-void	free_tokens(t_token *tokens);
+t_cmd		*parse_cmd(t_token *tokens);
+void		free_tokens(t_token *tokens);
 
 // parser.c
-t_cmd	*parse_line(char *line);
-void	token_list_clear(t_token **tokens);
-void	cmd_list_clear(t_cmd **cmd_list);
+t_cmd		*parse_line(char *line);
+void		token_list_clear(t_token **tokens);
+void		cmd_list_clear(t_cmd **cmd_list);
+t_cmd		*init_cmd(void);
 
 // debug.c
-void	print_cmd(t_cmd *cmd);
+void		print_cmd(t_cmd *cmd);
 
 #endif

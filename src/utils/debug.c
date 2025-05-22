@@ -6,7 +6,7 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 17:37:18 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/13 17:37:33 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/22 16:26:49 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,8 @@ void	print_cmd(t_cmd *cmd)
 		printf("  [%d]: %s\n", i, cmd->args[i]);
 		i++;
 	}
-	printf("Est un builtin : %s\n", cmd->is_builtin ? "oui" : "non");
+	if (cmd->is_builtin)
+		printf("Est un builtin : oui\n");
+	else
+		printf("Est un builtin : non\n");
 }
