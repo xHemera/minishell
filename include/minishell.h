@@ -6,7 +6,7 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:55:46 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/22 18:12:35 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/22 18:27:57 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,13 @@ t_cmd		*init_cmd(void);
 
 // debug.c
 void		print_cmd(t_cmd *cmd);
+
+// pipe_utils.c
+bool		open_pipe(int pipefd[2]);
+void		close_pipe(int pipefd[2]);
+
+// pipe_handler.c
+bool		init_pipes(int ***pipes, int nb_pipes);
+void		close_all_pipes(int **pipes, int nb_pipes);
 
 #endif
