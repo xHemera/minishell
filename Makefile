@@ -7,8 +7,6 @@ SRC_DIR = src
 OBJ_DIR = obj
 
 SRCS = $(SRC_DIR)/main.c \
-	$(SRC_DIR)/builtins/echo/echo.c \
-	$(SRC_DIR)/builtins/export/export.c \
 	$(SRC_DIR)/parsing/env.c \
 	$(SRC_DIR)/parsing/env_utils.c \
 	$(SRC_DIR)/parsing/tokenizer.c \
