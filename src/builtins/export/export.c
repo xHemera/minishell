@@ -6,7 +6,7 @@
 /*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:59:11 by tlize             #+#    #+#             */
-/*   Updated: 2025/05/22 17:47:24 by tlize            ###   ########.fr       */
+/*   Updated: 2025/05/22 17:55:39 by tlize            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int ft_export(t_cmd *cmd, t_env *envp)
 {
     t_env *test1;
     
-    if (cmd->arg_count == 1)
+    if (1 == 1)
     {
         while (envp->next)
         {
