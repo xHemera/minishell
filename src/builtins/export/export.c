@@ -6,7 +6,7 @@
 /*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:59:11 by tlize             #+#    #+#             */
-/*   Updated: 2025/05/19 18:44:30 by tlize            ###   ########.fr       */
+/*   Updated: 2025/05/22 17:47:24 by tlize            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 //suicide garantit avant la fin de la fonction
 
-int ft_export(t_env *envp, int argc)
+int ft_export(t_cmd *cmd, t_env *envp)
 {
-    if (argc == 1)
+    t_env *test1;
+    
+    if (cmd->arg_count == 1)
     {
         while (envp->next)
         {
@@ -26,6 +28,11 @@ int ft_export(t_env *envp, int argc)
             ft_printf("\n");
             envp = envp->next;
         }
+    }
+    else
+    {
+        test1 = env_new("test", "test");
+        return (1);
     }
     return (0);
 }
