@@ -6,7 +6,7 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:55:46 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/27 18:54:41 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/27 19:14:48 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ t_token		*add_token_to_list(t_token *head, char *token_value);
 int			handle_builtin(char *line, t_env *env);
 
 // builtins
-int			ft_unset(char **args, t_env **env);
+int			exec_builtin(t_cmd *cmd, t_env *envp);
 int			ft_exit(char **args);
 int			ft_cd(char **args, t_env *env);
 int			ft_pwd(void);
