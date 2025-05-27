@@ -6,7 +6,7 @@
 /*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:55:46 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/22 17:41:18 by tlize            ###   ########.fr       */
+/*   Updated: 2025/05/22 18:51:45 by tlize            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ t_token		*add_token_to_list(t_token *head, char *token_value);
 int			handle_builtin(char *line, t_env *env);
 
 // builtins
-int		ft_echo(char **argv, int i, int j, int newline);
-int		ft_export(t_cmd *cmd, t_env *envp);
+int			ft_echo(char **argv, int i, int j, int newline);
+int			ft_export(t_cmd *cmd, t_env *env, int argc);
 
 // cmd_parser.c
 t_cmd		*parse_cmd(t_token *tokens);
