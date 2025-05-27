@@ -6,7 +6,7 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:55:46 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/22 18:27:57 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/27 18:54:41 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,10 @@ t_token		*add_token_to_list(t_token *head, char *token_value);
 int			handle_builtin(char *line, t_env *env);
 
 // builtins
+int			ft_unset(char **args, t_env **env);
+int			ft_exit(char **args);
+int			ft_cd(char **args, t_env *env);
+int			ft_pwd(void);
 // int		ft_echo(char **argv, int i, int j, int newline);
 // int		ft_export(t_cmd *cmd, t_env *envp);
 
@@ -109,5 +113,7 @@ void		close_pipe(int pipefd[2]);
 // pipe_handler.c
 bool		init_pipes(int ***pipes, int nb_pipes);
 void		close_all_pipes(int **pipes, int nb_pipes);
+
+
 
 #endif
