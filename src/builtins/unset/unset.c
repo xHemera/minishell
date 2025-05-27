@@ -6,81 +6,82 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:52:07 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/27 18:55:42 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/27 19:06:19 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
-static int	is_valid_identifier(char *str)
+static int	is_builtin(char *cmd_name)
 {
-	int	i;
-
-	if (!str || !str[0])
+	if (!cmd_name)
 		return (0);
-	if (!ft_isalpha(str[0]) && str[0] != '_')
-		return (0);
-	i = 1;
-	while (str[i])
-	{
-		if (!ft_isalnum(str[i]) && str[i] != '_')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-static void	remove_env_node(t_env **env, t_env *node_to_remove)
-{
-	if (node_to_remove->prev)
-		node_to_remove->prev->next = node_to_remove->next;
-	else
-		*env = node_to_remove->next;
-	if (node_to_remove->next)
-		node_to_remove->next->prev = node_to_remove->prev;
-	free(node_to_remove->key);
-	free(node_to_remove->value);
-	free(node_to_remove);
-}
-
-static int	unset_variable(t_env **env, char *var_name)
-{
-	t_env	*current;
-
-	current = *env;
-	while (current)
-	{
-		if (ft_strncmp(current->key, var_name, ft_strlen(var_name) + 1) == 0)
-		{
-			remove_env_node(env, current);
-			return (0);
-		}
-		current = current->next;
-	}
+	if (ft_strncmp(cmd_name, "echo", 4) == 0 &&
+		(cmd_name[4] == '\0' || cmd_name[4] == ' '))
+		return (1);
+	if (ft_strncmp(cmd_name, "cd", 2) == 0 &&
+		(cmd_name[2] == '\0' || cmd_name[2] == ' '))
+		return (1);
+	if (ft_strncmp(cmd_name, "pwd", 3) == 0 &&
+		(cmd_name[3] == '\0' || cmd_name[3] == ' '))
+		return (1);
+	if (ft_strncmp(cmd_name, "export", 6) == 0 &&
+		(cmd_name[6] == '\0' || cmd_name[6] == ' '))
+		return (1);
+	if (ft_strncmp(cmd_name, "unset", 5) == 0 &&
+		(cmd_name[5] == '\0' || cmd_name[5] == ' '))
+		return (1);
+	if (ft_strncmp(cmd_name, "env", 3) == 0 &&
+		(cmd_name[3] == '\0' || cmd_name[3] == ' '))
+		return (1);
+	if (ft_strncmp(cmd_name, "exit", 4) == 0 &&
+		(cmd_name[4] == '\0' || cmd_name[4] == ' '))
+		return (1);
 	return (0);
 }
 
-int	ft_unset(char **args, t_env **env)
+static int	execute_command(t_cmd *cmd, t_env **env)
 {
-	int	i;
-	int	exit_status;
+	if (!cmd || !cmd->name)
+		return (1);
+	if (is_builtin(cmd->name))
+		return (exec_builtin(cmd, *env));
+	return (0);
+}
 
-	if (!args[1])
-		return (0);
+int	main(int argc, char **argv, char **envp)
+{
+	char	*line;
+	char	*prompt;
+	t_env	*env;
+	t_cmd	*cmd_list;
+	int		exit_status;
+
+	(void)argc;
+	(void)argv;
+	env = env_init(envp);
+	if (!env)
+		return (1);
 	exit_status = 0;
-	i = 1;
-	while (args[i])
+	while (1)
 	{
-		if (!is_valid_identifier(args[i]))
+		prompt = get_prompt();
+		line = readline(prompt);
+		free(prompt);
+		if (!line)
+			break ;
+		if (ft_strlen(line) > 0)
 		{
-			ft_putstr_fd("unset: not a valid identifier: ", 2);
-			ft_putstr_fd(args[i], 2);
-			ft_putchar_fd('\n', 2);
-			exit_status = 1;
+			add_history(line);
+			cmd_list = parse_line(line);
+			if (cmd_list)
+			{
+				exit_status = execute_command(cmd_list, &env);
+				cmd_list_clear(&cmd_list);
+			}
 		}
-		else
-			unset_variable(env, args[i]);
-		i++;
+		free(line);
 	}
+	env_clear(&env);
 	return (exit_status);
 }
