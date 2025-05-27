@@ -21,7 +21,6 @@ SRCS = $(SRC_DIR)/main.c \
 	$(SRC_DIR)/exec/builtinsalsa.c \
 	$(SRC_DIR)/builtins/cd/cd.c \
 	$(SRC_DIR)/builtins/pwd/pwd.c \
-	$(SRC_DIR)/builtins/unset/unset.c \
 	$(SRC_DIR)/builtins/exit/exit.c
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
