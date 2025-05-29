@@ -6,7 +6,7 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:55:46 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/29 14:20:55 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/29 14:45:15 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,11 @@ typedef struct s_cmd
 // free_utils.c
 void		free_cmd(t_cmd *cmd);
 void		cmd_list_clear(t_cmd **cmd_list);
+void		free_args(char **args);
 
 // env.c
 t_env		*env_init(char **envp);
+void		env_clear(t_env **env_list);
 
 // env_utils.c
 t_env		*env_new(char *key, char *value);

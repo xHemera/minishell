@@ -6,7 +6,7 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:19:54 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/29 14:15:30 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/29 14:46:06 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,17 +75,19 @@ static void	minishell_loop(t_env **env, int *exit_status)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_env	*env;
+	t_env	*env_list;
 	int		exit_status;
 
 	(void)argc;
 	(void)argv;
-	env = env_init(envp);
-	if (!env)
-		return (1);
 	exit_status = 0;
-	minishell_loop(&env, &exit_status);
-	env_clear(&env);
-	rl_clear_history();
+	env_list = env_init(envp);
+	if (!env_list)
+	{
+		ft_putendl_fd("Erreur : impossible d'initialiser l'environnement", 2);
+		return (EXIT_FAILURE);
+	}
+	minishell_loop(&env_list, &exit_status);
+	env_clear(&env_list);
 	return (exit_status);
 }

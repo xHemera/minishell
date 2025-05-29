@@ -6,7 +6,7 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 13:58:03 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/29 14:14:36 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/29 14:44:15 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,19 @@ void	cmd_list_clear(t_cmd **cmd_list)
 		free_cmd(*cmd_list);
 		*cmd_list = tmp;
 	}
+}
+
+void	free_args(char **args)
+{
+	int	i;
+
+	if (!args)
+		return ;
+	i = 0;
+	while (args[i])
+	{
+		free(args[i]);
+		i++;
+	}
+	free(args);
 }
