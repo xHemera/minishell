@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:19:54 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/27 19:15:58 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/29 11:55:35 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,26 @@ static int	is_builtin(char *cmd_name)
 {
 	if (!cmd_name)
 		return (0);
-	if (ft_strncmp(cmd_name, "echo", 4) == 0 &&
-		(cmd_name[4] == '\0' || cmd_name[4] == ' '))
+	if (ft_strncmp(cmd_name, "echo", 4) == 0
+		&& (cmd_name[4] == '\0' || cmd_name[4] == ' '))
 		return (1);
-	if (ft_strncmp(cmd_name, "cd", 2) == 0 &&
-		(cmd_name[2] == '\0' || cmd_name[2] == ' '))
+	if (ft_strncmp(cmd_name, "cd", 2) == 0
+		&& (cmd_name[2] == '\0' || cmd_name[2] == ' '))
 		return (1);
-	if (ft_strncmp(cmd_name, "pwd", 3) == 0 &&
-		(cmd_name[3] == '\0' || cmd_name[3] == ' '))
+	if (ft_strncmp(cmd_name, "pwd", 3) == 0
+		&& (cmd_name[3] == '\0' || cmd_name[3] == ' '))
 		return (1);
-	if (ft_strncmp(cmd_name, "export", 6) == 0 &&
-		(cmd_name[6] == '\0' || cmd_name[6] == ' '))
+	if (ft_strncmp(cmd_name, "export", 6) == 0
+		&& (cmd_name[6] == '\0' || cmd_name[6] == ' '))
 		return (1);
-	if (ft_strncmp(cmd_name, "unset", 5) == 0 &&
-		(cmd_name[5] == '\0' || cmd_name[5] == ' '))
+	if (ft_strncmp(cmd_name, "unset", 5) == 0
+		&& (cmd_name[5] == '\0' || cmd_name[5] == ' '))
 		return (1);
-	if (ft_strncmp(cmd_name, "env", 3) == 0 &&
-		(cmd_name[3] == '\0' || cmd_name[3] == ' '))
+	if (ft_strncmp(cmd_name, "env", 3) == 0
+		&& (cmd_name[3] == '\0' || cmd_name[3] == ' '))
 		return (1);
-	if (ft_strncmp(cmd_name, "exit", 4) == 0 &&
-		(cmd_name[4] == '\0' || cmd_name[4] == ' '))
+	if (ft_strncmp(cmd_name, "exit", 4) == 0
+		&& (cmd_name[4] == '\0' || cmd_name[4] == ' '))
 		return (1);
 	return (0);
 }
@@ -49,20 +49,12 @@ static int	execute_command(t_cmd *cmd, t_env **env)
 	return (0);
 }
 
-int	main(int argc, char **argv, char **envp)
+static void	minishell_loop(t_env **env, int *exit_status)
 {
 	char	*line;
 	char	*prompt;
-	t_env	*env;
 	t_cmd	*cmd_list;
-	int		exit_status;
 
-	(void)argc;
-	(void)argv;
-	env = env_init(envp);
-	if (!env)
-		return (1);
-	exit_status = 0;
 	while (1)
 	{
 		prompt = get_prompt();
@@ -76,12 +68,26 @@ int	main(int argc, char **argv, char **envp)
 			cmd_list = parse_line(line);
 			if (cmd_list)
 			{
-				exit_status = execute_command(cmd_list, &env);
+				*exit_status = execute_command(cmd_list, env);
 				cmd_list_clear(&cmd_list);
 			}
 		}
 		free(line);
 	}
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_env	*env;
+	int		exit_status;
+
+	(void)argc;
+	(void)argv;
+	env = env_init(envp);
+	if (!env)
+		return (1);
+	exit_status = 0;
+	minishell_loop(&env, &exit_status);
 	env_clear(&env);
 	return (exit_status);
 }

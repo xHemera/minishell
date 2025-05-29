@@ -3,35 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:59:11 by tlize             #+#    #+#             */
-/*   Updated: 2025/05/22 17:54:57 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/29 11:55:04 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../../include/minishell.h"
 
-//suicide garantit avant la fin de la fonction
-
-int ft_export(t_cmd *cmd, t_env *envp)
+int	ft_export(t_cmd *cmd, t_env *envp)
 {
-	t_env	*test1;
-
 	if (cmd->arg_count == 1)
 	{
-		while (envp->next)
+		while (envp)
 		{
-			ft_printf(envp->key);
-			ft_printf("=");
-			ft_printf(envp->value);
-			ft_printf("\n");
+			ft_printf("%s=%s\n", envp->key, envp->value);
 			envp = envp->next;
 		}
 	}
 	else
 	{
-		test1 = env_new("test", "test");
+		/* TODO: gérer l'ajout ou la modification de variables d'environnement */
+		ft_putstr_fd("export: variable export not implemented\n", 2);
 		return (1);
 	}
 	return (0);
