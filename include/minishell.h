@@ -114,6 +114,4 @@ void		close_pipe(int pipefd[2]);
 bool		init_pipes(int ***pipes, int nb_pipes);
 void		close_all_pipes(int **pipes, int nb_pipes);
 
-
-
 #endif
