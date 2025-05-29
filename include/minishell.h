@@ -6,7 +6,7 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:55:46 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/27 19:14:48 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/29 13:48:09 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,6 @@
 # include <unistd.h>
 # include <sys/wait.h>
 # include "libft/include/libft.h"
-
-# define RESET   "\033[0m"
-# define GREEN   "\033[32m"
-# define CYAN	"\033[36m"
-# define YELLOW  "\033[33m"
-# define TITLE "[Jarvis, nettoie moi le gland] "
 
 // Structure pour l'environnement
 typedef struct s_env
@@ -60,9 +54,6 @@ typedef struct s_cmd
 // ##################### //
 //       Fonctions       //
 // ##################### //
-
-// prompt.c
-char		*get_prompt(void);
 
 // env.c
 t_env		*env_init(char **envp);
