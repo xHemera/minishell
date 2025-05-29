@@ -15,10 +15,12 @@ SRCS = $(SRC_DIR)/main.c \
 	$(SRC_DIR)/parsing/parser.c \
 	$(SRC_DIR)/parsing/cmd_parser.c \
 	$(SRC_DIR)/utils/debug.c \
+	$(SRC_DIR)/utils/free_utils.c \
 	$(SRC_DIR)/exec/pipe/pipe_utils.c \
 	$(SRC_DIR)/exec/pipe/pipe_handler.c \
 	$(SRC_DIR)/exec/builtinsalsa.c \
 	$(SRC_DIR)/builtins/cd/cd.c \
+	$(SRC_DIR)/builtins/cd/cd_utils.c \
 	$(SRC_DIR)/builtins/pwd/pwd.c \
 	$(SRC_DIR)/builtins/exit/exit.c
 

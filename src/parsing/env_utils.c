@@ -6,7 +6,7 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:01:40 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/13 16:23:35 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/29 14:15:03 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,15 @@ void	env_add_back(t_env **head, t_env *new)
 void	env_clear(t_env **env)
 {
 	t_env	*tmp;
-	t_env	*next;
 
-	tmp = *env;
-	while (tmp)
+	while (*env)
 	{
-		next = tmp->next;
-		free(tmp->key);
-		free(tmp->value);
-		free(tmp);
-		tmp = next;
+		tmp = (*env)->next;
+		free((*env)->key);
+		free((*env)->value);
+		free(*env);
+		*env = tmp;
 	}
-	*env = NULL;
 }
 
 void	print_env(t_env *env)

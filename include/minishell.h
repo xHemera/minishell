@@ -6,7 +6,7 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:55:46 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/29 13:48:09 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/29 14:20:55 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,10 @@ typedef struct s_cmd
 //       Fonctions       //
 // ##################### //
 
+// free_utils.c
+void		free_cmd(t_cmd *cmd);
+void		cmd_list_clear(t_cmd **cmd_list);
+
 // env.c
 t_env		*env_init(char **envp);
 
@@ -84,6 +88,10 @@ int			ft_pwd(void);
 // int		ft_echo(char **argv, int i, int j, int newline);
 // int		ft_export(t_cmd *cmd, t_env *envp);
 
+// cd
+char		*get_env_value(t_env *env, char *key);
+int			set_env_value(t_env *env, char *key, char *new_value);
+
 // cmd_parser.c
 t_cmd		*parse_cmd(t_token *tokens);
 void		free_tokens(t_token *tokens);
@@ -91,7 +99,6 @@ void		free_tokens(t_token *tokens);
 // parser.c
 t_cmd		*parse_line(char *line);
 void		token_list_clear(t_token **tokens);
-void		cmd_list_clear(t_cmd **cmd_list);
 t_cmd		*init_cmd(void);
 
 // debug.c
