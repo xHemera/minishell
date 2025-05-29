@@ -1,0 +1,78 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_cmd.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/29 17:20:46 by tobesnar          #+#    #+#             */
+/*   Updated: 2025/05/29 17:46:31 by tobesnar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+static int	is_redirect(const char *token)
+{
+	if (!token)
+		return (0);
+	if (!ft_strncmp(token, "<", 2) || !ft_strncmp(token, ">", 2)
+		|| !ft_strncmp(token, ">>", 3) || !ft_strncmp(token, "<<", 3))
+		return (1);
+	return (0);
+}
+
+static void	add_arg_or_name(t_cmd *cmd, char *token)
+{
+	if (!cmd->name)
+	{
+		cmd->name = ft_strdup(token);
+		cmd_add_arg(cmd, ft_strdup(token));
+	}
+	else
+		cmd_add_arg(cmd, ft_strdup(token));
+}
+
+static int	parse_tokens(t_cmd *cmd, char **tokens)
+{
+	int	i;
+
+	i = 0;
+	while (tokens[i])
+	{
+		if (is_redirect(tokens[i]))
+		{
+			if (!handle_redirect(cmd, tokens, &i))
+				return (0);
+			continue ;
+		}
+		add_arg_or_name(cmd, tokens[i]);
+		i++;
+	}
+	return (1);
+}
+
+t_cmd	*parse_segment(char *segment)
+{
+	t_cmd	*cmd;
+	char	**tokens;
+	int		success;
+
+	cmd = cmd_new();
+	if (!cmd)
+		return (NULL);
+	tokens = tokenize_simple(segment);
+	if (!tokens)
+	{
+		free_cmd(cmd);
+		return (NULL);
+	}
+	success = parse_tokens(cmd, tokens);
+	free_tokens(tokens);
+	if (!success)
+	{
+		free_cmd(cmd);
+		return (NULL);
+	}
+	return (cmd);
+}

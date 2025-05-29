@@ -1,0 +1,91 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/29 16:28:47 by tobesnar          #+#    #+#             */
+/*   Updated: 2025/05/29 16:49:38 by tobesnar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+static t_env	*env_new(char *key, char *value)
+{
+	t_env	*node;
+
+	node = malloc(sizeof(t_env));
+	if (!node)
+	{
+		free(key);
+		free(value);
+		return (NULL);
+	}
+	node->key = key;
+	node->value = value;
+	node->prev = NULL;
+	node->next = NULL;
+	return (node);
+}
+
+static void	env_add_back(t_env **head, t_env *new)
+{
+	t_env	*temp;
+
+	if (!*head)
+	{
+		*head = new;
+		return ;
+	}
+	temp = *head;
+	while (temp->next)
+		temp = temp->next;
+	temp->next = new;
+	new->prev = temp;
+}
+
+static char	*get_key(const char *env)
+{
+	size_t	len;
+	char	*key;
+
+	len = 0;
+	while (env[len] && env[len] != '=')
+		len++;
+	key = malloc(len + 1);
+	if (!key)
+		return (NULL);
+	ft_strlcpy(key, env, len + 1);
+	return (key);
+}
+
+static char	*get_value(const char *env)
+{
+	while (*env && *env != '=')
+		env++;
+	if (!*env || !*(env + 1))
+		return (NULL);
+	return (ft_strdup(env + 1));
+}
+
+t_env	*env_init(char **envp)
+{
+	t_env	*head;
+	t_env	*new;
+
+	head = NULL;
+	while (*envp)
+	{
+		new = env_new(get_key(*envp), get_value(*envp));
+		if (!new)
+		{
+			free_env(&head);
+			return (NULL);
+		}
+		env_add_back(&head, new);
+		envp++;
+	}
+	return (head);
+}
