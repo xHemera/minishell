@@ -7,8 +7,6 @@ SRC_DIR = src
 OBJ_DIR = obj
 
 SRCS = $(SRC_DIR)/main.c \
-	$(SRC_DIR)/builtins/echo/echo.c \
-	$(SRC_DIR)/builtins/export/export.c \
 	$(SRC_DIR)/parsing/env.c \
 	$(SRC_DIR)/parsing/env_utils.c \
 	$(SRC_DIR)/parsing/tokenizer.c \
@@ -16,8 +14,13 @@ SRCS = $(SRC_DIR)/main.c \
 	$(SRC_DIR)/parsing/builtin_handler.c \
 	$(SRC_DIR)/parsing/parser.c \
 	$(SRC_DIR)/parsing/cmd_parser.c \
-	$(SRC_DIR)/utils/prompt.c \
-	$(SRC_DIR)/utils/debug.c
+	$(SRC_DIR)/utils/debug.c \
+	$(SRC_DIR)/exec/pipe/pipe_utils.c \
+	$(SRC_DIR)/exec/pipe/pipe_handler.c \
+	$(SRC_DIR)/exec/builtinsalsa.c \
+	$(SRC_DIR)/builtins/cd/cd.c \
+	$(SRC_DIR)/builtins/pwd/pwd.c \
+	$(SRC_DIR)/builtins/exit/exit.c
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 

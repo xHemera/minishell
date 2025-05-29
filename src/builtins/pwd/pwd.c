@@ -1,32 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export.c                                           :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 16:59:11 by tlize             #+#    #+#             */
-/*   Updated: 2025/05/29 11:55:04 by hemera           ###   ########.fr       */
+/*   Created: 2025/05/27 18:50:40 by tobesnar          #+#    #+#             */
+/*   Updated: 2025/05/27 18:55:22 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
-int	ft_export(t_cmd *cmd, t_env *envp)
+int	ft_pwd(void)
 {
-	if (cmd->arg_count == 1)
+	char	cwd[1024];
+
+	if (getcwd(cwd, sizeof(cwd)) != NULL)
 	{
-		while (envp)
-		{
-			ft_printf("%s=%s\n", envp->key, envp->value);
-			envp = envp->next;
-		}
+		ft_putstr_fd(cwd, 1);
+		ft_putchar_fd('\n', 1);
+		return (0);
 	}
 	else
 	{
-		/* TODO: gérer l'ajout ou la modification de variables d'environnement */
-		ft_putstr_fd("export: variable export not implemented\n", 2);
+		perror("pwd");
 		return (1);
 	}
-	return (0);
 }
