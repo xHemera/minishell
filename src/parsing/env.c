@@ -6,36 +6,24 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:01:34 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/29 14:37:39 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/29 15:17:55 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static void	env_free(t_env *env)
+void	env_clear(t_env **env)
 {
-	if (!env)
-		return ;
-	free(env->key);
-	free(env->value);
-	free(env);
-}
+	t_env	*tmp;
 
-void	env_clear(t_env **env_list)
-{
-	t_env	*current;
-	t_env	*next;
-
-	if (!env_list)
-		return ;
-	current = *env_list;
-	while (current)
+	while (*env)
 	{
-		next = current->next;
-		env_free(current);
-		current = next;
+		tmp = (*env)->next;
+		free((*env)->key);
+		free((*env)->value);
+		free(*env);
+		*env = tmp;
 	}
-	*env_list = NULL;
 }
 
 static char	*get_key(const char *env)
@@ -71,7 +59,7 @@ static char	*get_value(const char *env)
 	if (env[start] == '\0')
 		return (NULL);
 	start++;
-	value = strdup(env + start);
+	value = ft_strdup(env + start);
 	return (value);
 }
 

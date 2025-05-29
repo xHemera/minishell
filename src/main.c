@@ -6,7 +6,7 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:19:54 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/29 14:46:06 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/29 14:54:44 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static void	minishell_loop(t_env **env, int *exit_status)
 			if (cmd_list)
 			{
 				*exit_status = execute_command(cmd_list, env);
-				free_cmd(cmd_list);
+				cmd_list_clear(&cmd_list);
 			}
 		}
 		free(line);
