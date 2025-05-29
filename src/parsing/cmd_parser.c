@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:55:30 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/22 17:44:24 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/29 11:56:36 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,9 @@ t_cmd	*parse_cmd(t_token *tokens)
 		free(cmd);
 		return (NULL);
 	}
-	cmd->is_builtin = ft_strncmp(cmd->name, "env", 4) == 0
-		|| ft_strncmp(cmd->name, "export", 7) == 0
-		|| ft_strncmp(cmd->name, "unset", 6) == 0;
+	cmd->is_builtin = (ft_strncmp(cmd->name, "env", 4) == 0
+			|| ft_strncmp(cmd->name, "export", 7) == 0
+			|| ft_strncmp(cmd->name, "unset", 6) == 0);
 	free_tokens(tokens);
 	return (cmd);
 }

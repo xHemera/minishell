@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:55:46 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/22 18:51:45 by tlize            ###   ########.fr       */
+/*   Updated: 2025/05/27 19:14:48 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,12 @@ t_token		*add_token_to_list(t_token *head, char *token_value);
 int			handle_builtin(char *line, t_env *env);
 
 // builtins
-int			ft_echo(char **argv, int i, int j, int newline);
-int			ft_export(t_cmd *cmd, t_env *env, int argc);
+int			exec_builtin(t_cmd *cmd, t_env *envp);
+int			ft_exit(char **args);
+int			ft_cd(char **args, t_env *env);
+int			ft_pwd(void);
+// int		ft_echo(char **argv, int i, int j, int newline);
+// int		ft_export(t_cmd *cmd, t_env *envp);
 
 // cmd_parser.c
 t_cmd		*parse_cmd(t_token *tokens);
@@ -101,5 +105,13 @@ t_cmd		*init_cmd(void);
 
 // debug.c
 void		print_cmd(t_cmd *cmd);
+
+// pipe_utils.c
+bool		open_pipe(int pipefd[2]);
+void		close_pipe(int pipefd[2]);
+
+// pipe_handler.c
+bool		init_pipes(int ***pipes, int nb_pipes);
+void		close_all_pipes(int **pipes, int nb_pipes);
 
 #endif
