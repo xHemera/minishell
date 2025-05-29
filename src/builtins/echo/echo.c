@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 17:58:47 by tlize             #+#    #+#             */
-/*   Updated: 2025/05/22 17:30:18 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:57:17 by tlize            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+//Lors de l'appel, i = 0, j = 2 et newline = 1.
 int	ft_echo(char **argv, int i, int j, int newline)
 {
 	while (argv[i] && !ft_strncmp(argv[i], "-n", 2))

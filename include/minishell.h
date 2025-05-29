@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:55:46 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/29 13:48:09 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:33:16 by tlize            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int			exec_builtin(t_cmd *cmd, t_env *envp);
 int			ft_exit(char **args);
 int			ft_cd(char **args, t_env *env);
 int			ft_pwd(void);
-// int		ft_echo(char **argv, int i, int j, int newline);
+int			ft_echo(char **argv, int i, int j, int newline);
 // int		ft_export(t_cmd *cmd, t_env *envp);
 
 // cmd_parser.c

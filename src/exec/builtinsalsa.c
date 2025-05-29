@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtinsalsa.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 16:49:20 by tlize             #+#    #+#             */
-/*   Updated: 2025/05/27 19:13:54 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:57:40 by tlize            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,8 @@ int	exec_builtin(t_cmd *cmd, t_env *envp)
 	if (ft_strncmp(cmd->name, "exit", 4) == 0 &&
 		(cmd->name[4] == '\0' || cmd->name[4] == ' '))
 		return (ft_exit(cmd->args));
+	if (ft_strncmp(cmd->name, "echo", 4) == 0 &&
+		(cmd->name[4] == '\0' || cmd->name[4] == ' '))
+		return (ft_echo(cmd->args, 1, 2, 1));
 	return (1);
 }
