@@ -14,7 +14,6 @@ SRCS = $(SRC_DIR)/main.c \
 	$(SRC_DIR)/parsing/builtin_handler.c \
 	$(SRC_DIR)/parsing/parser.c \
 	$(SRC_DIR)/parsing/cmd_parser.c \
-	$(SRC_DIR)/utils/prompt.c \
 	$(SRC_DIR)/utils/debug.c \
 	$(SRC_DIR)/exec/pipe/pipe_utils.c \
 	$(SRC_DIR)/exec/pipe/pipe_handler.c \

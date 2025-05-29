@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 16:19:54 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/29 11:55:35 by hemera           ###   ########.fr       */
+/*   Updated: 2025/05/29 13:48:28 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,11 @@ static int	execute_command(t_cmd *cmd, t_env **env)
 static void	minishell_loop(t_env **env, int *exit_status)
 {
 	char	*line;
-	char	*prompt;
 	t_cmd	*cmd_list;
 
 	while (1)
 	{
-		prompt = get_prompt();
-		line = readline(prompt);
-		free(prompt);
+		line = readline("minishell>");
 		if (!line)
 			break ;
 		if (ft_strlen(line) > 0)
