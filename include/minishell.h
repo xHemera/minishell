@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:55:46 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/29 17:58:57 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/05/30 14:32:06 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,14 @@ char	**split_pipe_aware(const char *str);
 // env.c
 t_env	*env_init(char **envp);
 
-// debug.c
-void	print_cmd(t_cmd *cmd);
-void	print_cmd_list(t_cmd *cmd);
+// buitlins.c
+int	ft_cd(char **args, t_env *env);
+int	ft_pwd(void);
+// int ft_export(t_cmd *cmd, t_env *envp, int argc);
+int	ft_echo(char **argv, int i, int j, int newline);
+int	ft_exit(char **args);
+
+// exec_builtins.c
+int	exec_builtin(t_cmd *cmd, t_env *envp);
 
 #endif

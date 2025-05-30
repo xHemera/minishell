@@ -14,8 +14,12 @@ SRCS = main.c \
 	$(SRC_DIR)/parsing/cmd_utils.c \
 	$(SRC_DIR)/parsing/tokenize.c \
 	$(SRC_DIR)/parsing/tokenize_utils.c \
-	$(SRC_DIR)/utils/free_utils.c \
-	$(SRC_DIR)/utils/debug.c
+	$(SRC_DIR)/exec/exec_builtins.c \
+	$(SRC_DIR)/builtins/cd/cd.c \
+	$(SRC_DIR)/builtins/pwd/pwd.c \
+	$(SRC_DIR)/builtins/exit/exit.c \
+	$(SRC_DIR)/builtins/echo/echo.c \
+	$(SRC_DIR)/utils/free_utils.c
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
