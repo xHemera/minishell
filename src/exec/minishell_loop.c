@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   minishell_loop.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/29 15:53:18 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/06/01 13:57:51 by hemera           ###   ########.fr       */
+/*   Created: 2025/06/01 13:40:02 by hemera            #+#    #+#             */
+/*   Updated: 2025/06/01 13:51:42 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+void	minishell_loop(t_env **env)
 {
-	t_shell	data;
+	char	*line;
 
-	(void)argc;
-	(void)argv;
-	data.env = env_init(envp);
-	minishell_loop(&data.env);
-	free_env(&data.env);
-	return (0);
+	while (1)
+	{
+		line = readline("minishell> ");
+		if (!line)
+			exit(0);
+		if (*line)
+		{
+			add_history(line);
+			parse_and_exec(line, env);
+		}
+		free(line);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:55:46 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/06/01 13:12:26 by hemera           ###   ########.fr       */
+/*   Updated: 2025/06/01 13:52:47 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@
 # include <sys/wait.h>
 # include "libft/include/libft.h"
 # include <signal.h>
+
+// ! ############################################################### //
+// !                           Structures                            //
+// ! ############################################################### //
 
 typedef struct s_env
 {
@@ -56,32 +60,49 @@ typedef struct s_shell
 	t_cmd	*cmd;
 }	t_shell;
 
+// ! ############################################################### //
+// !                            Fonctions                            //
+// ! ############################################################### //
 
-// ##################### //
-//       Fonctions       //
-// ##################### //
+// ! ##################### BUILTINS ##################### //
+// buitlins.c
+int	ft_cd(char **args, t_env *env);
+int	ft_pwd(void);
+// ? int ft_export(t_cmd *cmd, t_env *envp, int argc);
+int	ft_echo(char **argv, int i, int j, int newline);
+int	ft_exit(char **args);
 
-// free_utils.c
-void	free_env(t_env **env);
-void	free_split(char **split);
-void	free_cmd(t_cmd *cmd);
-void	free_cmd_list(t_cmd *cmd);
-void	free_tokens(char **tokens);
+// ! ##################### EXEC ##################### //
+// exec_builtins.c
+int	exec_builtin(t_cmd *cmd, t_env *envp);
+int	is_builtin(char *cmd_name);
+int	is_str_builtin(const char *cmd, const char *name, size_t len);
 
-// tokenize.c
-char	**tokenize_simple(const char *str);
+// exec_cmd.c
+int	exec_external(t_cmd *cmd, t_env *env);
+int	is_state_changing_builtin(char *cmd_name);
+int	exec_cmd(t_cmd *cmd, t_env **env);
 
-// tokenize_utils.c
-int		skip_spaces(const char *str, int i);
-int		extract_quoted_token(const char *str, int start, char quote);
-int		extract_token(const char *str, int start);
-int		count_tokens(const char *str);
-char	*copy_token(const char *str, int start, int end);
+// exec_pipeline.c
+int	exec_pipeline(t_cmd *cmd_list, t_env **env);
 
+// minishell_loop.c
+void	minishell_loop(t_env **env);
+
+// parse_and_exec.c
+void	parse_and_exec(char *line, t_env **env);
+
+// ! ##################### PARSING ##################### //
 // cmd_utils.c
 t_cmd	*cmd_new(void);
 int		cmd_add_arg(t_cmd *cmd, char *arg);
 void	cmd_clear(t_cmd **head);
+
+// env_utils.c
+char	**env_to_array(t_env *env);
+
+// env.c
+t_env	*env_init(char **envp);
 
 // parse_cmd.c
 t_cmd	*parse_segment(char *segment);
@@ -92,21 +113,24 @@ int		handle_redirect(t_cmd *cmd, char **tokens, int *i);
 // split_pipe_aware.c
 char	**split_pipe_aware(const char *str);
 
-// env.c
-t_env	*env_init(char **envp);
+// tokenize_utils.c
+int		skip_spaces(const char *str, int i);
+int		extract_quoted_token(const char *str, int start, char quote);
+int		extract_token(const char *str, int start);
+int		count_tokens(const char *str);
+char	*copy_token(const char *str, int start, int end);
 
-// env_utils.c
-char	**env_to_array(t_env *env);
+// tokenize.c
+char	**tokenize_simple(const char *str);
 
-// buitlins.c
-int	ft_cd(char **args, t_env *env);
-int	ft_pwd(void);
-// ? int ft_export(t_cmd *cmd, t_env *envp, int argc);
-int	ft_echo(char **argv, int i, int j, int newline);
-int	ft_exit(char **args);
+// ! ##################### UTILS ##################### //
+// free_utils.c
+void	free_env(t_env **env);
+void	free_split(char **split);
+void	free_cmd(t_cmd *cmd);
+void	free_cmd_list(t_cmd *cmd);
+void	free_tokens(char **tokens);
 
-// exec_builtins.c
-int	exec_builtin(t_cmd *cmd, t_env *envp);
-int	exec_external(t_cmd *cmd, t_env *env);
+
 
 #endif

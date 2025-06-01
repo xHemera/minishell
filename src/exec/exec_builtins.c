@@ -6,7 +6,7 @@
 /*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 14:13:31 by hemera            #+#    #+#             */
-/*   Updated: 2025/06/01 13:09:03 by hemera           ###   ########.fr       */
+/*   Updated: 2025/06/01 13:42:45 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,25 @@
 // 		i ++;
 // 	return (i);
 // }
+
+int	is_str_builtin(const char *cmd, const char *name, size_t len)
+{
+	return (ft_strncmp(cmd, name, len) == 0
+		&& (cmd[len] == '\0' || cmd[len] == ' '));
+}
+
+int	is_builtin(char *cmd_name)
+{
+	if (!cmd_name)
+		return (0);
+	return (is_str_builtin(cmd_name, "echo", 4)
+		|| is_str_builtin(cmd_name, "cd", 2)
+		|| is_str_builtin(cmd_name, "pwd", 3)
+		|| is_str_builtin(cmd_name, "export", 6)
+		|| is_str_builtin(cmd_name, "unset", 5)
+		|| is_str_builtin(cmd_name, "env", 3)
+		|| is_str_builtin(cmd_name, "exit", 4));
+}
 
 int	exec_builtin(t_cmd *cmd, t_env *envp)
 {
@@ -51,29 +70,4 @@ int	exec_builtin(t_cmd *cmd, t_env *envp)
 	// 	(cmd->name[6] == '\0' || cmd->name[6] == ' '))
 	// 	return (ft_export(cmd, envp, argc_super(cmd)));
 	return (1);
-}
-
-int	exec_external(t_cmd *cmd, t_env *env)
-{
-	pid_t	pid;
-	int		status;
-	char	**envp;
-
-	envp = env_to_array(env); // Fonction à implémenter si elle n'existe pas
-
-	pid = fork();
-	if (pid < 0)
-	{
-		perror("fork");
-		return (1);
-	}
-	if (pid == 0)
-	{
-		execve(cmd->name, cmd->args, envp);
-		perror("execve");
-		exit(127);
-	}
-	waitpid(pid, &status, 0);
-	free_split(envp);
-	return (WEXITSTATUS(status));
 }
