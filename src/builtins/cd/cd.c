@@ -6,7 +6,7 @@
 /*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:55:31 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/06/01 14:54:52 by hemera           ###   ########.fr       */
+/*   Updated: 2025/06/01 15:04:05 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ int	set_env_value(t_env *env, char *key, char *new_value)
 int	ft_cd(char **args, t_env *env)
 {
 	char	*target_dir;
-	char	old_pwd[1024];
-	char	new_pwd[1024];
 
 	if (!args[1])
 	{
@@ -58,22 +56,5 @@ int	ft_cd(char **args, t_env *env)
 	}
 	else
 		target_dir = args[1];
-	if (!getcwd(old_pwd, sizeof(old_pwd)))
-	{
-		perror("cd: getcwd");
-		return (1);
-	}
-	if (chdir(target_dir) != 0)
-	{
-		perror("cd");
-		return (1);
-	}
-	if (!getcwd(new_pwd, sizeof(new_pwd)))
-	{
-		perror("cd: getcwd");
-		return (1);
-	}
-	set_env_value(env, "OLDPWD", old_pwd);
-	set_env_value(env, "PWD", new_pwd);
-	return (0);
+	return (cd_change_dir(target_dir, env));
 }

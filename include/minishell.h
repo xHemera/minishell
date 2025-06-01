@@ -6,7 +6,7 @@
 /*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:55:46 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/06/01 15:00:01 by hemera           ###   ########.fr       */
+/*   Updated: 2025/06/01 15:06:11 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ char	*get_env_value(t_env *env, char *key);
 int		set_env_value(t_env *env, char *key, char *new_value);
 int		handle_cd_dash(char **target_dir, t_env *env);
 int		handle_cd_home(char **target_dir, t_env *env);
+int		cd_change_dir(char *target_dir, t_env *env);
 
 int		ft_pwd(void);
 // ? int ft_export(t_cmd *cmd, t_env *envp, int argc);
@@ -90,10 +91,11 @@ int		exec_cmd(t_cmd *cmd, t_env **env);
 
 // exec_pipeline_utils.c
 void	parent_process_cleanup(t_cmd *cmd, int pipe_fd[2], int *in_fd);
-void	launch_child_process(t_cmd *cmd, int pipe_fd[2], int in_fd, t_env **env);
+void	launch_child_process(t_cmd *cmd, int pipe_fd[2],
+			int in_fd, t_env **env);
 
 // exec_pipeline.c
-int	exec_pipeline(t_cmd *cmd_list, t_env **env);
+int		exec_pipeline(t_cmd *cmd_list, t_env **env);
 
 // minishell_loop.c
 void	minishell_loop(t_env **env);
@@ -141,7 +143,5 @@ void	free_split(char **split);
 void	free_cmd(t_cmd *cmd);
 void	free_cmd_list(t_cmd *cmd);
 void	free_tokens(char **tokens);
-
-
 
 #endif
