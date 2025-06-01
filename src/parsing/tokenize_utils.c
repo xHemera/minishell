@@ -6,7 +6,7 @@
 /*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:40:36 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/06/01 13:02:25 by hemera           ###   ########.fr       */
+/*   Updated: 2025/06/01 14:07:40 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,28 +60,25 @@ int	count_tokens(const char *str)
 	return (count);
 }
 
-char	*copy_token(const char *str, int start, int end)
+char *copy_token(const char *str, int start, int end)
 {
-	char	*token;
-	int		len;
+    char *token;
+    int len;
 
-	if (end > start &&
-		((str[start] == '\'' && str[end] == '\'') ||
-		 (str[start] == '"' && str[end] == '"')))
-	{
-		start++;
-		end--;
-	}
-	len = end - start;
-	if (len < 0)
-		len = 0;
-
-	token = malloc(len + 1);
-	if (!token)
-		return (NULL);
-
-	if (len > 0)
-		ft_memcpy(token, str + start, len);
-	token[len] = '\0';
-	return (token);
+    if (end > start && str[start] == str[end] &&
+        (str[start] == '\'' || str[start] == '"'))
+    {
+        start++;
+        end--;
+    }
+    len = end - start;
+    if (len < 0)
+        len = 0;
+    token = malloc(len + 1);
+    if (!token)
+        return (NULL);
+    if (len > 0)
+        ft_memcpy(token, str + start, len);
+    token[len] = '\0';
+    return (token);
 }

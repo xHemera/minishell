@@ -6,7 +6,7 @@
 /*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:55:46 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/06/01 13:52:47 by hemera           ###   ########.fr       */
+/*   Updated: 2025/06/01 14:09:27 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ char	**env_to_array(t_env *env);
 
 // env.c
 t_env	*env_init(char **envp);
+t_env	*env_new(char *key, char *value);
+void	env_add_back(t_env **head, t_env *new);
 
 // parse_cmd.c
 t_cmd	*parse_segment(char *segment);

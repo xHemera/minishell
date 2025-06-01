@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 16:28:47 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/29 16:49:38 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/06/01 14:09:30 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_env	*env_new(char *key, char *value)
+t_env	*env_new(char *key, char *value)
 {
 	t_env	*node;
 
@@ -30,7 +30,7 @@ static t_env	*env_new(char *key, char *value)
 	return (node);
 }
 
-static void	env_add_back(t_env **head, t_env *new)
+void	env_add_back(t_env **head, t_env *new)
 {
 	t_env	*temp;
 

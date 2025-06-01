@@ -6,7 +6,7 @@
 /*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 13:07:32 by hemera            #+#    #+#             */
-/*   Updated: 2025/06/01 13:08:03 by hemera           ###   ########.fr       */
+/*   Updated: 2025/06/01 14:07:05 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,26 +24,36 @@ static int	env_size(t_env *env)
 	return (count);
 }
 
+static char	*join_key_value(t_env *env)
+{
+	char	*tmp;
+	char	*res;
+
+	tmp = ft_strjoin(env->key, "=");
+	if (!tmp)
+		return (NULL);
+	res = ft_strjoin(tmp, env->value);
+	free(tmp);
+	return (res);
+}
+
 char	**env_to_array(t_env *env)
 {
-	int		size = env_size(env);
-	char	**envp = malloc(sizeof(char *) * (size + 1));
-	char	*joined;
-	int		i = 0;
+	char	**envp;
+	int		i;
 
+	envp = malloc(sizeof(char *) * (env_size(env) + 1));
 	if (!envp)
 		return (NULL);
+	i = 0;
 	while (env)
 	{
 		if (env->key && env->value)
 		{
-			joined = ft_strjoin(env->key, "=");
-			if (!joined)
-				return (free_split(envp), NULL);
-			envp[i] = ft_strjoin(joined, env->value);
-			free(joined);
+			envp[i] = join_key_value(env);
 			if (!envp[i])
-				return (free_split(envp), NULL);
+				while (i > 0)
+					free(envp[--i]), free(envp);
 			i++;
 		}
 		env = env->next;

@@ -6,7 +6,7 @@
 /*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 13:41:08 by hemera            #+#    #+#             */
-/*   Updated: 2025/06/01 13:41:08 by hemera           ###   ########.fr       */
+/*   Updated: 2025/06/01 14:04:03 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,8 @@ int	exec_pipeline(t_cmd *cmd_list, t_env **env)
 		cmd = cmd->next;
 	}
 	while (wait(NULL) > 0)
-		;
+    ;
+	if (in_fd != 0)
+		close(in_fd);
 	return (0);
 }
