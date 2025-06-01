@@ -6,7 +6,7 @@
 /*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:40:36 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/06/01 14:07:40 by hemera           ###   ########.fr       */
+/*   Updated: 2025/06/01 14:19:55 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ int	skip_spaces(const char *str, int i)
 	return (i);
 }
 
-
 int	extract_quoted_token(const char *str, int start, char quote)
 {
-	int	i = start + 1;
+	int	i;
 
+	i = start + 1;
 	while (str[i] && str[i] != quote)
 		i++;
 	return (i);
@@ -31,8 +31,9 @@ int	extract_quoted_token(const char *str, int start, char quote)
 
 int	extract_token(const char *str, int start)
 {
-	int	i = start;
+	int	i;
 
+	i = start;
 	while (str[i] && str[i] != ' ' && str[i] != '\t'
 		&& str[i] != '\'' && str[i] != '"')
 		i++;
@@ -41,9 +42,11 @@ int	extract_token(const char *str, int start)
 
 int	count_tokens(const char *str)
 {
-	int	i = 0;
-	int	count = 0;
+	int	i;
+	int	count;
 
+	i = 0;
+	count = 0;
 	while (str[i])
 	{
 		i = skip_spaces(str, i);
@@ -60,25 +63,25 @@ int	count_tokens(const char *str)
 	return (count);
 }
 
-char *copy_token(const char *str, int start, int end)
+char	*copy_token(const char *str, int start, int end)
 {
-    char *token;
-    int len;
+	char	*token;
+	int		len;
 
-    if (end > start && str[start] == str[end] &&
-        (str[start] == '\'' || str[start] == '"'))
-    {
-        start++;
-        end--;
-    }
-    len = end - start;
-    if (len < 0)
-        len = 0;
-    token = malloc(len + 1);
-    if (!token)
-        return (NULL);
-    if (len > 0)
-        ft_memcpy(token, str + start, len);
-    token[len] = '\0';
-    return (token);
+	if (end > start && str[start] == str[end]
+		&& (str[start] == '\'' || str[start] == '"'))
+	{
+		start++;
+		end--;
+	}
+	len = end - start;
+	if (len < 0)
+		len = 0;
+	token = malloc(len + 1);
+	if (!token)
+		return (NULL);
+	if (len > 0)
+		ft_memcpy(token, str + start, len);
+	token[len] = '\0';
+	return (token);
 }

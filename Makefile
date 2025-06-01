@@ -13,6 +13,7 @@ SRCS = main.c \
 	$(SRC_DIR)/builtins/pwd/pwd.c \
 	$(SRC_DIR)/exec/exec_builtins.c \
 	$(SRC_DIR)/exec/exec_cmd.c \
+	$(SRC_DIR)/exec/exec_pipeline_utils.c \
 	$(SRC_DIR)/exec/exec_pipeline.c \
 	$(SRC_DIR)/exec/minishell_loop.c \
 	$(SRC_DIR)/exec/parse_and_exec.c \

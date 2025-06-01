@@ -6,7 +6,7 @@
 /*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 13:40:42 by hemera            #+#    #+#             */
-/*   Updated: 2025/06/01 13:52:05 by hemera           ###   ########.fr       */
+/*   Updated: 2025/06/01 14:24:17 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 
 static t_cmd	*build_cmd_list(char **segments)
 {
-	t_cmd	*cmd_list = NULL;
-	t_cmd	*last = NULL;
+	t_cmd	*cmd_list;
+	t_cmd	*last;
 	t_cmd	*cmd;
-	int		i = 0;
+	int		i;
 
+	cmd_list = NULL;
+	last = NULL;
+	i = 0;
 	while (segments[i])
 	{
 		cmd = parse_segment(segments[i]);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_handler.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:26:14 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/29 17:47:46 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/06/01 14:22:44 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,3 @@ int	handle_redirect(t_cmd *cmd, char **tokens, int *i)
 	}
 	return (0);
 }
-

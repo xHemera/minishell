@@ -6,7 +6,7 @@
 /*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 13:07:32 by hemera            #+#    #+#             */
-/*   Updated: 2025/06/01 14:07:05 by hemera           ###   ########.fr       */
+/*   Updated: 2025/06/01 14:23:38 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 static int	env_size(t_env *env)
 {
-	int	count = 0;
+	int	count;
 
+	count = 0;
 	while (env)
 	{
 		count++;
@@ -37,6 +38,16 @@ static char	*join_key_value(t_env *env)
 	return (res);
 }
 
+static void	free_env_array(char **envp, int i)
+{
+	while (i > 0)
+	{
+		i--;
+		free(envp[i]);
+	}
+	free(envp);
+}
+
 char	**env_to_array(t_env *env)
 {
 	char	**envp;
@@ -52,8 +63,10 @@ char	**env_to_array(t_env *env)
 		{
 			envp[i] = join_key_value(env);
 			if (!envp[i])
-				while (i > 0)
-					free(envp[--i]), free(envp);
+			{
+				free_env_array(envp, i);
+				return (NULL);
+			}
 			i++;
 		}
 		env = env->next;

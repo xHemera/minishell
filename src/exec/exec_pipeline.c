@@ -6,37 +6,11 @@
 /*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 13:41:08 by hemera            #+#    #+#             */
-/*   Updated: 2025/06/01 14:04:03 by hemera           ###   ########.fr       */
+/*   Updated: 2025/06/01 14:33:24 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	parent_process_cleanup(t_cmd *cmd, int pipe_fd[2], int *in_fd)
-{
-	if (*in_fd != 0)
-		close(*in_fd);
-	if (cmd->next)
-	{
-		close(pipe_fd[1]);
-		*in_fd = pipe_fd[0];
-	}
-}
-
-static void	launch_child_process(t_cmd *cmd, int pipe_fd[2], int in_fd, t_env **env)
-{
-	if (cmd->next)
-		dup2(pipe_fd[1], 1);
-	if (in_fd != 0)
-		dup2(in_fd, 0);
-	if (cmd->next)
-	{
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
-	}
-	exec_cmd(cmd, env);
-	exit(1);
-}
 
 static int	handle_builtin_in_pipeline(t_cmd *cmd, int in_fd, t_env **env)
 {
@@ -59,38 +33,64 @@ static int	handle_builtin_in_pipeline(t_cmd *cmd, int in_fd, t_env **env)
 	return (result);
 }
 
-int	exec_pipeline(t_cmd *cmd_list, t_env **env)
+static int	handle_state_changing_builtin(t_cmd **cmd, int pipe_fd[2])
 {
-	t_cmd	*cmd = cmd_list;
-	int		in_fd = 0;
-	int		pipe_fd[2];
-	int		pid;
+	if ((*cmd)->next && is_state_changing_builtin((*cmd)->name))
+	{
+		*cmd = (*cmd)->next;
+		return (1);
+	}
+	if ((*cmd)->next && pipe(pipe_fd) == -1)
+		return (perror("pipe"), 1);
+	return (0);
+}
 
+static int	fork_and_launch(t_cmd *cmd, int pipe_fd[2], int in_fd, t_env **env)
+{
+	int	pid;
+
+	pid = fork();
+	if (pid == -1)
+		return (perror("fork"), 1);
+	if (pid == 0)
+		launch_child_process(cmd, pipe_fd, in_fd, env);
+	return (0);
+}
+
+static int	exec_pipeline_loop(t_cmd *cmd_list, t_env **env)
+{
+	t_cmd	*cmd;
+	int		in_fd;
+	int		pipe_fd[2];
+	int		ret;
+
+	cmd = cmd_list;
+	in_fd = 0;
 	while (cmd)
 	{
-		if (cmd->next && is_state_changing_builtin(cmd->name))
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(cmd->name, 2);
-			ft_putstr_fd(": BRR BRR PATAPIM\n", 2);
-			ft_putstr_fd("Dans ce cas il faut exec dans le processus parent (on modif l'état du shell)\n", 2);
-			cmd = cmd->next;
+		ret = handle_state_changing_builtin(&cmd, pipe_fd);
+		if (ret == 1)
 			continue ;
-		}
-		if (cmd->next && pipe(pipe_fd) == -1)
-			return (perror("pipe"), 1);
+		else if (ret == 2)
+			return (1);
 		if (!cmd->next && is_state_changing_builtin(cmd->name))
 			return (handle_builtin_in_pipeline(cmd, in_fd, env));
-		pid = fork();
-		if (pid == -1)
-			return (perror("fork"), 1);
-		if (pid == 0)
-			launch_child_process(cmd, pipe_fd, in_fd, env);
+		ret = fork_and_launch(cmd, pipe_fd, in_fd, env);
+		if (ret)
+			return (1);
 		parent_process_cleanup(cmd, pipe_fd, &in_fd);
 		cmd = cmd->next;
 	}
+	return (in_fd);
+}
+
+int	exec_pipeline(t_cmd *cmd_list, t_env **env)
+{
+	int	in_fd;
+
+	in_fd = exec_pipeline_loop(cmd_list, env);
 	while (wait(NULL) > 0)
-    ;
+		;
 	if (in_fd != 0)
 		close(in_fd);
 	return (0);

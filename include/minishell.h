@@ -6,7 +6,7 @@
 /*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:55:46 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/06/01 14:09:27 by hemera           ###   ########.fr       */
+/*   Updated: 2025/06/01 14:30:27 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,10 @@ int	is_str_builtin(const char *cmd, const char *name, size_t len);
 int	exec_external(t_cmd *cmd, t_env *env);
 int	is_state_changing_builtin(char *cmd_name);
 int	exec_cmd(t_cmd *cmd, t_env **env);
+
+// exec_pipeline_utils.c
+void	parent_process_cleanup(t_cmd *cmd, int pipe_fd[2], int *in_fd);
+void	launch_child_process(t_cmd *cmd, int pipe_fd[2], int in_fd, t_env **env);
 
 // exec_pipeline.c
 int	exec_pipeline(t_cmd *cmd_list, t_env **env);

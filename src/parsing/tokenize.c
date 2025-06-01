@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:39:55 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/29 17:43:57 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/06/01 14:22:34 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 static char	**alloc_tokens_array(int count)
 {
-	char **tokens = malloc(sizeof(char *) * (count + 1));
+	char	**tokens;
+
+	tokens = malloc(sizeof(char *) * (count + 1));
 	if (!tokens)
 		return (NULL);
 	return (tokens);
@@ -22,9 +24,10 @@ static char	**alloc_tokens_array(int count)
 
 static int	handle_token(const char *str, int *i, char **tokens, int idx)
 {
-	int	start = *i;
+	int	start;
 	int	end;
 
+	start = *i;
 	if (str[*i] == '\'' || str[*i] == '"')
 		end = extract_quoted_token(str, *i, str[*i]);
 	else
@@ -34,16 +37,32 @@ static int	handle_token(const char *str, int *i, char **tokens, int idx)
 	tokens[idx] = copy_token(str, start, end);
 	if (!tokens[idx])
 		return (0);
-	*i = (str[end]) ? end + 1 : end;
+	if (str[end])
+		*i = end + 1;
+	else
+		*i = end;
+	return (1);
+}
+
+static int	init_tokenize_loop_vars(const char *str,
+	int *i, int *idx, int *count)
+{
+	*i = 0;
+	*idx = 0;
+	*count = count_tokens(str);
+	if (*count < 0)
+		return (0);
 	return (1);
 }
 
 static char	**tokenize_loop(const char *str, char **tokens)
 {
-	int	i = 0;
-	int	idx = 0;
-	int	count = count_tokens(str);
+	int	i;
+	int	idx;
+	int	count;
 
+	if (!init_tokenize_loop_vars(str, &i, &idx, &count))
+		return (NULL);
 	tokens = alloc_tokens_array(count);
 	if (!tokens)
 		return (NULL);
