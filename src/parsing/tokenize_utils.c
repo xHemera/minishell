@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:40:36 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/29 17:44:14 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/06/01 13:02:25 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,17 +65,23 @@ char	*copy_token(const char *str, int start, int end)
 	char	*token;
 	int		len;
 
-	if ((str[start] == '\'' && str[end] == '\'')
-		|| (str[start] == '"' && str[end] == '"'))
+	if (end > start &&
+		((str[start] == '\'' && str[end] == '\'') ||
+		 (str[start] == '"' && str[end] == '"')))
 	{
 		start++;
 		end--;
 	}
-	len = end - start + 1;
+	len = end - start;
+	if (len < 0)
+		len = 0;
+
 	token = malloc(len + 1);
 	if (!token)
 		return (NULL);
-	ft_memcpy(token, str + start, len);
+
+	if (len > 0)
+		ft_memcpy(token, str + start, len);
 	token[len] = '\0';
 	return (token);
 }

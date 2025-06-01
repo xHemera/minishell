@@ -6,7 +6,7 @@
 /*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:55:46 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/06/01 12:56:01 by hemera           ###   ########.fr       */
+/*   Updated: 2025/06/01 13:12:26 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,14 +95,18 @@ char	**split_pipe_aware(const char *str);
 // env.c
 t_env	*env_init(char **envp);
 
+// env_utils.c
+char	**env_to_array(t_env *env);
+
 // buitlins.c
 int	ft_cd(char **args, t_env *env);
 int	ft_pwd(void);
-// int ft_export(t_cmd *cmd, t_env *envp, int argc);
+// ? int ft_export(t_cmd *cmd, t_env *envp, int argc);
 int	ft_echo(char **argv, int i, int j, int newline);
 int	ft_exit(char **args);
 
 // exec_builtins.c
 int	exec_builtin(t_cmd *cmd, t_env *envp);
+int	exec_external(t_cmd *cmd, t_env *env);
 
 #endif
