@@ -6,13 +6,13 @@
 /*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 18:55:31 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/30 14:04:59 by hemera           ###   ########.fr       */
+/*   Updated: 2025/06/01 14:54:52 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*get_env_value(t_env *env, char *key)
+char	*get_env_value(t_env *env, char *key)
 {
 	while (env)
 	{
@@ -23,7 +23,7 @@ static char	*get_env_value(t_env *env, char *key)
 	return (NULL);
 }
 
-static int	set_env_value(t_env *env, char *key, char *new_value)
+int	set_env_value(t_env *env, char *key, char *new_value)
 {
 	while (env)
 	{
@@ -38,33 +38,6 @@ static int	set_env_value(t_env *env, char *key, char *new_value)
 		env = env->next;
 	}
 	return (1);
-}
-
-static int	handle_cd_home(char **target_dir, t_env *env)
-{
-	char	*home_dir;
-
-	home_dir = get_env_value(env, "HOME");
-	if (!home_dir)
-	{
-		ft_putstr_fd("cd: HOME not set\n", 2);
-		return (1);
-	}
-	*target_dir = home_dir;
-	return (0);
-}
-
-static int	handle_cd_dash(char **target_dir, t_env *env)
-{
-	*target_dir = get_env_value(env, "OLDPWD");
-	if (!*target_dir)
-	{
-		ft_putstr_fd("cd: OLDPWD not set\n", 2);
-		return (1);
-	}
-	ft_putstr_fd(*target_dir, 1);
-	ft_putchar_fd('\n', 1);
-	return (0);
 }
 
 int	ft_cd(char **args, t_env *env)

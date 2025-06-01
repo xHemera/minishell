@@ -6,39 +6,38 @@
 /*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 13:41:28 by hemera            #+#    #+#             */
-/*   Updated: 2025/06/01 14:08:08 by hemera           ###   ########.fr       */
+/*   Updated: 2025/06/01 14:35:12 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int exec_external(t_cmd *cmd, t_env *env)
+int	exec_external(t_cmd *cmd, t_env *env)
 {
-    pid_t pid;
-    int status;
-    char **envp;
+	pid_t	pid;
+	int		status;
+	char	**envp;
 
-    envp = env_to_array(env);
-    if (!envp)
-        return (1);
-
-    pid = fork();
-    if (pid < 0)
-    {
-        perror("fork");
-        free_split(envp);
-        return (1);
-    }
-    if (pid == 0)
-    {
-        execve(cmd->name, cmd->args, envp);
-        perror("execve");
-        free_split(envp);
-        exit(127);
-    }
-    waitpid(pid, &status, 0);
-    free_split(envp);
-    return (WEXITSTATUS(status));
+	envp = env_to_array(env);
+	if (!envp)
+		return (1);
+	pid = fork();
+	if (pid < 0)
+	{
+		perror("fork");
+		free_split(envp);
+		return (1);
+	}
+	if (pid == 0)
+	{
+		execve(cmd->name, cmd->args, envp);
+		perror("execve");
+		free_split(envp);
+		exit(127);
+	}
+	waitpid(pid, &status, 0);
+	free_split(envp);
+	return (WEXITSTATUS(status));
 }
 
 int	is_state_changing_builtin(char *cmd_name)

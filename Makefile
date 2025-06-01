@@ -8,6 +8,7 @@ OBJ_DIR = obj
 
 SRCS = main.c \
 	$(SRC_DIR)/builtins/cd/cd.c \
+	$(SRC_DIR)/builtins/cd/cd_utils.c \
 	$(SRC_DIR)/builtins/echo/echo.c \
 	$(SRC_DIR)/builtins/exit/exit.c \
 	$(SRC_DIR)/builtins/pwd/pwd.c \

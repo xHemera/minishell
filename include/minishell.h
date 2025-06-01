@@ -6,7 +6,7 @@
 /*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:55:46 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/06/01 14:30:27 by hemera           ###   ########.fr       */
+/*   Updated: 2025/06/01 15:00:01 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,22 +66,27 @@ typedef struct s_shell
 
 // ! ##################### BUILTINS ##################### //
 // buitlins.c
-int	ft_cd(char **args, t_env *env);
-int	ft_pwd(void);
+int		ft_cd(char **args, t_env *env);
+char	*get_env_value(t_env *env, char *key);
+int		set_env_value(t_env *env, char *key, char *new_value);
+int		handle_cd_dash(char **target_dir, t_env *env);
+int		handle_cd_home(char **target_dir, t_env *env);
+
+int		ft_pwd(void);
 // ? int ft_export(t_cmd *cmd, t_env *envp, int argc);
-int	ft_echo(char **argv, int i, int j, int newline);
-int	ft_exit(char **args);
+int		ft_echo(char **argv, int i, int j, int newline);
+int		ft_exit(char **args);
 
 // ! ##################### EXEC ##################### //
 // exec_builtins.c
-int	exec_builtin(t_cmd *cmd, t_env *envp);
-int	is_builtin(char *cmd_name);
-int	is_str_builtin(const char *cmd, const char *name, size_t len);
+int		exec_builtin(t_cmd *cmd, t_env *envp);
+int		is_builtin(char *cmd_name);
+int		is_str_builtin(const char *cmd, const char *name, size_t len);
 
 // exec_cmd.c
-int	exec_external(t_cmd *cmd, t_env *env);
-int	is_state_changing_builtin(char *cmd_name);
-int	exec_cmd(t_cmd *cmd, t_env **env);
+int		exec_external(t_cmd *cmd, t_env *env);
+int		is_state_changing_builtin(char *cmd_name);
+int		exec_cmd(t_cmd *cmd, t_env **env);
 
 // exec_pipeline_utils.c
 void	parent_process_cleanup(t_cmd *cmd, int pipe_fd[2], int *in_fd);
