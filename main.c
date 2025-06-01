@@ -6,36 +6,35 @@
 /*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:53:18 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/30 14:20:21 by hemera           ###   ########.fr       */
+/*   Updated: 2025/06/01 12:55:15 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static int	is_str_builtin(const char *cmd, const char *name, size_t len)
+{
+	return (ft_strncmp(cmd, name, len) == 0
+		&& (cmd[len] == '\0' || cmd[len] == ' '));
+}
+
 static int	is_builtin(char *cmd_name)
 {
 	if (!cmd_name)
 		return (0);
-	if (ft_strncmp(cmd_name, "echo", 4) == 0
-		&& (cmd_name[4] == '\0' || cmd_name[4] == ' '))
+	if (is_str_builtin(cmd_name, "echo", 4))
 		return (1);
-	if (ft_strncmp(cmd_name, "cd", 2) == 0
-		&& (cmd_name[2] == '\0' || cmd_name[2] == ' '))
+	if (is_str_builtin(cmd_name, "cd", 2))
 		return (1);
-	if (ft_strncmp(cmd_name, "pwd", 3) == 0
-		&& (cmd_name[3] == '\0' || cmd_name[3] == ' '))
+	if (is_str_builtin(cmd_name, "pwd", 3))
 		return (1);
-	if (ft_strncmp(cmd_name, "export", 6) == 0
-		&& (cmd_name[6] == '\0' || cmd_name[6] == ' '))
+	if (is_str_builtin(cmd_name, "export", 6))
 		return (1);
-	if (ft_strncmp(cmd_name, "unset", 5) == 0
-		&& (cmd_name[5] == '\0' || cmd_name[5] == ' '))
+	if (is_str_builtin(cmd_name, "unset", 5))
 		return (1);
-	if (ft_strncmp(cmd_name, "env", 3) == 0
-		&& (cmd_name[3] == '\0' || cmd_name[3] == ' '))
+	if (is_str_builtin(cmd_name, "env", 3))
 		return (1);
-	if (ft_strncmp(cmd_name, "exit", 4) == 0
-		&& (cmd_name[4] == '\0' || cmd_name[4] == ' '))
+	if (is_str_builtin(cmd_name, "exit", 4))
 		return (1);
 	return (0);
 }

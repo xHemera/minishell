@@ -6,7 +6,7 @@
 /*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:55:46 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/30 14:41:01 by hemera           ###   ########.fr       */
+/*   Updated: 2025/06/01 12:56:01 by hemera           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <unistd.h>
 # include <sys/wait.h>
 # include "libft/include/libft.h"
+# include <signal.h>
 
 typedef struct s_env
 {
