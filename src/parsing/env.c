@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 16:28:47 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/06/01 14:09:30 by hemera           ###   ########.fr       */
+/*   Updated: 2025/06/02 15:53:51 by tlize            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ t_env	*env_init(char **envp)
 	t_env	*new;
 
 	head = NULL;
-	while (*envp)
+	while (*envp++)
 	{
 		new = env_new(get_key(*envp), get_value(*envp));
 		if (!new)
@@ -84,6 +84,7 @@ t_env	*env_init(char **envp)
 			free_env(&head);
 			return (NULL);
 		}
+		if (new->key != '_')
 		env_add_back(&head, new);
 		envp++;
 	}

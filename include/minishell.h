@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:55:46 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/06/01 15:06:11 by hemera           ###   ########.fr       */
+/*   Updated: 2025/06/02 14:57:04 by tlize            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int		handle_cd_home(char **target_dir, t_env *env);
 int		cd_change_dir(char *target_dir, t_env *env);
 
 int		ft_pwd(void);
-// ? int ft_export(t_cmd *cmd, t_env *envp, int argc);
+int		ft_export(t_cmd *cmd, t_env *envp, int argc);
 int		ft_echo(char **argv, int i, int j, int newline);
 int		ft_exit(char **args);
 
