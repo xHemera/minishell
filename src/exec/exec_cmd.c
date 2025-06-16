@@ -6,11 +6,40 @@
 /*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 13:41:28 by hemera            #+#    #+#             */
-/*   Updated: 2025/06/16 15:29:54 by tlize            ###   ########.fr       */
+/*   Updated: 2025/06/16 17:34:28 by tlize            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static char	*get_path(t_cmd *cmd, t_env *env, int i)
+{
+	char	*superchiant;
+	char	**paths;
+	char	*path;
+	char	*path_temp;
+
+	superchiant = "PATH";
+	while (*env->key != *superchiant)
+		env = env->next;
+	superchiant = env->value;
+	paths = ft_split(superchiant, ':');
+	while (paths[++i])
+	{
+		path_temp = ft_strjoin(paths[i], "/");
+		path = ft_strjoin(path_temp, cmd->name);
+		free(path_temp);
+		if (access(path, F_OK) == 0)
+			return (path);
+		free(path);
+	}
+	i = -1;
+	while (paths[++i])
+		free(paths[i]);
+	free(paths);
+	free(cmd);
+	return (0);
+}
 
 int	exec_external(t_cmd *cmd, t_env *env)
 {
@@ -30,7 +59,7 @@ int	exec_external(t_cmd *cmd, t_env *env)
 	}
 	if (pid == 0)
 	{
-		execve(cmd->name, cmd->args, envp);
+		execve(get_path(cmd, env, -1), cmd->args, envp);
 		perror("execve");
 		free_split(envp);
 		exit(127);
