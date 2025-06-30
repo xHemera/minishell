@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse_and_exec.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 13:40:42 by hemera            #+#    #+#             */
-/*   Updated: 2025/06/16 15:26:56 by tlize            ###   ########.fr       */
+/*   Updated: 2025/06/30 16:47:59 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_cmd	*build_cmd_list(char **segments)
+static t_cmd	*build_cmd_list(char **segments, t_env *env)
 {
 	t_cmd	*cmd_list;
 	t_cmd	*last;
@@ -24,7 +24,7 @@ static t_cmd	*build_cmd_list(char **segments)
 	i = 0;
 	while (segments[i])
 	{
-		cmd = parse_segment(segments[i]);
+		cmd = parse_segment_with_env(segments[i], env);
 		if (!cmd)
 		{
 			free_cmd_list(cmd_list);
@@ -48,7 +48,7 @@ void	parse_and_exec(char *line, t_env **env)
 	segments = split_pipe_aware(line);
 	if (!segments)
 		return ;
-	cmd_list = build_cmd_list(segments);
+	cmd_list = build_cmd_list(segments, *env);
 	if (cmd_list)
 	{
 		if (!cmd_list->next)

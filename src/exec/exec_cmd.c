@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 13:41:28 by hemera            #+#    #+#             */
-/*   Updated: 2025/06/30 14:23:39 by tlize            ###   ########.fr       */
+/*   Updated: 2025/06/30 17:01:38 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,26 +18,31 @@ char	*get_path(t_cmd *cmd, t_env *env, int i)
 	char	*path;
 	char	*path_temp;
 
-	while (env && strcmp(env->key, "PATH") != 0)
+	while (env && ft_strncmp(env->key, "PATH", 4) != 0)
 		env = env->next;
 	if (!env)
-		return (0);
+		return (NULL);
 	paths = ft_split(env->value, ':');
+	if (!paths)
+		return (NULL);
 	while (paths[++i])
 	{
 		path_temp = ft_strjoin(paths[i], "/");
+		if (!path_temp)
+			continue ;
 		path = ft_strjoin(path_temp, cmd->name);
 		free(path_temp);
+		if (!path)
+			continue ;
 		if (access(path, F_OK) == 0)
+		{
+			free_split(paths);
 			return (path);
+		}
 		free(path);
 	}
-	i = -1;
-	while (paths[++i])
-		free(paths[i]);
-	free(paths);
-	free(cmd);
-	return (0);
+	free_split(paths);
+	return (NULL);
 }
 
 int	exec_external(t_cmd *cmd, t_env *env)
@@ -78,9 +83,14 @@ int	is_state_changing_builtin(char *cmd_name)
 
 int	exec_cmd(t_cmd *cmd, t_env **env)
 {
+	int	exit_code;
+
 	if (!cmd || !cmd->name)
 		return (1);
 	if (is_builtin(cmd->name))
-		return (exec_builtin(cmd, *env));
-	return (exec_external(cmd, *env));
+		exit_code = exec_builtin(cmd, *env);
+	else
+		exit_code = exec_external(cmd, *env);
+	g_last_exit_code = exit_code;
+	return (exit_code);
 }

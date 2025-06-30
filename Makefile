@@ -25,6 +25,8 @@ SRCS = main.c \
 	$(SRC_DIR)/parsing/cmd_utils.c \
 	$(SRC_DIR)/parsing/env_utils.c \
 	$(SRC_DIR)/parsing/env.c \
+	$(SRC_DIR)/parsing/expansion.c \
+	$(SRC_DIR)/parsing/expansion_utils.c \
 	$(SRC_DIR)/parsing/parse_cmd.c \
 	$(SRC_DIR)/parsing/redirection_handler.c \
 	$(SRC_DIR)/parsing/split_pipe_aware.c \

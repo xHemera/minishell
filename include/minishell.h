@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
+/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:55:46 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/06/30 14:15:04 by tlize            ###   ########.fr       */
+/*   Updated: 2025/06/30 16:51:14 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ void	env_add_back(t_env **head, t_env *new);
 
 // parse_cmd.c
 t_cmd	*parse_segment(char *segment);
+t_cmd	*parse_segment_with_env(char *segment, t_env *env);
 
 // redirection_handler.c
 int		handle_redirect(t_cmd *cmd, char **tokens, int *i);
@@ -148,5 +149,20 @@ void	free_split(char **split);
 void	free_cmd(t_cmd *cmd);
 void	free_cmd_list(t_cmd *cmd);
 void	free_tokens(char **tokens);
+
+// ! ##################### EXPANSION ##################### //
+// expansion.c
+char	*ft_expand_variables(char *str, t_env *env, int last_exit_code);
+char	*ft_get_var_value(char *var_name, t_env *env, int last_exit_code);
+char	*ft_extract_var_name(char *str, int start);
+int		ft_find_var_end(char *str, int start);
+char	*ft_replace_variable(char *str, int start, int end, char *value);
+int		ft_is_valid_var_char(char c, int first);
+
+// ! ############################################################### //
+// !                           Global Variables                      //
+// ! ############################################################### //
+
+extern int	g_last_exit_code;
 
 #endif

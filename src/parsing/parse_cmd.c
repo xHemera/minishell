@@ -6,7 +6,7 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:20:46 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/29 17:46:31 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/06/30 16:58:27 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,34 @@ static int	parse_tokens(t_cmd *cmd, char **tokens)
 	return (1);
 }
 
+static int	parse_tokens_with_expansion(t_cmd *cmd, char **tokens, t_env *env)
+{
+	int		i;
+	char	*expanded_token;
+
+	i = 0;
+	while (tokens[i])
+	{
+		if (is_redirect(tokens[i]))
+		{
+			if (!handle_redirect(cmd, tokens, &i))
+				return (0);
+			continue ;
+		}
+		expanded_token = ft_expand_variables(tokens[i], env, g_last_exit_code);
+		if (!expanded_token)
+		{
+			expanded_token = ft_strdup(tokens[i]);
+			if (!expanded_token)
+				return (0);
+		}
+		add_arg_or_name(cmd, expanded_token);
+		free(expanded_token);
+		i++;
+	}
+	return (1);
+}
+
 t_cmd	*parse_segment(char *segment)
 {
 	t_cmd	*cmd;
@@ -68,6 +96,31 @@ t_cmd	*parse_segment(char *segment)
 		return (NULL);
 	}
 	success = parse_tokens(cmd, tokens);
+	free_tokens(tokens);
+	if (!success)
+	{
+		free_cmd(cmd);
+		return (NULL);
+	}
+	return (cmd);
+}
+
+t_cmd	*parse_segment_with_env(char *segment, t_env *env)
+{
+	t_cmd	*cmd;
+	char	**tokens;
+	int		success;
+
+	cmd = cmd_new();
+	if (!cmd)
+		return (NULL);
+	tokens = tokenize_simple(segment);
+	if (!tokens)
+	{
+		free_cmd(cmd);
+		return (NULL);
+	}
+	success = parse_tokens_with_expansion(cmd, tokens, env);
 	free_tokens(tokens);
 	if (!success)
 	{
