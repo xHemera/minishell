@@ -1,3 +1,0 @@
-minishell> command_inexistant
-execve: No such file or directory
-minishell> 

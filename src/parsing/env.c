@@ -74,8 +74,8 @@ t_env	*env_init(char **envp)
 {
 	t_env	*head;
 	t_env	*new;
-	char 	*empty;
-	
+	char	*empty;
+
 	head = NULL;
 	empty = "_";
 	while (*envp)
@@ -86,9 +86,9 @@ t_env	*env_init(char **envp)
 			free_env(&head);
 			return (NULL);
 		}
-	if (*new->key != *empty)
-		env_add_back(&head, new);
-	envp++;
+		if (*new->key != *empty)
+			env_add_back(&head, new);
+		envp++;
 	}
 	return (head);
 }

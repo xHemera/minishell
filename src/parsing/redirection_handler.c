@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_handler.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:26:14 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/06/01 14:22:44 by hemera           ###   ########.fr       */
+/*   Updated: 2025/06/30 13:37:25 by tlize            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ static int	handle_input_heredoc(t_cmd *cmd, char *token, char *next)
 		cmd->input_file = ft_strdup(next);
 		if (!cmd->input_file)
 			return (0);
+		free(cmd->heredoc);
+		cmd->heredoc = NULL;
 		return (1);
 	}
 	if (!ft_strncmp(token, "<<", 3))
@@ -28,6 +30,8 @@ static int	handle_input_heredoc(t_cmd *cmd, char *token, char *next)
 		cmd->heredoc = ft_strdup(next);
 		if (!cmd->heredoc)
 			return (0);
+		free(cmd->input_file);
+		cmd->input_file = NULL;
 		return (1);
 	}
 	return (0);

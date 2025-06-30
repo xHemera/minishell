@@ -10,10 +10,13 @@ SRCS = main.c \
 	$(SRC_DIR)/builtins/cd/cd.c \
 	$(SRC_DIR)/builtins/cd/cd_utils.c \
 	$(SRC_DIR)/builtins/echo/echo.c \
+	$(SRC_DIR)/builtins/env/env.c \
 	$(SRC_DIR)/builtins/exit/exit.c \
 	$(SRC_DIR)/builtins/export/export.c \
 	$(SRC_DIR)/builtins/pwd/pwd.c \
+	$(SRC_DIR)/builtins/unset/unset.c \
 	$(SRC_DIR)/exec/exec_builtins.c \
+	$(SRC_DIR)/exec/exec_child.c \
 	$(SRC_DIR)/exec/exec_cmd.c \
 	$(SRC_DIR)/exec/exec_pipeline_utils.c \
 	$(SRC_DIR)/exec/exec_pipeline.c \

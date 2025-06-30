@@ -6,24 +6,23 @@
 /*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 13:41:28 by hemera            #+#    #+#             */
-/*   Updated: 2025/06/16 17:34:28 by tlize            ###   ########.fr       */
+/*   Updated: 2025/06/30 14:23:39 by tlize            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*get_path(t_cmd *cmd, t_env *env, int i)
+char	*get_path(t_cmd *cmd, t_env *env, int i)
 {
-	char	*superchiant;
 	char	**paths;
 	char	*path;
 	char	*path_temp;
 
-	superchiant = "PATH";
-	while (*env->key != *superchiant)
+	while (env && strcmp(env->key, "PATH") != 0)
 		env = env->next;
-	superchiant = env->value;
-	paths = ft_split(superchiant, ':');
+	if (!env)
+		return (0);
+	paths = ft_split(env->value, ':');
 	while (paths[++i])
 	{
 		path_temp = ft_strjoin(paths[i], "/");
@@ -59,12 +58,10 @@ int	exec_external(t_cmd *cmd, t_env *env)
 	}
 	if (pid == 0)
 	{
-		execve(get_path(cmd, env, -1), cmd->args, envp);
-		perror("execve");
-		free_split(envp);
-		exit(127);
+		exec_child(cmd, envp, env);
 	}
 	waitpid(pid, &status, 0);
+	unlink(".heredoc_tmp");
 	free_split(envp);
 	return (WEXITSTATUS(status));
 }

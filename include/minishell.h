@@ -6,7 +6,7 @@
 /*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:55:46 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/06/02 14:57:04 by tlize            ###   ########.fr       */
+/*   Updated: 2025/06/30 14:15:04 by tlize            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <sys/wait.h>
 # include "libft/include/libft.h"
 # include <signal.h>
+# include <fcntl.h>
 
 // ! ############################################################### //
 // !                           Structures                            //
@@ -77,6 +78,8 @@ int		ft_pwd(void);
 int		ft_export(t_cmd *cmd, t_env *envp, int argc);
 int		ft_echo(char **argv, int i, int j, int newline);
 int		ft_exit(char **args);
+int		ft_unset(t_cmd *cmd, t_env *envp);
+int		ft_env(t_env *envp);
 
 // ! ##################### EXEC ##################### //
 // exec_builtins.c
@@ -88,6 +91,8 @@ int		is_str_builtin(const char *cmd, const char *name, size_t len);
 int		exec_external(t_cmd *cmd, t_env *env);
 int		is_state_changing_builtin(char *cmd_name);
 int		exec_cmd(t_cmd *cmd, t_env **env);
+int		exec_child(t_cmd *cmd, char **envp, t_env *env);
+char	*get_path(t_cmd *cmd, t_env *env, int i);
 
 // exec_pipeline_utils.c
 void	parent_process_cleanup(t_cmd *cmd, int pipe_fd[2], int *in_fd);
