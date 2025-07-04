@@ -24,13 +24,23 @@ static int	is_redirect(const char *token)
 
 static void	add_arg_or_name(t_cmd *cmd, char *token)
 {
+	char	*clean_token;
+
+	clean_token = remove_quotes(token);
+	if (!clean_token || clean_token[0] == '\0')
+	{
+		free(clean_token);
+		return;
+	}
+
 	if (!cmd->name)
 	{
-		cmd->name = ft_strdup(token);
-		cmd_add_arg(cmd, ft_strdup(token));
+		cmd->name = ft_strdup(clean_token);
+		cmd_add_arg(cmd, ft_strdup(clean_token));
 	}
 	else
-		cmd_add_arg(cmd, ft_strdup(token));
+		cmd_add_arg(cmd, ft_strdup(clean_token));
+	free(clean_token);
 }
 
 static int	parse_tokens(t_cmd *cmd, char **tokens)
@@ -66,7 +76,7 @@ static int	parse_tokens_with_expansion(t_cmd *cmd, char **tokens, t_env *env)
 				return (0);
 			continue ;
 		}
-		expanded_token = ft_expand_variables(tokens[i], env, g_last_exit_code);
+		expanded_token = ft_expand_variables_quotes(tokens[i], env, g_signal_received);
 		if (!expanded_token)
 		{
 			expanded_token = ft_strdup(tokens[i]);
@@ -89,7 +99,7 @@ t_cmd	*parse_segment(char *segment)
 	cmd = cmd_new();
 	if (!cmd)
 		return (NULL);
-	tokens = tokenize_simple(segment);
+	tokens = tokenize_improved(segment);
 	if (!tokens)
 	{
 		free_cmd(cmd);
@@ -114,7 +124,7 @@ t_cmd	*parse_segment_with_env(char *segment, t_env *env)
 	cmd = cmd_new();
 	if (!cmd)
 		return (NULL);
-	tokens = tokenize_simple(segment);
+	tokens = tokenize_improved(segment);
 	if (!tokens)
 	{
 		free_cmd(cmd);

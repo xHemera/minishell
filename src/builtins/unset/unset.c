@@ -33,13 +33,16 @@ int	ft_unset(t_cmd *cmd, t_env *envp)
 	size_t	size;
 	t_env	*tmp;
 
+	if (!cmd->args[1])
+		return (0);
 	while (envp)
 	{
 		cmd_arg = 1;
 		while (cmd->args[cmd_arg])
 		{
 			size = ft_strlen(cmd->args[cmd_arg]);
-			if (ft_strncmp(cmd->args[cmd_arg], envp->key, size) == 0)
+			if (ft_strncmp(cmd->args[cmd_arg], envp->key, size) == 0
+				&& ft_strlen(envp->key) == size)
 			{
 				tmp = do_unset(envp);
 				envp = tmp;
@@ -50,5 +53,5 @@ int	ft_unset(t_cmd *cmd, t_env *envp)
 		if (cmd->args[cmd_arg] == NULL)
 			envp = envp->next;
 	}
-	return (1);
+	return (0);
 }

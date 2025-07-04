@@ -44,6 +44,11 @@ int	ft_cd(char **args, t_env *env)
 {
 	char	*target_dir;
 
+	if (args[1] && args[2])
+	{
+		ft_putstr_fd("cd: too many arguments\n", 2);
+		return (1);
+	}
 	if (!args[1])
 	{
 		if (handle_cd_home(&target_dir, env))

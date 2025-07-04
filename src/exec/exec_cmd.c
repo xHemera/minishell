@@ -91,6 +91,6 @@ int	exec_cmd(t_cmd *cmd, t_env **env)
 		exit_code = exec_builtin(cmd, *env);
 	else
 		exit_code = exec_external(cmd, *env);
-	g_last_exit_code = exit_code;
+	g_signal_received = exit_code;
 	return (exit_code);
 }

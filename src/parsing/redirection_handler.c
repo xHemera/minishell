@@ -14,49 +14,73 @@
 
 static int	handle_input_heredoc(t_cmd *cmd, char *token, char *next)
 {
+	char	*clean_next;
+
+	clean_next = remove_quotes(next);
 	if (!ft_strncmp(token, "<", 2))
 	{
 		free(cmd->input_file);
-		cmd->input_file = ft_strdup(next);
+		cmd->input_file = ft_strdup(clean_next);
 		if (!cmd->input_file)
+		{
+			free(clean_next);
 			return (0);
+		}
 		free(cmd->heredoc);
 		cmd->heredoc = NULL;
+		free(clean_next);
 		return (1);
 	}
 	if (!ft_strncmp(token, "<<", 3))
 	{
 		free(cmd->heredoc);
-		cmd->heredoc = ft_strdup(next);
+		cmd->heredoc = ft_strdup(clean_next);
 		if (!cmd->heredoc)
+		{
+			free(clean_next);
 			return (0);
+		}
 		free(cmd->input_file);
 		cmd->input_file = NULL;
+		free(clean_next);
 		return (1);
 	}
+	free(clean_next);
 	return (0);
 }
 
 static int	handle_output(t_cmd *cmd, char *token, char *next)
 {
+	char	*clean_next;
+
+	clean_next = remove_quotes(next);
 	if (!ft_strncmp(token, ">", 2))
 	{
 		free(cmd->output_file);
-		cmd->output_file = ft_strdup(next);
+		cmd->output_file = ft_strdup(clean_next);
 		if (!cmd->output_file)
+		{
+			free(clean_next);
 			return (0);
+		}
 		cmd->append = 0;
+		free(clean_next);
 		return (1);
 	}
 	if (!ft_strncmp(token, ">>", 3))
 	{
 		free(cmd->output_file);
-		cmd->output_file = ft_strdup(next);
+		cmd->output_file = ft_strdup(clean_next);
 		if (!cmd->output_file)
+		{
+			free(clean_next);
 			return (0);
+		}
 		cmd->append = 1;
+		free(clean_next);
 		return (1);
 	}
+	free(clean_next);
 	return (0);
 }
 

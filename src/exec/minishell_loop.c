@@ -20,7 +20,16 @@ void	minishell_loop(t_env **env)
 	{
 		line = readline("minishell> ");
 		if (!line)
-			exit(0);
+		{
+			ft_putstr_fd("exit\n", 1);
+			if (g_signal_received >= 130)
+				exit(g_signal_received - 128);
+			exit(g_signal_received);
+		}
+		if (g_signal_received == 130)
+		{
+			g_signal_received = 0;
+		}
 		if (*line)
 		{
 			add_history(line);

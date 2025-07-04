@@ -68,12 +68,6 @@ char	*copy_token(const char *str, int start, int end)
 	char	*token;
 	int		len;
 
-	if (end > start && str[start] == str[end]
-		&& (str[start] == '\'' || str[start] == '"'))
-	{
-		start++;
-		end--;
-	}
 	len = end - start;
 	if (len < 0)
 		len = 0;
