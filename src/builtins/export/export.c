@@ -1,5 +1,54 @@
 #include "../../../include/minishell.h"
 
+static int	is_valid_identifier(char *str)
+{
+	int	i;
+
+	if (!str || !str[0])
+		return (0);
+	if (!ft_isalpha(str[0]) && str[0] != '_')
+		return (0);
+	i = 1;
+	while (str[i])
+	{
+		if (!ft_isalnum(str[i]) && str[i] != '_')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+static int	handle_invalid_identifier(char **cmd, char **supersplit, int i)
+{
+	ft_printf("minishell: export: `%s': not a valid identifier\n", cmd[i]);
+	free_split(supersplit);
+	return (1);
+}
+
+static void	add_new_env_var(char **supersplit, t_env *envp)
+{
+	t_env	*current;
+
+	current = envp;
+	while (current->prev)
+		current = current->prev;
+	while (current)
+	{
+		if (ft_strncmp(current->key, supersplit[0],
+			ft_strlen(supersplit[0]) + 1) == 0)
+		{
+			if (supersplit[1])
+			{
+				free(current->value);
+				current->value = ft_strdup(supersplit[1]);
+			}
+			return ;
+		}
+		current = current->next;
+	}
+	env_add_back(&envp, env_new(supersplit[0], supersplit[1]));
+}
+
 static void	print_export_env(t_env *env)
 {
 	while (env)

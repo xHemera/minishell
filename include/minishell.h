@@ -84,12 +84,8 @@ int		ft_env(t_env *envp);
 // exit.c
 int		ft_exit(char **args);
 
-// export.c & export_utils.c
+// export.c
 int		ft_export(t_cmd *cmd, t_env *envp, int argc);
-int		test_double(char **maxisplit, t_env *envp);
-int		is_valid_identifier(char *str);
-int		handle_invalid_identifier(char **cmd, char **supersplit, int i);
-void	add_new_env_var(char **supersplit, t_env *envp);
 
 // pwd.c
 int		ft_pwd(void);
