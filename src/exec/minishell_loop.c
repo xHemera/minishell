@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell_loop.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/01 13:40:02 by hemera            #+#    #+#             */
-/*   Updated: 2025/06/30 17:00:04 by tobesnar         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 void	minishell_loop(t_env **env)
@@ -23,8 +11,8 @@ void	minishell_loop(t_env **env)
 		{
 			ft_putstr_fd("exit\n", 1);
 			if (g_signal_received >= 130)
-				exit(g_signal_received - 128);
-			exit(g_signal_received);
+				cleanup_and_exit(g_signal_received - 128);
+			cleanup_and_exit(g_signal_received);
 		}
 		if (g_signal_received == 130)
 		{

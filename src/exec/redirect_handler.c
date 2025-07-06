@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   redirect_handler.c                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/30 15:00:00 by tlize             #+#    #+#             */
-/*   Updated: 2025/06/30 15:00:00 by tlize            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 int	create_heredoc_file(t_cmd *cmd)
@@ -49,45 +37,53 @@ int	create_heredoc_file(t_cmd *cmd)
 	return (1);
 }
 
-int	setup_input_redirect(t_cmd *cmd)
+static int	handle_heredoc_redirect(t_cmd *cmd)
 {
 	int	fd;
 
-	if (cmd->heredoc)
+	if (!create_heredoc_file(cmd))
+		return (1);
+	fd = open(".heredoc_tmp", O_RDONLY);
+	if (fd == -1)
 	{
-		if (!create_heredoc_file(cmd))
-			return (1);
-		fd = open(".heredoc_tmp", O_RDONLY);
-		if (fd == -1)
-		{
-			perror("heredoc");
-			return (1);
-		}
-		dup2(fd, STDIN_FILENO);
-		close(fd);
-		unlink(".heredoc_tmp");
+		perror("heredoc");
+		return (1);
 	}
-	else if (cmd->input_file)
-	{
-		fd = open(cmd->input_file, O_RDONLY);
-		if (fd == -1)
-		{
-			perror(cmd->input_file);
-			return (1);
-		}
-		dup2(fd, STDIN_FILENO);
-		close(fd);
-	}
+	dup2(fd, STDIN_FILENO);
+	close(fd);
+	unlink(".heredoc_tmp");
 	return (0);
 }
 
-int	setup_output_redirect(t_cmd *cmd)
+static int	handle_file_redirect(t_cmd *cmd)
+{
+	int	fd;
+
+	fd = open(cmd->input_file, O_RDONLY);
+	if (fd == -1)
+	{
+		perror(cmd->input_file);
+		return (1);
+	}
+	dup2(fd, STDIN_FILENO);
+	close(fd);
+	return (0);
+}
+
+int	setup_input_redirect(t_cmd *cmd)
+{
+	if (cmd->heredoc)
+		return (handle_heredoc_redirect(cmd));
+	else if (cmd->input_file)
+		return (handle_file_redirect(cmd));
+	return (0);
+}
+
+static int	open_output_file_with_flags(t_cmd *cmd)
 {
 	int	fd;
 	int	flags;
 
-	if (!cmd->output_file)
-		return (0);
 	flags = O_WRONLY | O_CREAT;
 	if (cmd->append)
 		flags |= O_APPEND;
@@ -97,8 +93,20 @@ int	setup_output_redirect(t_cmd *cmd)
 	if (fd == -1)
 	{
 		perror(cmd->output_file);
-		return (1);
+		return (-1);
 	}
+	return (fd);
+}
+
+int	setup_output_redirect(t_cmd *cmd)
+{
+	int	fd;
+
+	if (!cmd->output_file)
+		return (0);
+	fd = open_output_file_with_flags(cmd);
+	if (fd == -1)
+		return (1);
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
 	return (0);

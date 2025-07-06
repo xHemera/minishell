@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   quote_handler.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/04 16:01:00 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/07/04 16:01:00 by tobesnar         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 int	has_unclosed_quotes(const char *str)
@@ -38,6 +26,20 @@ int	has_unclosed_quotes(const char *str)
 	return (in_quote);
 }
 
+static void	handle_quote_state(char c, int *in_quote, char *quote)
+{
+	if (!*in_quote && (c == '\'' || c == '"'))
+	{
+		*in_quote = 1;
+		*quote = c;
+	}
+	else if (*in_quote && c == *quote)
+	{
+		*in_quote = 0;
+		*quote = 0;
+	}
+}
+
 char	*remove_quotes(char *str)
 {
 	int		i;
@@ -57,17 +59,9 @@ char	*remove_quotes(char *str)
 	quote = 0;
 	while (str[i])
 	{
-		if (!in_quote && (str[i] == '\'' || str[i] == '"'))
-		{
-			in_quote = 1;
-			quote = str[i];
-		}
-		else if (in_quote && str[i] == quote)
-		{
-			in_quote = 0;
-			quote = 0;
-		}
-		else
+		handle_quote_state(str[i], &in_quote, &quote);
+		if (!((!in_quote && (str[i] == '\'' || str[i] == '"'))
+				|| (in_quote && str[i] == quote && quote != 0)))
 			result[j++] = str[i];
 		i++;
 	}

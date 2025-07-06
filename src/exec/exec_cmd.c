@@ -1,22 +1,22 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   exec_cmd.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/01 13:41:28 by hemera            #+#    #+#             */
-/*   Updated: 2025/06/30 17:01:38 by tobesnar         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
+
+static char	*build_path(char *dir, char *cmd_name)
+{
+	char	*path_temp;
+	char	*path;
+
+	path_temp = ft_strjoin(dir, "/");
+	if (!path_temp)
+		return (NULL);
+	path = ft_strjoin(path_temp, cmd_name);
+	free(path_temp);
+	return (path);
+}
 
 char	*get_path(t_cmd *cmd, t_env *env, int i)
 {
 	char	**paths;
 	char	*path;
-	char	*path_temp;
 
 	while (env && ft_strncmp(env->key, "PATH", 4) != 0)
 		env = env->next;
@@ -27,11 +27,7 @@ char	*get_path(t_cmd *cmd, t_env *env, int i)
 		return (NULL);
 	while (paths[++i])
 	{
-		path_temp = ft_strjoin(paths[i], "/");
-		if (!path_temp)
-			continue ;
-		path = ft_strjoin(path_temp, cmd->name);
-		free(path_temp);
+		path = build_path(paths[i], cmd->name);
 		if (!path)
 			continue ;
 		if (access(path, F_OK) == 0)
@@ -45,6 +41,21 @@ char	*get_path(t_cmd *cmd, t_env *env, int i)
 	return (NULL);
 }
 
+static int	create_child_process(t_cmd *cmd, char **envp, t_env *env)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid < 0)
+	{
+		perror("fork");
+		return (-1);
+	}
+	if (pid == 0)
+		exec_child(cmd, envp, env);
+	return (pid);
+}
+
 int	exec_external(t_cmd *cmd, t_env *env)
 {
 	pid_t	pid;
@@ -54,16 +65,11 @@ int	exec_external(t_cmd *cmd, t_env *env)
 	envp = env_to_array(env);
 	if (!envp)
 		return (1);
-	pid = fork();
-	if (pid < 0)
+	pid = create_child_process(cmd, envp, env);
+	if (pid == -1)
 	{
-		perror("fork");
 		free_split(envp);
 		return (1);
-	}
-	if (pid == 0)
-	{
-		exec_child(cmd, envp, env);
 	}
 	waitpid(pid, &status, 0);
 	unlink(".heredoc_tmp");

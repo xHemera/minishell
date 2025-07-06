@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parse_and_exec.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/30 13:47:22 by tlize             #+#    #+#             */
-/*   Updated: 2025/06/30 14:31:07 by tlize            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 static int	check_pipe_errors(char *line, int i)
@@ -23,7 +11,8 @@ static int	check_pipe_errors(char *line, int i)
 			j++;
 		if (!line[j] || line[j] == '|')
 		{
-			ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
+			ft_putstr_fd("minishell: syntax error near unexpected ", 2);
+			ft_putstr_fd("token `|'\n", 2);
 			return (1);
 		}
 	}
@@ -43,7 +32,8 @@ static int	check_redirect_errors(char *line, int *i)
 			j = *i + 2;
 		else if (line[*i + 1] == '>')
 		{
-			ft_putstr_fd("minishell: syntax error near unexpected token `>'\n", 2);
+			ft_putstr_fd("minishell: syntax error near unexpected ", 2);
+			ft_putstr_fd("token `>'\n", 2);
 			return (1);
 		}
 		else
@@ -53,18 +43,52 @@ static int	check_redirect_errors(char *line, int *i)
 		if (!line[j] || line[j] == '|' || line[j] == '>' || line[j] == '<')
 		{
 			if (!line[j])
-				ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
+				ft_putstr_fd("minishell: syntax error near unexpected "
+					"token `newline'\n", 2);
 			else if (line[j] == '>')
-				ft_putstr_fd("minishell: syntax error near unexpected token `>'\n", 2);
+				ft_putstr_fd("minishell: syntax error near unexpected "
+					"token `>'\n", 2);
 			else if (line[j] == '<')
-				ft_putstr_fd("minishell: syntax error near unexpected token `<'\n", 2);
+				ft_putstr_fd("minishell: syntax error near unexpected "
+					"token `<'\n", 2);
 			else if (line[j] == '|')
-				ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
+				ft_putstr_fd("minishell: syntax error near unexpected "
+					"token `|'\n", 2);
 			return (1);
 		}
 		*i = j - 1;
 	}
 	return (0);
+}
+
+static int	check_initial_pipe(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
+		i++;
+	if (line[i] == '|')
+	{
+		ft_putstr_fd("minishell: syntax error near unexpected ", 2);
+		ft_putstr_fd("token `|'\n", 2);
+		return (1);
+	}
+	return (0);
+}
+
+static void	handle_quotes(char c, int *in_quotes, char *quote_char)
+{
+	if (!*in_quotes && (c == '\'' || c == '"'))
+	{
+		*in_quotes = 1;
+		*quote_char = c;
+	}
+	else if (*in_quotes && c == *quote_char)
+	{
+		*in_quotes = 0;
+		*quote_char = 0;
+	}
 }
 
 static int	has_syntax_error(char *line)
@@ -73,29 +97,15 @@ static int	has_syntax_error(char *line)
 	int		in_quotes;
 	char	quote_char;
 
+	if (check_initial_pipe(line))
+		return (1);
 	i = 0;
 	in_quotes = 0;
 	quote_char = 0;
-	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
-		i++;
-	if (line[i] == '|')
-	{
-		ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", 2);
-		return (1);
-	}
 	while (line[i])
 	{
-		if (!in_quotes && (line[i] == '\'' || line[i] == '"'))
-		{
-			in_quotes = 1;
-			quote_char = line[i];
-		}
-		else if (in_quotes && line[i] == quote_char)
-		{
-			in_quotes = 0;
-			quote_char = 0;
-		}
-		else if (!in_quotes)
+		handle_quotes(line[i], &in_quotes, &quote_char);
+		if (!in_quotes)
 		{
 			if (check_pipe_errors(line, i))
 				return (1);
@@ -105,6 +115,15 @@ static int	has_syntax_error(char *line)
 		i++;
 	}
 	return (0);
+}
+
+static void	add_cmd_to_list(t_cmd **cmd_list, t_cmd **last, t_cmd *cmd)
+{
+	if (!*cmd_list)
+		*cmd_list = cmd;
+	else
+		(*last)->next = cmd;
+	*last = cmd;
 }
 
 static t_cmd	*build_cmd_list(char **segments, t_env *env)
@@ -125,11 +144,7 @@ static t_cmd	*build_cmd_list(char **segments, t_env *env)
 			free_cmd_list(cmd_list);
 			return (NULL);
 		}
-		if (!cmd_list)
-			cmd_list = cmd;
-		else
-			last->next = cmd;
-		last = cmd;
+		add_cmd_to_list(&cmd_list, &last, cmd);
 		i++;
 	}
 	return (cmd_list);

@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/27 18:51:40 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/30 14:41:14 by hemera           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../../include/minishell.h"
 
 static int	is_valid_number(char *str)
@@ -45,7 +33,7 @@ int	ft_exit(char **args)
 		if (!is_valid_number(args[1]))
 		{
 			ft_putstr_fd("exit: numeric argument required\n", 2);
-			exit(2);
+			cleanup_and_exit(2);
 		}
 		if (arg_count > 2)
 		{
@@ -54,5 +42,5 @@ int	ft_exit(char **args)
 		}
 		exit_code = ft_atoi(args[1]) % 256;
 	}
-	exit(exit_code);
+	cleanup_and_exit(exit_code);
 }

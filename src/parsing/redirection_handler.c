@@ -1,87 +1,65 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   redirection_handler.c                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/29 17:26:14 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/06/30 13:37:25 by tlize            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
+
+static int	set_input_file(t_cmd *cmd, char *clean_next)
+{
+	free(cmd->input_file);
+	cmd->input_file = ft_strdup(clean_next);
+	if (!cmd->input_file)
+		return (0);
+	free(cmd->heredoc);
+	cmd->heredoc = NULL;
+	return (1);
+}
+
+static int	set_heredoc(t_cmd *cmd, char *clean_next)
+{
+	free(cmd->heredoc);
+	cmd->heredoc = ft_strdup(clean_next);
+	if (!cmd->heredoc)
+		return (0);
+	free(cmd->input_file);
+	cmd->input_file = NULL;
+	return (1);
+}
 
 static int	handle_input_heredoc(t_cmd *cmd, char *token, char *next)
 {
 	char	*clean_next;
+	int		result;
 
 	clean_next = remove_quotes(next);
+	result = 0;
 	if (!ft_strncmp(token, "<", 2))
-	{
-		free(cmd->input_file);
-		cmd->input_file = ft_strdup(clean_next);
-		if (!cmd->input_file)
-		{
-			free(clean_next);
-			return (0);
-		}
-		free(cmd->heredoc);
-		cmd->heredoc = NULL;
-		free(clean_next);
-		return (1);
-	}
-	if (!ft_strncmp(token, "<<", 3))
-	{
-		free(cmd->heredoc);
-		cmd->heredoc = ft_strdup(clean_next);
-		if (!cmd->heredoc)
-		{
-			free(clean_next);
-			return (0);
-		}
-		free(cmd->input_file);
-		cmd->input_file = NULL;
-		free(clean_next);
-		return (1);
-	}
+		result = set_input_file(cmd, clean_next);
+	else if (!ft_strncmp(token, "<<", 3))
+		result = set_heredoc(cmd, clean_next);
 	free(clean_next);
-	return (0);
+	return (result);
+}
+
+static int	set_output_file(t_cmd *cmd, char *clean_next, int append)
+{
+	free(cmd->output_file);
+	cmd->output_file = ft_strdup(clean_next);
+	if (!cmd->output_file)
+		return (0);
+	cmd->append = append;
+	return (1);
 }
 
 static int	handle_output(t_cmd *cmd, char *token, char *next)
 {
 	char	*clean_next;
+	int		result;
 
 	clean_next = remove_quotes(next);
+	result = 0;
 	if (!ft_strncmp(token, ">", 2))
-	{
-		free(cmd->output_file);
-		cmd->output_file = ft_strdup(clean_next);
-		if (!cmd->output_file)
-		{
-			free(clean_next);
-			return (0);
-		}
-		cmd->append = 0;
-		free(clean_next);
-		return (1);
-	}
-	if (!ft_strncmp(token, ">>", 3))
-	{
-		free(cmd->output_file);
-		cmd->output_file = ft_strdup(clean_next);
-		if (!cmd->output_file)
-		{
-			free(clean_next);
-			return (0);
-		}
-		cmd->append = 1;
-		free(clean_next);
-		return (1);
-	}
+		result = set_output_file(cmd, clean_next, 0);
+	else if (!ft_strncmp(token, ">>", 3))
+		result = set_output_file(cmd, clean_next, 1);
 	free(clean_next);
-	return (0);
+	return (result);
 }
 
 int	handle_redirect(t_cmd *cmd, char **tokens, int *i)

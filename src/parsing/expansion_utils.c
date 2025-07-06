@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   expansion_utils.c                                  :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/30 17:00:00 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/06/30 17:03:04 by tobesnar         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 static char	*ft_get_special_var(char *var_name, int last_exit_code)
@@ -64,13 +52,30 @@ char	*ft_replace_variable(char *str, int start, int end, char *value)
 	return (result);
 }
 
-static char	*ft_process_expansion(char *new_str, t_env *env, int last_exit_code)
+static char	*expand_variable_at_position(char *new_str, int *i, t_env *env,
+	int last_exit_code)
 {
-	int		i;
 	char	*var_name;
 	char	*value;
 	char	*temp_str;
 	int		end;
+
+	var_name = ft_extract_var_name(new_str, *i + 1);
+	end = ft_find_var_end(new_str, *i + 1);
+	value = ft_get_var_value(var_name, env, last_exit_code);
+	temp_str = new_str;
+	new_str = ft_replace_variable(new_str, *i, *i + 1 + (end - (*i + 1)),
+			value);
+	free(temp_str);
+	free(var_name);
+	*i += ft_strlen(value);
+	free(value);
+	return (new_str);
+}
+
+char	*ft_process_expansion(char *new_str, t_env *env, int last_exit_code)
+{
+	int		i;
 
 	i = 0;
 	while (new_str[i])
@@ -79,15 +84,8 @@ static char	*ft_process_expansion(char *new_str, t_env *env, int last_exit_code)
 			&& (ft_isalnum(new_str[i + 1]) || new_str[i + 1] == '_'
 				|| new_str[i + 1] == '?' || new_str[i + 1] == '$'))
 		{
-			var_name = ft_extract_var_name(new_str, i + 1);
-			end = ft_find_var_end(new_str, i + 1);
-			value = ft_get_var_value(var_name, env, last_exit_code);
-			temp_str = new_str;
-			new_str = ft_replace_variable(new_str, i, i + 1 + (end - (i + 1)), value);
-			free(temp_str);
-			free(var_name);
-			i += ft_strlen(value);
-			free(value);
+			new_str = expand_variable_at_position(new_str, &i, env,
+					last_exit_code);
 		}
 		else
 			i++;

@@ -1,16 +1,6 @@
-/* ***********int	handle_heredoc_input(t_cmd *cmd)************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   exec_child_utils.c                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/30 13:47:22 by tlize             #+#    #+#             */
-/*   Updated: 2025/06/30 14:31:07 by tlize            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
+
+
 
 static int	handle_heredoc_input(t_cmd *cmd)
 {
@@ -63,30 +53,34 @@ int	redirect_input(t_cmd *cmd)
 	return (0);
 }
 
-int	redirect_output(t_cmd *cmd)
+static int	open_output_file(t_cmd *cmd)
 {
 	int	fd;
 	int	flags;
 
-	fd = -1;
 	flags = O_WRONLY | O_CREAT;
 	if (cmd->append)
 		flags |= O_APPEND;
 	else
 		flags |= O_TRUNC;
+	fd = open(cmd->output_file, flags, 0644);
+	if (fd == -1)
+	{
+		perror(cmd->output_file);
+		exit(1);
+	}
+	return (fd);
+}
+
+int	redirect_output(t_cmd *cmd)
+{
+	int	fd;
+
 	if (cmd->output_file)
 	{
-		fd = open(cmd->output_file, flags, 0644);
-		if (fd != -1)
-		{
-			dup2(fd, STDOUT_FILENO);
-			close(fd);
-		}
-		else
-		{
-			perror(cmd->output_file);
-			exit(1);
-		}
+		fd = open_output_file(cmd);
+		dup2(fd, STDOUT_FILENO);
+		close(fd);
 	}
 	return (0);
 }
