@@ -26,11 +26,24 @@ static int	handle_input_heredoc(t_cmd *cmd, char *token, char *next)
 {
 	char	*clean_next;
 	int		result;
+	int		test_fd;
 
 	clean_next = remove_quotes(next);
 	result = 0;
+
 	if (!ft_strncmp(token, "<", 2))
+	{
+		// Tester l'accès au fichier d'entrée
+		test_fd = open(clean_next, O_RDONLY);
+		if (test_fd == -1)
+		{
+			perror(clean_next);
+			free(clean_next);
+			return (0);
+		}
+		close(test_fd);
 		result = set_input_file(cmd, clean_next);
+	}
 	else if (!ft_strncmp(token, "<<", 3))
 		result = set_heredoc(cmd, clean_next);
 	free(clean_next);
@@ -51,9 +64,29 @@ static int	handle_output(t_cmd *cmd, char *token, char *next)
 {
 	char	*clean_next;
 	int		result;
+	int		test_fd;
+	int		flags;
 
 	clean_next = remove_quotes(next);
 	result = 0;
+
+	// Tester l'ouverture du fichier comme bash le fait
+	flags = O_WRONLY | O_CREAT;
+	if (!ft_strncmp(token, ">>", 3))
+		flags |= O_APPEND;
+	else
+		flags |= O_TRUNC;
+
+	test_fd = open(clean_next, flags, 0644);
+	if (test_fd == -1)
+	{
+		perror(clean_next);
+		free(clean_next);
+		return (0);
+	}
+	close(test_fd);
+
+	// Stocker la redirection (même si erreur, bash fait pareil)
 	if (!ft_strncmp(token, ">", 2))
 		result = set_output_file(cmd, clean_next, 0);
 	else if (!ft_strncmp(token, ">>", 3))

@@ -21,22 +21,24 @@ void	launch_child_process(t_cmd *cmd, int pipe_fd[2], int in_fd, t_env **env)
 
 	if (is_builtin(cmd->name))
 	{
+		setup_pipeline_redirects(cmd, pipe_fd, in_fd);
 		if (cmd->input_file || cmd->output_file || cmd->append || cmd->heredoc)
 		{
+			// In a pipeline, continue execution even if redirections fail
 			redirect_input(cmd);
 			redirect_output(cmd);
 		}
-		setup_pipeline_redirects(cmd, pipe_fd, in_fd);
 		exit(exec_builtin(cmd, *env));
 	}
 	else
 	{
+		setup_pipeline_redirects(cmd, pipe_fd, in_fd);
 		if (cmd->input_file || cmd->output_file || cmd->append || cmd->heredoc)
 		{
+			// In a pipeline, continue execution even if redirections fail
 			redirect_input(cmd);
 			redirect_output(cmd);
 		}
-		setup_pipeline_redirects(cmd, pipe_fd, in_fd);
 		envp = env_to_array(*env);
 		if (!envp)
 			exit(1);

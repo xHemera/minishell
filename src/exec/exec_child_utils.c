@@ -39,7 +39,7 @@ int	handle_file_input(t_cmd *cmd)
 	else
 	{
 		perror(cmd->input_file);
-		exit(1);
+		return (-1);  // Just return error, don't change stdin
 	}
 	return (0);
 }
@@ -49,7 +49,10 @@ int	redirect_input(t_cmd *cmd)
 	if (cmd->heredoc)
 		return (handle_heredoc_input(cmd));
 	else if (cmd->input_file)
-		return (handle_file_input(cmd));
+	{
+		if (handle_file_input(cmd) != 0)
+			return (0);  // Continue even if input redirection fails
+	}
 	return (0);
 }
 
@@ -67,7 +70,7 @@ static int	open_output_file(t_cmd *cmd)
 	if (fd == -1)
 	{
 		perror(cmd->output_file);
-		exit(1);
+		return (-1);
 	}
 	return (fd);
 }
@@ -79,8 +82,13 @@ int	redirect_output(t_cmd *cmd)
 	if (cmd->output_file)
 	{
 		fd = open_output_file(cmd);
-		dup2(fd, STDOUT_FILENO);
-		close(fd);
+		if (fd != -1)
+		{
+			dup2(fd, STDOUT_FILENO);
+			close(fd);
+		}
+		// If redirection fails, just continue without redirecting
+		// This allows the command to write to the pipe normally
 	}
-	return (0);
+	return (0);  // Always return success to continue pipeline
 }

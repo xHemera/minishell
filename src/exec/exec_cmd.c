@@ -90,13 +90,40 @@ int	is_state_changing_builtin(char *cmd_name)
 int	exec_cmd(t_cmd *cmd, t_env **env)
 {
 	int	exit_code;
+	int	original_stdin;
+	int	original_stdout;
 
 	if (!cmd || !cmd->name)
 		return (1);
+
+	// Save original file descriptors
+	original_stdin = dup(STDIN_FILENO);
+	original_stdout = dup(STDOUT_FILENO);
+
+	// Handle redirections for simple commands
+	if (cmd->input_file || cmd->output_file || cmd->append || cmd->heredoc)
+	{
+		if (redirect_input(cmd) != 0 || redirect_output(cmd) != 0)
+		{
+			dup2(original_stdin, STDIN_FILENO);
+			dup2(original_stdout, STDOUT_FILENO);
+			close(original_stdin);
+			close(original_stdout);
+			return (1);
+		}
+	}
+
 	if (is_builtin(cmd->name))
 		exit_code = exec_builtin(cmd, *env);
 	else
 		exit_code = exec_external(cmd, *env);
+
+	// Restore original file descriptors
+	dup2(original_stdin, STDIN_FILENO);
+	dup2(original_stdout, STDOUT_FILENO);
+	close(original_stdin);
+	close(original_stdout);
+
 	g_signal_received = exit_code;
 	return (exit_code);
 }

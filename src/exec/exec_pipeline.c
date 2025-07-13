@@ -59,7 +59,10 @@ static int	process_command_in_pipeline(t_cmd **cmd, int *in_fd,
 	}
 	pid = fork_and_launch(*cmd, pipe_fd, *in_fd, env);
 	if (pid == -1)
-		return (-1);
+	{
+		parent_process_cleanup(*cmd, pipe_fd, in_fd);
+		return (0);  // Continue pipeline even if fork fails
+	}
 	if (!(*cmd)->next)
 		*last_pid = pid;
 	parent_process_cleanup(*cmd, pipe_fd, in_fd);
@@ -97,8 +100,8 @@ int	exec_pipeline(t_cmd *cmd_list, t_env **env)
 
 	last_exit_code = 0;
 	in_fd = exec_pipeline_loop(cmd_list, env, &last_pid);
-	if (in_fd < 0)
-		return (1);
+	
+	// Always wait for all processes, even if there was an error
 	while (1)
 	{
 		waited_pid = wait(&status);
@@ -107,7 +110,7 @@ int	exec_pipeline(t_cmd *cmd_list, t_env **env)
 		if (waited_pid == last_pid)
 			last_exit_code = WEXITSTATUS(status);
 	}
-	if (in_fd != 0)
+	if (in_fd > 0)
 		close(in_fd);
 	return (last_exit_code);
 }

@@ -173,9 +173,13 @@ void	parse_and_exec(char *line, t_env **env)
 	if (cmd_list)
 	{
 		if (!cmd_list->next)
-			exec_cmd(cmd_list, env);
+			g_signal_received = exec_cmd(cmd_list, env);
 		else
 			g_signal_received = exec_pipeline(cmd_list, env);
+	}
+	else
+	{
+		g_signal_received = 1;
 	}
 	free_cmd_list(cmd_list);
 	free_split(segments);
