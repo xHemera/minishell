@@ -1,16 +1,50 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   exec_pipeline_utils.c                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/01 14:29:13 by hemera            #+#    #+#             */
-/*   Updated: 2025/06/01 14:31:07 by hemera           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
+
+static void	setup_pipeline_redirects(t_cmd *cmd, int pipe_fd[2], int in_fd)
+{
+	if (cmd->next)
+	{
+		close(pipe_fd[0]);
+		dup2(pipe_fd[1], STDOUT_FILENO);
+		close(pipe_fd[1]);
+	}
+	if (in_fd != 0)
+	{
+		dup2(in_fd, STDIN_FILENO);
+		close(in_fd);
+	}
+}
+
+void	launch_child_process(t_cmd *cmd, int pipe_fd[2], int in_fd, t_env **env)
+{
+	char	**envp;
+
+	if (is_builtin(cmd->name))
+	{
+		setup_pipeline_redirects(cmd, pipe_fd, in_fd);
+		if (cmd->input_file || cmd->output_file || cmd->append || cmd->heredoc)
+		{
+			// In a pipeline, continue execution even if redirections fail
+			redirect_input(cmd);
+			redirect_output(cmd);
+		}
+		exit(exec_builtin(cmd, *env));
+	}
+	else
+	{
+		setup_pipeline_redirects(cmd, pipe_fd, in_fd);
+		if (cmd->input_file || cmd->output_file || cmd->append || cmd->heredoc)
+		{
+			// In a pipeline, continue execution even if redirections fail
+			redirect_input(cmd);
+			redirect_output(cmd);
+		}
+		envp = env_to_array(*env);
+		if (!envp)
+			exit(1);
+		exec_child(cmd, envp, *env);
+	}
+}
 
 void	parent_process_cleanup(t_cmd *cmd, int pipe_fd[2], int *in_fd)
 {
@@ -21,20 +55,6 @@ void	parent_process_cleanup(t_cmd *cmd, int pipe_fd[2], int *in_fd)
 		close(pipe_fd[1]);
 		*in_fd = pipe_fd[0];
 	}
-}
-
-void	launch_child_process(t_cmd *cmd, int pipe_fd[2],
-		int in_fd, t_env **env)
-{
-	if (cmd->next)
-		dup2(pipe_fd[1], 1);
-	if (in_fd != 0)
-		dup2(in_fd, 0);
-	if (cmd->next)
-	{
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
-	}
-	exec_cmd(cmd, env);
-	exit(1);
+	else
+		*in_fd = 0;
 }

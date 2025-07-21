@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   tokenize_utils.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/29 17:40:36 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/06/01 14:19:55 by hemera           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 int	skip_spaces(const char *str, int i)
@@ -68,12 +56,6 @@ char	*copy_token(const char *str, int start, int end)
 	char	*token;
 	int		len;
 
-	if (end > start && str[start] == str[end]
-		&& (str[start] == '\'' || str[start] == '"'))
-	{
-		start++;
-		end--;
-	}
 	len = end - start;
 	if (len < 0)
 		len = 0;

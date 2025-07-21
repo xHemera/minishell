@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/29 16:28:47 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/06/16 15:57:51 by tlize            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 t_env	*env_new(char *key, char *value)
@@ -88,6 +76,12 @@ t_env	*env_init(char **envp)
 		}
 		if (*new->key != *empty)
 			env_add_back(&head, new);
+		else
+		{
+			free(new->key);
+			free(new->value);
+			free(new);
+		}
 		envp++;
 	}
 	return (head);

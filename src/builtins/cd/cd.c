@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/27 18:55:31 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/06/01 15:04:05 by hemera           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 char	*get_env_value(t_env *env, char *key)
@@ -44,6 +32,11 @@ int	ft_cd(char **args, t_env *env)
 {
 	char	*target_dir;
 
+	if (args[1] && args[2])
+	{
+		ft_putstr_fd("cd: too many arguments\n", 2);
+		return (1);
+	}
 	if (!args[1])
 	{
 		if (handle_cd_home(&target_dir, env))

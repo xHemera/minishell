@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   split_pipe_aware.c                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/29 17:03:01 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/05/29 17:13:08 by tobesnar         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 static int	is_quote(char c)
@@ -54,6 +42,8 @@ static char	*extract_segment(const char *str, int *pos)
 {
 	int		start;
 	int		i;
+	char	*substr;
+	char	*trimmed;
 
 	while (is_whitespace(str[*pos]))
 		(*pos)++;
@@ -69,7 +59,10 @@ static char	*extract_segment(const char *str, int *pos)
 			i++;
 	}
 	*pos = i + (str[i] == '|');
-	return (ft_strtrim(ft_substr(str, start, i - start), " \t"));
+	substr = ft_substr(str, start, i - start);
+	trimmed = ft_strtrim(substr, " \t");
+	free(substr);
+	return (trimmed);
 }
 
 char	**split_pipe_aware(const char *str)

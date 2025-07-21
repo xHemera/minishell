@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell_loop.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/01 13:40:02 by hemera            #+#    #+#             */
-/*   Updated: 2025/06/01 14:25:26 by hemera           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 void	minishell_loop(t_env **env)
@@ -20,7 +8,16 @@ void	minishell_loop(t_env **env)
 	{
 		line = readline("minishell> ");
 		if (!line)
-			exit(0);
+		{
+			ft_putstr_fd("exit\n", 1);
+			if (g_signal_received >= 130)
+				cleanup_and_exit(g_signal_received - 128);
+			cleanup_and_exit(g_signal_received);
+		}
+		if (g_signal_received == 130)
+		{
+			g_signal_received = 0;
+		}
 		if (*line)
 		{
 			add_history(line);

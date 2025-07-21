@@ -1,43 +1,59 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   exec_cmd.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/01 13:41:28 by hemera            #+#    #+#             */
-/*   Updated: 2025/06/30 14:23:39 by tlize            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
+
+static char	*build_path(char *dir, char *cmd_name)
+{
+	char	*path_temp;
+	char	*path;
+
+	path_temp = ft_strjoin(dir, "/");
+	if (!path_temp)
+		return (NULL);
+	path = ft_strjoin(path_temp, cmd_name);
+	free(path_temp);
+	return (path);
+}
 
 char	*get_path(t_cmd *cmd, t_env *env, int i)
 {
 	char	**paths;
 	char	*path;
-	char	*path_temp;
 
-	while (env && strcmp(env->key, "PATH") != 0)
+	while (env && ft_strncmp(env->key, "PATH", 4) != 0)
 		env = env->next;
 	if (!env)
-		return (0);
+		return (NULL);
 	paths = ft_split(env->value, ':');
+	if (!paths)
+		return (NULL);
 	while (paths[++i])
 	{
-		path_temp = ft_strjoin(paths[i], "/");
-		path = ft_strjoin(path_temp, cmd->name);
-		free(path_temp);
+		path = build_path(paths[i], cmd->name);
+		if (!path)
+			continue ;
 		if (access(path, F_OK) == 0)
+		{
+			free_split(paths);
 			return (path);
+		}
 		free(path);
 	}
-	i = -1;
-	while (paths[++i])
-		free(paths[i]);
-	free(paths);
-	free(cmd);
-	return (0);
+	free_split(paths);
+	return (NULL);
+}
+
+static int	create_child_process(t_cmd *cmd, char **envp, t_env *env)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid < 0)
+	{
+		perror("fork");
+		return (-1);
+	}
+	if (pid == 0)
+		exec_child(cmd, envp, env);
+	return (pid);
 }
 
 int	exec_external(t_cmd *cmd, t_env *env)
@@ -49,16 +65,11 @@ int	exec_external(t_cmd *cmd, t_env *env)
 	envp = env_to_array(env);
 	if (!envp)
 		return (1);
-	pid = fork();
-	if (pid < 0)
+	pid = create_child_process(cmd, envp, env);
+	if (pid == -1)
 	{
-		perror("fork");
 		free_split(envp);
 		return (1);
-	}
-	if (pid == 0)
-	{
-		exec_child(cmd, envp, env);
 	}
 	waitpid(pid, &status, 0);
 	unlink(".heredoc_tmp");
@@ -78,9 +89,41 @@ int	is_state_changing_builtin(char *cmd_name)
 
 int	exec_cmd(t_cmd *cmd, t_env **env)
 {
+	int	exit_code;
+	int	original_stdin;
+	int	original_stdout;
+
 	if (!cmd || !cmd->name)
 		return (1);
+
+	// Save original file descriptors
+	original_stdin = dup(STDIN_FILENO);
+	original_stdout = dup(STDOUT_FILENO);
+
+	// Handle redirections for simple commands
+	if (cmd->input_file || cmd->output_file || cmd->append || cmd->heredoc)
+	{
+		if (redirect_input(cmd) != 0 || redirect_output(cmd) != 0)
+		{
+			dup2(original_stdin, STDIN_FILENO);
+			dup2(original_stdout, STDOUT_FILENO);
+			close(original_stdin);
+			close(original_stdout);
+			return (1);
+		}
+	}
+
 	if (is_builtin(cmd->name))
-		return (exec_builtin(cmd, *env));
-	return (exec_external(cmd, *env));
+		exit_code = exec_builtin(cmd, *env);
+	else
+		exit_code = exec_external(cmd, *env);
+
+	// Restore original file descriptors
+	dup2(original_stdin, STDIN_FILENO);
+	dup2(original_stdout, STDOUT_FILENO);
+	close(original_stdin);
+	close(original_stdout);
+
+	g_signal_received = exit_code;
+	return (exit_code);
 }

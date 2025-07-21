@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   env_utils.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: hemera <hemera@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/01 13:07:32 by hemera            #+#    #+#             */
-/*   Updated: 2025/06/01 14:23:38 by hemera           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 static int	env_size(t_env *env)
@@ -33,7 +21,10 @@ static char	*join_key_value(t_env *env)
 	tmp = ft_strjoin(env->key, "=");
 	if (!tmp)
 		return (NULL);
-	res = ft_strjoin(tmp, env->value);
+	if (env->value)
+		res = ft_strjoin(tmp, env->value);
+	else
+		res = ft_strjoin(tmp, "");
 	free(tmp);
 	return (res);
 }
@@ -59,7 +50,7 @@ char	**env_to_array(t_env *env)
 	i = 0;
 	while (env)
 	{
-		if (env->key && env->value)
+		if (env->key)
 		{
 			envp[i] = join_key_value(env);
 			if (!envp[i])
