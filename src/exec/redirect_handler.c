@@ -58,7 +58,8 @@ static int	handle_heredoc_redirect(t_cmd *cmd)
 static int	handle_file_redirect(t_cmd *cmd)
 {
 	int	fd;
-
+	
+	ft_printf("jewbuzz");
 	fd = open(cmd->input_file, O_RDONLY);
 	if (fd == -1)
 	{

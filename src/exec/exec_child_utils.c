@@ -51,7 +51,7 @@ int	redirect_input(t_cmd *cmd)
 	else if (cmd->input_file)
 	{
 		if (handle_file_input(cmd) != 0)
-			return (0);  // Continue even if input redirection fails
+			exit(1);
 	}
 	return (0);
 }
