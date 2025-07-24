@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/24 21:47:37 by marvin            #+#    #+#             */
+/*   Updated: 2025/07/24 21:47:37 by marvin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -111,7 +123,7 @@ char	*get_path(t_cmd *cmd, t_env *env);
 int		redirect_input(t_cmd *cmd);
 int		redirect_output(t_cmd *cmd);
 
-// exec_pipeline.c & exec_pipeline_process.c 
+// exec_pipeline.c & exec_pipeline_process.c
 // exec_pipeline_child.c & exec_pipeline_redirect.c
 int		exec_pipeline(t_cmd *cmd_list, t_env **env);
 int		setup_pipe(int pipe_fd[2]);
