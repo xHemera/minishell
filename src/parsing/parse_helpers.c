@@ -35,11 +35,8 @@ int	add_arg_or_name(t_cmd *cmd, char *token)
 	int		result;
 
 	clean_token = remove_quotes(token);
-	if (!clean_token || clean_token[0] == '\0')
-	{
-		free(clean_token);
+	if (!clean_token)
 		return (0);
-	}
 	if (!cmd->name)
 		result = handle_first_arg(cmd, clean_token);
 	else

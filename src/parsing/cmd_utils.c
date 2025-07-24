@@ -18,11 +18,10 @@ t_cmd	*cmd_new(void)
 	return (cmd);
 }
 
-static char	**create_new_args_array(t_cmd *cmd, char *arg)
+static char	**create_new_args_array(t_cmd *cmd)
 {
 	int		count;
 	char	**new_args;
-	char	*arg_dup;
 
 	count = 0;
 	while (cmd->args && cmd->args[count])
@@ -30,12 +29,6 @@ static char	**create_new_args_array(t_cmd *cmd, char *arg)
 	new_args = malloc(sizeof(char *) * (count + 2));
 	if (!new_args)
 		return (NULL);
-	arg_dup = ft_strdup(arg);
-	if (!arg_dup)
-	{
-		free(new_args);
-		return (NULL);
-	}
 	return (new_args);
 }
 
@@ -55,24 +48,20 @@ int	cmd_add_arg(t_cmd *cmd, char *arg)
 {
 	int		count;
 	char	**new_args;
-	char	*arg_dup;
 
 	if (!cmd || !arg)
 		return (0);
-	new_args = create_new_args_array(cmd, arg);
+	new_args = create_new_args_array(cmd);
 	if (!new_args)
-		return (0);
-	arg_dup = ft_strdup(arg);
-	if (!arg_dup)
 	{
-		free(new_args);
+		free(arg);
 		return (0);
 	}
 	count = 0;
 	copy_existing_args(new_args, cmd->args);
 	while (cmd->args && cmd->args[count])
 		count++;
-	new_args[count] = arg_dup;
+	new_args[count] = arg;
 	new_args[count + 1] = NULL;
 	free(cmd->args);
 	cmd->args = new_args;

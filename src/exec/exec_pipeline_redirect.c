@@ -20,14 +20,3 @@ void	handle_child_builtin(t_cmd *cmd, char **envp, t_env *env)
 	free_split(envp);
 	exit(exec_builtin(cmd, env));
 }
-
-void	handle_direct_execution(t_cmd *cmd, char **envp)
-{
-	if (access(cmd->name, F_OK) == 0)
-	{
-		if (execve(cmd->name, cmd->args, envp) == -1)
-			perror(cmd->name);
-	}
-	else
-		perror(cmd->name);
-}

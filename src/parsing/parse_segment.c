@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static int	parse_tokens_with_expansion(t_cmd *cmd, char **tokens, t_env *env)
+static int	parse_tokens(t_cmd *cmd, char **tokens)
 {
 	int		i;
 
@@ -13,14 +13,14 @@ static int	parse_tokens_with_expansion(t_cmd *cmd, char **tokens, t_env *env)
 				return (0);
 			continue ;
 		}
-		if (!handle_token(cmd, tokens[i], i == 0, env))
+		if (!add_arg_or_name(cmd, tokens[i]))
 			return (0);
 		i++;
 	}
 	return (1);
 }
 
-t_cmd	*parse_segment_with_env(char *segment, t_env *env)
+t_cmd	*parse_segment(char *segment)
 {
 	t_cmd	*cmd;
 	char	**tokens;
@@ -35,7 +35,7 @@ t_cmd	*parse_segment_with_env(char *segment, t_env *env)
 		free_cmd(cmd);
 		return (NULL);
 	}
-	success = parse_tokens_with_expansion(cmd, tokens, env);
+	success = parse_tokens(cmd, tokens);
 	free_tokens(tokens);
 	if (!success)
 	{

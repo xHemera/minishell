@@ -173,6 +173,7 @@ int		ft_is_valid_var_char(char c, int first);
 // parse_cmd.c
 t_cmd	*parse_segment(char *segment);
 t_cmd	*parse_segment_with_env(char *segment, t_env *env);
+int		handle_token(t_cmd *cmd, char *token, int is_first, t_env *env);
 
 // parse_helpers.c
 int		is_redirect(const char *token);
