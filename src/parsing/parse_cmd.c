@@ -1,10 +1,8 @@
 #include "minishell.h"
 
-
-
 static int	parse_tokens(t_cmd *cmd, char **tokens)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	while (tokens[i])
@@ -15,10 +13,25 @@ static int	parse_tokens(t_cmd *cmd, char **tokens)
 				return (0);
 			continue ;
 		}
-		add_arg_or_name(cmd, tokens[i]);
+		if (!add_arg_or_name(cmd, tokens[i]))
+			return (0);
 		i++;
 	}
 	return (1);
+}
+
+static char	*get_expanded_token(char *token, t_env *env)
+{
+	char	*expanded_token;
+
+	expanded_token = ft_expand_variables_quotes(token, env, g_signal_received);
+	if (!expanded_token)
+	{
+		expanded_token = ft_strdup(token);
+		if (!expanded_token)
+			return (NULL);
+	}
+	return (expanded_token);
 }
 
 static int	parse_tokens_with_expansion(t_cmd *cmd, char **tokens, t_env *env)
@@ -35,15 +48,14 @@ static int	parse_tokens_with_expansion(t_cmd *cmd, char **tokens, t_env *env)
 				return (0);
 			continue ;
 		}
-		expanded_token = ft_expand_variables_quotes(tokens[i], env,
-			g_signal_received);
+		expanded_token = get_expanded_token(tokens[i], env);
 		if (!expanded_token)
+			return (0);
+		if (!add_arg_or_name(cmd, expanded_token))
 		{
-			expanded_token = ft_strdup(tokens[i]);
-			if (!expanded_token)
-				return (0);
+			free(expanded_token);
+			return (0);
 		}
-		add_arg_or_name(cmd, expanded_token);
 		free(expanded_token);
 		i++;
 	}

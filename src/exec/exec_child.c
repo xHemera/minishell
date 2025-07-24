@@ -53,7 +53,7 @@ static void	handle_relative_path(t_cmd *cmd, char **envp, t_env *env)
 {
 	char	*path;
 
-	path = get_path(cmd, env, -1);
+	path = get_path(cmd, env);
 	if (path)
 		execve(path, cmd->args, envp);
 	else

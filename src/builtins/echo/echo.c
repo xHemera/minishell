@@ -18,11 +18,11 @@ int	ft_echo(char **argv, int i, int j, int newline)
 	while (argv[i] && !ft_strncmp(argv[i], "-n", 2))
 	{
 		while (argv[i][j] == 'n')
-			j ++;
+			j++;
 		if (argv[i][j] != '\0')
 			break ;
 		newline = 0;
-		i ++;
+		i++;
 	}
 	while (argv[i])
 	{

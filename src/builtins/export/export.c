@@ -1,60 +1,5 @@
 #include "../../../include/minishell.h"
 
-static int	is_valid_identifier(char *str)
-{
-	int	i;
-
-	if (!str || !str[0])
-		return (0);
-	if (!ft_isalpha(str[0]) && str[0] != '_')
-		return (0);
-	i = 1;
-	while (str[i])
-	{
-		if (!ft_isalnum(str[i]) && str[i] != '_')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-static int	handle_invalid_identifier(char *invalid_arg)
-{
-	ft_putstr_fd("minishell: export: `", 2);
-	ft_putstr_fd(invalid_arg, 2);
-	ft_putstr_fd("': not a valid identifier\n", 2);
-	return (1);
-}
-
-static void	add_new_env_var(char **supersplit, t_env *envp)
-{
-	t_env	*current;
-	char	*key_dup;
-	char	*value_dup;
-
-	current = envp;
-	while (current->prev)
-		current = current->prev;
-	while (current)
-	{
-		if (ft_strncmp(current->key, supersplit[0],
-			ft_strlen(supersplit[0]) + 1) == 0)
-		{
-			if (supersplit[1])
-			{
-				if (current->value)
-					free(current->value);
-				current->value = ft_strdup(supersplit[1]);
-			}
-			return ;
-		}
-		current = current->next;
-	}
-	key_dup = ft_strdup(supersplit[0]);
-	value_dup = supersplit[1] ? ft_strdup(supersplit[1]) : NULL;
-	env_add_back(&envp, env_new(key_dup, value_dup));
-}
-
 static void	print_export_env(t_env *env)
 {
 	while (env)
@@ -67,44 +12,39 @@ static void	print_export_env(t_env *env)
 	}
 }
 
-static int	export_add(char **cmd, t_env *envp)
+static int	process_export_arg(char *arg, t_env *envp)
 {
-	char	**supersplit;
-	int		i;
-	int		error;
+	char	**split;
 
-	i = 1;
-	error = 0;
-	while (cmd[i])
+	split = ft_split(arg, '=');
+	if (!split || !split[0] || !is_valid_identifier(split[0]))
 	{
-		supersplit = ft_split(cmd[i], '=');
-		if (!supersplit || !supersplit[0] || !is_valid_identifier(supersplit[0]))
-		{
-			if (!error)
-				error = handle_invalid_identifier(cmd[i]);
-			if (supersplit)
-				free_split(supersplit);
-			i++;
-			continue ;
-		}
-		add_new_env_var(supersplit, envp);
-		free_split(supersplit);
-		i++;
+		if (split)
+			free_split(split);
+		return (handle_invalid_identifier(arg));
 	}
-	return (error);
+	if (!find_and_update_env_var(envp, split[0], split[1]))
+		add_new_env_var(envp, split[0], split[1]);
+	free_split(split);
+	return (0);
 }
 
 int	ft_export(t_cmd *cmd, t_env *envp, int argc)
 {
+	int	i;
+	int	error;
+
 	if (argc == 1)
 	{
 		print_export_env(envp);
+		return (0);
 	}
-	else
+	i = 1;
+	error = 0;
+	while (cmd->args[i])
 	{
-		while (envp->next)
-			envp = envp->next;
-		return (export_add(cmd->args, envp));
+		error |= process_export_arg(cmd->args[i], envp);
+		i++;
 	}
-	return (0);
+	return (error);
 }

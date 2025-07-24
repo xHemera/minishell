@@ -72,6 +72,8 @@ char	**split_pipe_aware(const char *str)
 	int		pos;
 	int		i;
 
+	if (!str)
+		return (NULL);
 	cmd_count = count_cmds(str);
 	result = malloc(sizeof(char *) * (cmd_count + 1));
 	if (!result)
@@ -83,9 +85,7 @@ char	**split_pipe_aware(const char *str)
 		result[i] = extract_segment(str, &pos);
 		if (!result[i])
 		{
-			while (i-- > 0)
-				free(result[i]);
-			free(result);
+			ft_free_split(result);
 			return (NULL);
 		}
 		i++;
