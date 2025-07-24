@@ -5,7 +5,7 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/24 21:44:23 by marvin            #+#    #+#             */
+/*   Created: 2025/05/05 21:44:23 by marvin            #+#    #+#             */
 /*   Updated: 2025/07/24 21:44:23 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -16,7 +16,7 @@ static int	handle_heredoc_line(char *line, t_cmd *cmd, int fd)
 {
 	if (!line)
 	{
-		if (g_signal_received == SIGINT)
+		if (g_ms.signal_received == SIGINT)
 		{
 			close(fd);
 			unlink(".heredoc_tmp");

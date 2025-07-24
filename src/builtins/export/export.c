@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/24 21:42:23 by marvin            #+#    #+#             */
-/*   Updated: 2025/07/24 21:42:23 by marvin           ###   ########.fr       */
+/*   Created: 2025/05/05 21:42:23 by marvin            #+#    #+#             */
+/*   Updated: 2025/07/24 22:26:44 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static int	process_export_arg(char *arg, t_env *envp)
 {
 	char	**split;
 
+	if (!arg || arg[0] == '=')
+		return (handle_invalid_identifier(arg));
 	split = ft_split(arg, '=');
 	if (!split || !split[0] || !is_valid_identifier(split[0]))
 	{

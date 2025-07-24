@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/24 21:45:45 by marvin            #+#    #+#             */
-/*   Updated: 2025/07/24 21:45:45 by marvin           ###   ########.fr       */
+/*   Created: 2025/05/05 21:45:45 by marvin            #+#    #+#             */
+/*   Updated: 2025/07/24 22:30:51 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ char	*get_expanded_token(char *token, t_env *env)
 {
 	char	*expanded_token;
 
-	expanded_token = ft_expand_variables_quotes(token, env, g_signal_received);
+	expanded_token = ft_expand_variables_quotes(token, env,
+			g_ms.signal_received);
 	if (!expanded_token)
 	{
 		expanded_token = ft_strdup(token);

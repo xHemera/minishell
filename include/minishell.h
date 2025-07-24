@@ -5,7 +5,7 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/24 21:47:37 by marvin            #+#    #+#             */
+/*   Created: 2025/05/05 21:47:37 by marvin            #+#    #+#             */
 /*   Updated: 2025/07/24 21:47:37 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -71,7 +71,14 @@ typedef struct s_shell
 /*                           GLOBAL VARIABLES                                */
 /* ************************************************************************** */
 
-extern int	g_signal_received;
+typedef struct s_global
+{
+	int			signal_received;
+	t_env		*env_ptr;
+	t_cmd		*cmd_ptr;
+}	t_global;
+
+extern t_global	g_ms;
 
 /* ************************************************************************** */
 /*                            FUNCTION PROTOTYPES                            */
