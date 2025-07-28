@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_helpers.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/05 21:45:50 by marvin            #+#    #+#             */
+/*   Updated: 2025/07/24 21:45:50 by marvin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	is_redirect(const char *token)
@@ -10,24 +22,37 @@ int	is_redirect(const char *token)
 	return (0);
 }
 
-void	add_arg_or_name(t_cmd *cmd, char *token)
+static int	handle_first_arg(t_cmd *cmd, char *clean_token)
+{
+	cmd->name = ft_strdup(clean_token);
+	if (!cmd->name)
+		return (0);
+	if (!cmd_add_arg(cmd, ft_strdup(clean_token)))
+	{
+		free(cmd->name);
+		cmd->name = NULL;
+		return (0);
+	}
+	return (1);
+}
+
+static int	handle_additional_arg(t_cmd *cmd, char *clean_token)
+{
+	return (cmd_add_arg(cmd, ft_strdup(clean_token)));
+}
+
+int	add_arg_or_name(t_cmd *cmd, char *token)
 {
 	char	*clean_token;
+	int		result;
 
 	clean_token = remove_quotes(token);
-	if (!clean_token || clean_token[0] == '\0')
-	{
-		free(clean_token);
-		return ;
-	}
+	if (!clean_token)
+		return (0);
 	if (!cmd->name)
-	{
-		cmd->name = ft_strdup(clean_token);
-		cmd_add_arg(cmd, ft_strdup(clean_token));
-	}
+		result = handle_first_arg(cmd, clean_token);
 	else
-	{
-		cmd_add_arg(cmd, ft_strdup(clean_token));
-	}
+		result = handle_additional_arg(cmd, clean_token);
 	free(clean_token);
+	return (result);
 }

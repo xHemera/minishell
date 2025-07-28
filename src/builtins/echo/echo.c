@@ -5,7 +5,7 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tlize <tlize@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/23 20:40:04 by tlize             #+#    #+#             */
+/*   Created: 2025/05/05 20:40:04 by tlize             #+#    #+#             */
 /*   Updated: 2025/07/23 20:40:04 by tlize            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -18,11 +18,11 @@ int	ft_echo(char **argv, int i, int j, int newline)
 	while (argv[i] && !ft_strncmp(argv[i], "-n", 2))
 	{
 		while (argv[i][j] == 'n')
-			j ++;
+			j++;
 		if (argv[i][j] != '\0')
 			break ;
 		newline = 0;
-		i ++;
+		i++;
 	}
 	while (argv[i])
 	{

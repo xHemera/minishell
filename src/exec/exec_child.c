@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_child.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/05 21:42:37 by marvin            #+#    #+#             */
+/*   Updated: 2025/07/24 21:42:37 by marvin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void	check_file_permissions(t_cmd *cmd, char **envp,
@@ -53,7 +65,7 @@ static void	handle_relative_path(t_cmd *cmd, char **envp, t_env *env)
 {
 	char	*path;
 
-	path = get_path(cmd, env, -1);
+	path = get_path(cmd, env);
 	if (path)
 		execve(path, cmd->args, envp);
 	else

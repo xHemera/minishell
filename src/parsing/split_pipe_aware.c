@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   split_pipe_aware.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/05 21:46:30 by marvin            #+#    #+#             */
+/*   Updated: 2025/07/24 21:46:30 by marvin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	is_quote(char c)
@@ -72,6 +84,8 @@ char	**split_pipe_aware(const char *str)
 	int		pos;
 	int		i;
 
+	if (!str)
+		return (NULL);
 	cmd_count = count_cmds(str);
 	result = malloc(sizeof(char *) * (cmd_count + 1));
 	if (!result)
@@ -83,9 +97,7 @@ char	**split_pipe_aware(const char *str)
 		result[i] = extract_segment(str, &pos);
 		if (!result[i])
 		{
-			while (i-- > 0)
-				free(result[i]);
-			free(result);
+			ft_free_split(result);
 			return (NULL);
 		}
 		i++;

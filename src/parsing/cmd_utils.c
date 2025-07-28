@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmd_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/05 21:45:26 by marvin            #+#    #+#             */
+/*   Updated: 2025/07/24 21:45:26 by marvin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_cmd	*cmd_new(void)
@@ -18,6 +30,32 @@ t_cmd	*cmd_new(void)
 	return (cmd);
 }
 
+static char	**create_new_args_array(t_cmd *cmd)
+{
+	int		count;
+	char	**new_args;
+
+	count = 0;
+	while (cmd->args && cmd->args[count])
+		count++;
+	new_args = malloc(sizeof(char *) * (count + 2));
+	if (!new_args)
+		return (NULL);
+	return (new_args);
+}
+
+static void	copy_existing_args(char **new_args, char **old_args)
+{
+	int	i;
+
+	i = 0;
+	while (old_args && old_args[i])
+	{
+		new_args[i] = old_args[i];
+		i++;
+	}
+}
+
 int	cmd_add_arg(t_cmd *cmd, char *arg)
 {
 	int		count;
@@ -25,18 +63,16 @@ int	cmd_add_arg(t_cmd *cmd, char *arg)
 
 	if (!cmd || !arg)
 		return (0);
-	count = 0;
-	while (cmd->args && cmd->args[count])
-		count++;
-	new_args = malloc(sizeof(char *) * (count + 2));
+	new_args = create_new_args_array(cmd);
 	if (!new_args)
-		return (0);
-	count = 0;
-	while (cmd->args && cmd->args[count])
 	{
-		new_args[count] = cmd->args[count];
-		count++;
+		free(arg);
+		return (0);
 	}
+	count = 0;
+	copy_existing_args(new_args, cmd->args);
+	while (cmd->args && cmd->args[count])
+		count++;
 	new_args[count] = arg;
 	new_args[count + 1] = NULL;
 	free(cmd->args);
