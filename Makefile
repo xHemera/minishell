@@ -1,5 +1,5 @@
 NAME = minishell
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Wextra -Werror -Iinclude
 LIBFT = -Linclude/libft -lft -lreadline
 
