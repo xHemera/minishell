@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_loop.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 21:44:15 by marvin            #+#    #+#             */
-/*   Updated: 2025/07/24 21:44:15 by marvin           ###   ########.fr       */
+/*   Created: 2025/07/29 10:31:07 by tobesnar          #+#    #+#             */
+/*   Updated: 2025/07/29 10:31:07 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,7 @@ void	minishell_loop(t_env **env)
 			cleanup_and_exit(g_ms.signal_received);
 		}
 		if (g_ms.signal_received == 130)
-		{
 			g_ms.signal_received = 0;
-		}
 		if (*line)
 		{
 			add_history(line);

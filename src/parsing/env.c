@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 21:45:31 by marvin            #+#    #+#             */
-/*   Updated: 2025/07/24 21:45:31 by marvin           ###   ########.fr       */
+/*   Created: 2025/07/29 10:31:55 by tobesnar          #+#    #+#             */
+/*   Updated: 2025/07/29 10:31:55 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,15 +74,21 @@ t_env	*env_init(char **envp)
 {
 	t_env	*head;
 	t_env	*new;
-	char	*empty;
+	char	*key;
+	char	*value;
+	char	*empty = "_";
 
 	head = NULL;
-	empty = "_";
 	while (*envp)
 	{
-		new = env_new(get_key(*envp), get_value(*envp));
+		key = get_key(*envp);     // alloue
+		value = get_value(*envp); // alloue
+
+		new = env_new(key, value); // prend ownership (ne dup pas !)
 		if (!new)
 		{
+			free(key);   // ici oui, car env_new a échoué
+			free(value); // idem
 			free_env(&head);
 			return (NULL);
 		}
@@ -96,5 +102,5 @@ t_env	*env_init(char **envp)
 		}
 		envp++;
 	}
-	return (head);
+	return (head); // PAS de free(key/value) ici
 }

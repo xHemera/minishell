@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 21:42:42 by marvin            #+#    #+#             */
-/*   Updated: 2025/07/24 21:42:42 by marvin           ###   ########.fr       */
+/*   Created: 2025/07/29 10:30:13 by tobesnar          #+#    #+#             */
+/*   Updated: 2025/07/29 10:30:13 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static void	handle_directory_error(char *cmd_name)
 static void	handle_execution_error(char *cmd_name)
 {
 	perror(cmd_name);
+	free_env(&g_ms.env_ptr);
 	exit(127);
 }
 

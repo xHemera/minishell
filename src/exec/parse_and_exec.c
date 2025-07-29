@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_and_exec.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 21:44:20 by marvin            #+#    #+#             */
-/*   Updated: 2025/07/24 21:44:20 by marvin           ###   ########.fr       */
+/*   Created: 2025/07/29 10:31:12 by tobesnar          #+#    #+#             */
+/*   Updated: 2025/07/29 10:31:12 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,12 @@ void	parse_and_exec(char *line, t_env **env)
 	cmd_list = build_cmd_list(segments, *env);
 	set_global_cmd(cmd_list);
 	if (cmd_list)
+	{
 		execute_command_list(cmd_list, env);
+	}
 	else
 		g_ms.signal_received = 1;
-	free_cmd_list(cmd_list);
+	cmd_clear(&cmd_list);
 	set_global_cmd(NULL);
 	free_split(segments);
 }

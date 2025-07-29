@@ -1,6 +1,6 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -Iinclude
+CFLAGS = -g -Wall -Wextra -Werror -Iinclude
 LIBFT = -Linclude/libft -lft -lreadline
 
 SRC_DIR = src

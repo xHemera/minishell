@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_child.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 21:42:37 by marvin            #+#    #+#             */
-/*   Updated: 2025/07/24 21:42:37 by marvin           ###   ########.fr       */
+/*   Created: 2025/07/29 10:29:44 by tobesnar          #+#    #+#             */
+/*   Updated: 2025/07/29 10:29:44 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ static void	execute_file(t_cmd *cmd, char **envp)
 		exit(0);
 	}
 	perror("execve");
+	free_env(&g_ms.env_ptr);
 	free_split(envp);
 	exit(127);
 }
@@ -67,7 +68,9 @@ static void	handle_relative_path(t_cmd *cmd, char **envp, t_env *env)
 
 	path = get_path(cmd, env);
 	if (path)
+	{
 		execve(path, cmd->args, envp);
+	}
 	else
 	{
 		write(2, cmd->name, ft_strlen(cmd->name));
