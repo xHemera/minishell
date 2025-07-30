@@ -39,7 +39,6 @@ static void	execute_file(t_cmd *cmd, char **envp)
 		exit(0);
 	}
 	perror("execve");
-	free_env(&g_ms.env_ptr);
 	free_split(envp);
 	exit(127);
 }
@@ -68,9 +67,7 @@ static void	handle_relative_path(t_cmd *cmd, char **envp, t_env *env)
 
 	path = get_path(cmd, env);
 	if (path)
-	{
 		execve(path, cmd->args, envp);
-	}
 	else
 	{
 		write(2, cmd->name, ft_strlen(cmd->name));

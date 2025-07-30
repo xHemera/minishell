@@ -1,3 +1,4 @@
+int redirect_heredoc_input(void);
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -42,8 +43,7 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
-typedef struct s_token
-{
+typedef struct s_token {
 	struct s_token	*prev;
 	char			*value;
 	struct s_token	*next;
@@ -73,9 +73,7 @@ typedef struct s_shell
 
 typedef struct s_global
 {
-	int			signal_received;
-	t_env		*env_ptr;
-	t_cmd		*cmd_ptr;
+	int			last_was_signaled;
 }	t_global;
 
 extern t_global	g_ms;
@@ -146,7 +144,6 @@ void	handle_child_builtin(t_cmd *cmd, char **envp, t_env *env);
 void	handle_direct_execution(t_cmd *cmd, char **envp);
 
 // heredoc_utils.c
-int		create_heredoc_file(t_cmd *cmd);
 
 // minishell_loop.c
 void	minishell_loop(t_env **env);
@@ -156,7 +153,12 @@ void	parse_and_exec(char *line, t_env **env);
 
 /* -------------------------------- PARSING --------------------------------- */
 
-// cmd_utils.c
+t_cmd	*cmd_new(void);
+int	cmd_add_arg(t_cmd *cmd, char *arg);
+void	cmd_clear(t_cmd **head);
+
+// parse_cmd_utils.c
+int setup_empty_cmd(t_cmd *cmd);
 t_cmd	*cmd_new(void);
 int		cmd_add_arg(t_cmd *cmd, char *arg);
 void	cmd_clear(t_cmd **head);
@@ -227,6 +229,10 @@ int		extract_quoted_token(const char *str, int start, char quote);
 int		extract_token(const char *str, int start);
 int		count_tokens(const char *str);
 char	*copy_token(const char *str, int start, int end);
+
+//heredoc
+void free_heredoc_file(t_cmd *cmd);
+int handle_heredoc(t_cmd *cmd);
 
 /* ----------------------------- TOKENIZE ------------------------------ */
 int		is_token_separator(char c);

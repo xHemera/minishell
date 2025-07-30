@@ -29,13 +29,6 @@ int	set_output_file(t_cmd *cmd, char *file, int append)
 	return (cmd->output_file != NULL);
 }
 
-int	set_heredoc(t_cmd *cmd, char *delimiter)
-{
-	if (cmd->heredoc)
-		free(cmd->heredoc);
-	cmd->heredoc = ft_strdup(delimiter);
-	return (cmd->heredoc != NULL);
-}
 
 int	test_file_access(char *file, int flags)
 {

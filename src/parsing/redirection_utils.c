@@ -17,27 +17,31 @@ int	handle_input_redirect(t_cmd *cmd, char *token, char *next)
 	char	*clean_next;
 	int		result;
 
-	if (!ft_strncmp(token, "<", 2))
-	{
+   if (!ft_strncmp(token, "<", 2))
+   {
+	   clean_next = remove_quotes(next);
+	   if (!clean_next)
+		   return (0);
+	   result = test_file_access(clean_next, O_RDONLY);
+	   if (result)
+		   result = set_input_file(cmd, clean_next);
+	   free(clean_next);
+	   return (result);
+   }
+   else if (!ft_strncmp(token, "<<", 3))
+   {
 		clean_next = remove_quotes(next);
 		if (!clean_next)
 			return (0);
-		result = test_file_access(clean_next, O_RDONLY);
-		if (result)
-			result = set_input_file(cmd, clean_next);
+		if (cmd->heredoc)
+			free(cmd->heredoc);
+		cmd->heredoc = ft_strdup(clean_next);
 		free(clean_next);
-		return (result);
-	}
-	else if (!ft_strncmp(token, "<<", 3))
-	{
-		clean_next = remove_quotes(next);
-		if (!clean_next)
+		if (handle_heredoc(cmd) != 0)
 			return (0);
-		result = set_heredoc(cmd, clean_next);
-		free(clean_next);
-		return (result);
-	}
-	return (0);
+		return (1);
+   }
+   return (0);
 }
 
 int	handle_output_redirect(t_cmd *cmd, char *token, char *next)

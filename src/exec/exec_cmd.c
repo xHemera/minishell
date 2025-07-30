@@ -16,6 +16,9 @@ int	exec_cmd(t_cmd *cmd, t_env **env)
 {
 	if (!cmd)
 		return (1);
+	// Guard: skip execution if name is NULL or empty (heredoc-only or invalid command)
+	if (!cmd->name || cmd->name[0] == '\0')
+		return (0);
 	if (cmd->is_builtin)
 		return (exec_builtin(cmd, *env));
 	return (exec_external(cmd, *env));

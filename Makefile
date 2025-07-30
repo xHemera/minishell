@@ -1,6 +1,6 @@
 NAME = minishell
 CC = cc
-CFLAGS = -g -Wall -Wextra -Werror -Iinclude
+CFLAGS = -Wall -Wextra -Werror -Iinclude
 LIBFT = -Linclude/libft -lft -lreadline
 
 SRC_DIR = src
@@ -54,6 +54,8 @@ SRCS = main.c \
 	$(SRC_DIR)/parsing/tokenize_improved_utils.c \
 	$(SRC_DIR)/parsing/tokenize_quote_utils.c \
 	$(SRC_DIR)/parsing/tokenize_utils.c \
+	$(SRC_DIR)/parsing/heredoc.c \
+	$(SRC_DIR)/parsing/heredoc_utils.c \
 	$(SRC_DIR)/signals/signals.c \
 	$(SRC_DIR)/utils/free_utils.c \
 	$(SRC_DIR)/utils/cleanup.c

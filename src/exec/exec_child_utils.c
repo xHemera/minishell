@@ -12,26 +12,14 @@
 
 #include "minishell.h"
 
-static int	handle_heredoc_input(void)
+int redirect_input(t_cmd *cmd)
 {
-	int	fd;
+	int fd;
 
-	fd = open(".heredoc_tmp", O_RDONLY);
-	if (fd == -1)
-	{
-		perror("heredoc");
-		return (1);
-	}
-	dup2(fd, STDIN_FILENO);
-	close(fd);
-	unlink(".heredoc_tmp");
-	return (0);
-}
-
-static int	handle_file_input(t_cmd *cmd)
-{
-	int	fd;
-
+	   if (cmd->heredoc)
+		return redirect_heredoc_input();
+	if (!cmd->input_file)
+		return (0);
 	fd = open(cmd->input_file, O_RDONLY);
 	if (fd == -1)
 	{
@@ -40,15 +28,6 @@ static int	handle_file_input(t_cmd *cmd)
 	}
 	dup2(fd, STDIN_FILENO);
 	close(fd);
-	return (0);
-}
-
-int	redirect_input(t_cmd *cmd)
-{
-	if (cmd->heredoc)
-		return (handle_heredoc_input());
-	else if (cmd->input_file)
-		return (handle_file_input(cmd));
 	return (0);
 }
 

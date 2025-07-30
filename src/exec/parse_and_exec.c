@@ -17,23 +17,24 @@ static int	handle_syntax_errors(char *line)
 	if (has_unclosed_quotes(line))
 	{
 		ft_putstr_fd("minishell: syntax error: unclosed quotes\n", 2);
-		g_ms.signal_received = 2;
 		return (1);
 	}
 	if (has_syntax_error(line))
-	{
-		g_ms.signal_received = 2;
 		return (1);
-	}
 	return (0);
 }
 
 static void	execute_command_list(t_cmd *cmd_list, t_env **env)
 {
+	// Skip execution if command is heredoc-only (name is empty or NULL)
+	if ((!cmd_list->name) || (cmd_list->name[0] == '\0')) {
+		// Still clean up, but do not execute
+		return;
+	}
 	if (!cmd_list->next)
-		g_ms.signal_received = exec_cmd(cmd_list, env);
+		exec_cmd(cmd_list, env);
 	else
-		g_ms.signal_received = exec_pipeline(cmd_list, env);
+		exec_pipeline(cmd_list, env);
 }
 
 void	parse_and_exec(char *line, t_env **env)
@@ -47,14 +48,8 @@ void	parse_and_exec(char *line, t_env **env)
 	if (!segments)
 		return ;
 	cmd_list = build_cmd_list(segments, *env);
-	set_global_cmd(cmd_list);
 	if (cmd_list)
-	{
 		execute_command_list(cmd_list, env);
-	}
-	else
-		g_ms.signal_received = 1;
-	cmd_clear(&cmd_list);
-	set_global_cmd(NULL);
+	free_cmd_list(cmd_list);
 	free_split(segments);
 }

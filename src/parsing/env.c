@@ -74,21 +74,15 @@ t_env	*env_init(char **envp)
 {
 	t_env	*head;
 	t_env	*new;
-	char	*key;
-	char	*value;
-	char	*empty = "_";
+	char	*empty;
 
 	head = NULL;
+	empty = "_";
 	while (*envp)
 	{
-		key = get_key(*envp);     // alloue
-		value = get_value(*envp); // alloue
-
-		new = env_new(key, value); // prend ownership (ne dup pas !)
+		new = env_new(get_key(*envp), get_value(*envp));
 		if (!new)
 		{
-			free(key);   // ici oui, car env_new a échoué
-			free(value); // idem
 			free_env(&head);
 			return (NULL);
 		}
@@ -102,5 +96,5 @@ t_env	*env_init(char **envp)
 		}
 		envp++;
 	}
-	return (head); // PAS de free(key/value) ici
+	return (head);
 }

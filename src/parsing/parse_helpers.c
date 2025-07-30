@@ -16,9 +16,9 @@ int	is_redirect(const char *token)
 {
 	if (!token)
 		return (0);
-	if (!ft_strncmp(token, "<", 2) || !ft_strncmp(token, ">", 2)
-		|| !ft_strncmp(token, ">>", 3) || !ft_strncmp(token, "<<", 3))
-		return (1);
+	   if (!ft_strncmp(token, "<", 2) || !ft_strncmp(token, ">", 2)
+			   || !ft_strncmp(token, ">>", 3) || !ft_strncmp(token, "<<", 3))
+			   return (1);
 	return (0);
 }
 

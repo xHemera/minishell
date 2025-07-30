@@ -68,10 +68,13 @@ int	wait_for_children(int last_pid)
 	{
 		if (pid == last_pid)
 		{
-			if (WIFEXITED(status))
+			if (WIFEXITED(status)) {
 				last_status = WEXITSTATUS(status);
-			else if (WIFSIGNALED(status))
+				g_ms.last_was_signaled = 0;
+			} else if (WIFSIGNALED(status)) {
 				last_status = 128 + WTERMSIG(status);
+				g_ms.last_was_signaled = 1;
+			}
 		}
 		pid = wait(&status);
 	}

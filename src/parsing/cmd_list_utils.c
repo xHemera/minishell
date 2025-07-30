@@ -31,16 +31,17 @@ t_cmd	*build_cmd_list(char **segments, t_env *env)
 	cmd_list = NULL;
 	last = NULL;
 	i = 0;
-	while (segments[i])
-	{
-		cmd = parse_segment_with_env(segments[i], env);
-		if (!cmd)
-		{
-			free_cmd_list(cmd_list);
-			return (NULL);
-		}
-		add_cmd_to_list(&cmd_list, &last, cmd);
-		i++;
-	}
-	return (cmd_list);
+   while (segments[i])
+   {
+	   cmd = parse_segment_with_env(segments[i], env);
+	   if (!cmd)
+	   {
+		   // Si une commande échoue (ex: heredoc raté), on libère tout et on arrête
+		   free_cmd_list(cmd_list);
+		   return (NULL);
+	   }
+	   add_cmd_to_list(&cmd_list, &last, cmd);
+	   i++;
+   }
+   return (cmd_list);
 }

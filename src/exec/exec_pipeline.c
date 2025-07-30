@@ -35,10 +35,11 @@ static int	process_pipeline_command(t_cmd *cmd, int pipe_fd[2], int *in_fd,
 
 int	exec_pipeline(t_cmd *cmd_list, t_env **env)
 {
-	int		pipe_fd[2];
-	int		in_fd;
+	int	pipe_fd[2];
+	int	in_fd;
 	pid_t	last_pid;
 	pid_t	pid;
+	int	status;
 
 	in_fd = STDIN_FILENO;
 	last_pid = 0;
@@ -50,5 +51,9 @@ int	exec_pipeline(t_cmd *cmd_list, t_env **env)
 		last_pid = pid;
 		cmd_list = cmd_list->next;
 	}
-	return (wait_for_children(last_pid));
+	// Ignore SIGINT pendant l'attente des enfants
+	signal(SIGINT, SIG_IGN);
+	status = wait_for_children(last_pid);
+	signal(SIGINT, handle_sigint);
+	return (status);
 }

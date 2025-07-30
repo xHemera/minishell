@@ -6,7 +6,7 @@
 /*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 10:32:21 by tobesnar          #+#    #+#             */
-/*   Updated: 2025/07/29 10:32:22 by tobesnar         ###   ########.fr       */
+/*   Updated: 2025/07/29 11:12:45 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@ char	*get_expanded_token(char *token, t_env *env)
 {
 	char	*expanded_token;
 
-	expanded_token = ft_expand_variables_quotes(token, env,
-			g_ms.signal_received);
+	expanded_token = ft_expand_variables_quotes(token, env, 0);
 	if (!expanded_token)
 	{
 		expanded_token = ft_strdup(token);
@@ -27,7 +26,7 @@ char	*get_expanded_token(char *token, t_env *env)
 	return (expanded_token);
 }
 
-static int	setup_empty_cmd(t_cmd *cmd)
+int setup_empty_cmd(t_cmd *cmd)
 {
 	cmd->name = ft_strdup("");
 	if (!cmd->name)

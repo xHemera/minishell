@@ -29,7 +29,6 @@ static void	handle_directory_error(char *cmd_name)
 static void	handle_execution_error(char *cmd_name)
 {
 	perror(cmd_name);
-	free_env(&g_ms.env_ptr);
 	exit(127);
 }
 

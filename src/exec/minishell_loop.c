@@ -18,16 +18,17 @@ void	minishell_loop(t_env **env)
 
 	while (1)
 	{
+		if (g_ms.last_was_signaled)
+		{
+			write(1, "\n", 1);
+			g_ms.last_was_signaled = 0;
+		}
 		line = readline("minishell> ");
 		if (!line)
 		{
 			ft_putstr_fd("exit\n", 1);
-			if (g_ms.signal_received >= 130)
-				cleanup_and_exit(g_ms.signal_received - 128);
-			cleanup_and_exit(g_ms.signal_received);
+			cleanup_and_exit(0);
 		}
-		if (g_ms.signal_received == 130)
-			g_ms.signal_received = 0;
 		if (*line)
 		{
 			add_history(line);

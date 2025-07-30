@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-t_global	g_ms = {0, NULL, NULL};
+t_global	g_ms = {0};
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -24,10 +24,7 @@ int	main(int argc, char **argv, char **envp)
 	env = env_init(envp);
 	if (!env)
 		return (1);
-	set_global_env(env);
 	minishell_loop(&env);
 	free_env(&env);
-	if (g_ms.signal_received >= 130)
-		return (g_ms.signal_received - 128);
-	return (g_ms.signal_received);
+	return (0);
 }

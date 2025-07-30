@@ -26,7 +26,6 @@ int	handle_redirect(t_cmd *cmd, char **tokens, int *i)
 		result = handle_input_redirect(cmd, token, next);
 	else
 		result = handle_output_redirect(cmd, token, next);
-	if (result)
-		(*i)++;
-	return (result);
+   (*i) += 2; // Toujours avancer de 2, succès ou échec
+   return (result);
 }
