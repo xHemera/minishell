@@ -70,12 +70,7 @@ typedef struct s_shell
 /*                           GLOBAL VARIABLES                                */
 /* ************************************************************************** */
 
-typedef struct s_global
-{
-	int			last_was_signaled;
-}	t_global;
-
-extern t_global	g_ms;
+extern volatile sig_atomic_t g_signal;
 
 /* ************************************************************************** */
 /*                            FUNCTION PROTOTYPES                            */

@@ -12,16 +12,21 @@
 
 #include "minishell.h"
 
+extern volatile sig_atomic_t g_signal;
+
 void	minishell_loop(t_env **env)
 {
 	char	*line;
 
 	while (1)
 	{
-		if (g_ms.last_was_signaled)
+		if (g_signal == SIGINT)
 		{
 			write(1, "\n", 1);
-			g_ms.last_was_signaled = 0;
+			rl_on_new_line();
+			rl_replace_line("", 0);
+			rl_redisplay();
+			g_signal = 0;
 		}
 		line = readline("minishell> ");
 		if (!line)
