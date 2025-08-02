@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 21:46:55 by marvin            #+#    #+#             */
-/*   Updated: 2025/07/24 21:46:55 by marvin           ###   ########.fr       */
+/*   Created: 2025/07/29 10:34:37 by tobesnar          #+#    #+#             */
+/*   Updated: 2025/07/29 10:34:37 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,10 @@ void	free_cmd(t_cmd *cmd)
 		}
 		free(cmd->args);
 	}
-	free(cmd->input_file);
-	free(cmd->output_file);
-	free(cmd->heredoc);
-	free(cmd);
+   free(cmd->input_file);
+   free(cmd->output_file);
+   free_heredoc_file(cmd);
+   free(cmd);
 }
 
 void	free_cmd_list(t_cmd *cmd)

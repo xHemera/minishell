@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipeline_process.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 21:44:01 by marvin            #+#    #+#             */
-/*   Updated: 2025/07/24 21:44:01 by marvin           ###   ########.fr       */
+/*   Created: 2025/07/29 10:30:33 by tobesnar          #+#    #+#             */
+/*   Updated: 2025/07/29 10:30:33 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,13 @@ int	wait_for_children(int last_pid)
 	{
 		if (pid == last_pid)
 		{
-			if (WIFEXITED(status))
+			if (WIFEXITED(status)) {
 				last_status = WEXITSTATUS(status);
-			else if (WIFSIGNALED(status))
+				g_ms.last_was_signaled = 0;
+			} else if (WIFSIGNALED(status)) {
 				last_status = 128 + WTERMSIG(status);
+				g_ms.last_was_signaled = 1;
+			}
 		}
 		pid = wait(&status);
 	}

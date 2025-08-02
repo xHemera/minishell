@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_handler.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 21:46:25 by marvin            #+#    #+#             */
-/*   Updated: 2025/07/24 21:46:25 by marvin           ###   ########.fr       */
+/*   Created: 2025/07/29 10:33:17 by tobesnar          #+#    #+#             */
+/*   Updated: 2025/07/29 10:33:17 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int	handle_redirect(t_cmd *cmd, char **tokens, int *i)
 		result = handle_input_redirect(cmd, token, next);
 	else
 		result = handle_output_redirect(cmd, token, next);
-	if (result)
-		(*i)++;
-	return (result);
+   (*i) += 2; // Toujours avancer de 2, succès ou échec
+   return (result);
 }

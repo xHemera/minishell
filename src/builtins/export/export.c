@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 21:42:23 by marvin            #+#    #+#             */
-/*   Updated: 2025/07/24 22:26:44 by marvin           ###   ########.fr       */
+/*   Created: 2025/07/29 10:28:48 by tobesnar          #+#    #+#             */
+/*   Updated: 2025/07/29 10:28:49 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/minishell.h"
+#include "minishell.h"
 
 static void	print_export_env(t_env *env)
 {

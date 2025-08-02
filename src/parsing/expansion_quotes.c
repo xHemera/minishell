@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_quotes.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 21:45:34 by marvin            #+#    #+#             */
-/*   Updated: 2025/07/24 21:45:34 by marvin           ###   ########.fr       */
+/*   Created: 2025/07/29 10:31:59 by tobesnar          #+#    #+#             */
+/*   Updated: 2025/07/29 10:31:59 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 static char	get_current_quote(char *str, int pos)
 {
 	int		i;

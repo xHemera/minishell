@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_list_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 21:45:24 by marvin            #+#    #+#             */
-/*   Updated: 2025/07/24 21:45:24 by marvin           ###   ########.fr       */
+/*   Created: 2025/07/29 10:31:24 by tobesnar          #+#    #+#             */
+/*   Updated: 2025/07/29 10:31:24 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,17 @@ t_cmd	*build_cmd_list(char **segments, t_env *env)
 	cmd_list = NULL;
 	last = NULL;
 	i = 0;
-	while (segments[i])
-	{
-		cmd = parse_segment_with_env(segments[i], env);
-		if (!cmd)
-		{
-			free_cmd_list(cmd_list);
-			return (NULL);
-		}
-		add_cmd_to_list(&cmd_list, &last, cmd);
-		i++;
-	}
-	return (cmd_list);
+   while (segments[i])
+   {
+	   cmd = parse_segment_with_env(segments[i], env);
+	   if (!cmd)
+	   {
+		   // Si une commande échoue (ex: heredoc raté), on libère tout et on arrête
+		   free_cmd_list(cmd_list);
+		   return (NULL);
+	   }
+	   add_cmd_to_list(&cmd_list, &last, cmd);
+	   i++;
+   }
+   return (cmd_list);
 }

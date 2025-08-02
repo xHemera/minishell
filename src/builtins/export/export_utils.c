@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 21:42:21 by marvin            #+#    #+#             */
-/*   Updated: 2025/07/24 21:42:21 by marvin           ###   ########.fr       */
+/*   Created: 2025/07/29 10:28:31 by tobesnar          #+#    #+#             */
+/*   Updated: 2025/07/29 10:28:31 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/minishell.h"
+#include "minishell.h"
 
 int	is_valid_identifier(char *str)
 {

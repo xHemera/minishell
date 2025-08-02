@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 21:45:26 by marvin            #+#    #+#             */
-/*   Updated: 2025/07/24 21:45:26 by marvin           ###   ########.fr       */
+/*   Created: 2025/07/29 10:31:29 by tobesnar          #+#    #+#             */
+/*   Updated: 2025/07/29 10:31:29 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ t_cmd	*cmd_new(void)
 	cmd = malloc(sizeof(t_cmd));
 	if (!cmd)
 		return (NULL);
-	cmd->name = NULL;
-	cmd->args = NULL;
-	cmd->input_file = NULL;
-	cmd->output_file = NULL;
-	cmd->append = 0;
-	cmd->heredoc = NULL;
-	cmd->is_builtin = 0;
-	cmd->next = NULL;
+   cmd->name = NULL;
+   cmd->args = NULL;
+   cmd->input_file = NULL;
+   cmd->output_file = NULL;
+   cmd->append = 0;
+   cmd->heredoc = NULL;
+   cmd->is_builtin = 0;
+   cmd->next = NULL;
 	return (cmd);
 }
 
@@ -78,21 +78,4 @@ int	cmd_add_arg(t_cmd *cmd, char *arg)
 	free(cmd->args);
 	cmd->args = new_args;
 	return (1);
-}
-
-void	cmd_clear(t_cmd **head)
-{
-	t_cmd	*tmp;
-	t_cmd	*next;
-
-	if (!head || !*head)
-		return ;
-	tmp = *head;
-	while (tmp)
-	{
-		next = tmp->next;
-		free_cmd(tmp);
-		tmp = next;
-	}
-	*head = NULL;
 }

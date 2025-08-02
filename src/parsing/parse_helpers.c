@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 21:45:50 by marvin            #+#    #+#             */
-/*   Updated: 2025/07/24 21:45:50 by marvin           ###   ########.fr       */
+/*   Created: 2025/07/29 10:32:30 by tobesnar          #+#    #+#             */
+/*   Updated: 2025/07/29 10:32:30 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ int	is_redirect(const char *token)
 {
 	if (!token)
 		return (0);
-	if (!ft_strncmp(token, "<", 2) || !ft_strncmp(token, ">", 2)
-		|| !ft_strncmp(token, ">>", 3) || !ft_strncmp(token, "<<", 3))
-		return (1);
+	   if (!ft_strncmp(token, "<", 2) || !ft_strncmp(token, ">", 2)
+			   || !ft_strncmp(token, ">>", 3) || !ft_strncmp(token, "<<", 3))
+			   return (1);
 	return (0);
 }
 

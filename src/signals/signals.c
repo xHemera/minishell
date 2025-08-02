@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 21:46:48 by marvin            #+#    #+#             */
-/*   Updated: 2025/07/24 21:46:48 by marvin           ###   ########.fr       */
+/*   Created: 2025/07/29 10:34:13 by tobesnar          #+#    #+#             */
+/*   Updated: 2025/07/29 10:34:13 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	handle_sigint(int sig)
 {
 	(void)sig;
-	g_ms.signal_received = 130;
 	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
@@ -39,8 +38,4 @@ void	setup_signals_child(void)
 	signal(SIGQUIT, SIG_DFL);
 }
 
-void	setup_signals_heredoc(void)
-{
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_IGN);
-}
+/* setup_signals_heredoc removed */

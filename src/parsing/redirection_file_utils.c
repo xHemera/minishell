@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_file_utils.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tobesnar <tobesnar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 21:46:23 by marvin            #+#    #+#             */
-/*   Updated: 2025/07/24 21:46:23 by marvin           ###   ########.fr       */
+/*   Created: 2025/07/29 10:32:48 by tobesnar          #+#    #+#             */
+/*   Updated: 2025/07/29 10:32:48 by tobesnar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,6 @@ int	set_output_file(t_cmd *cmd, char *file, int append)
 	return (cmd->output_file != NULL);
 }
 
-int	set_heredoc(t_cmd *cmd, char *delimiter)
-{
-	if (cmd->heredoc)
-		free(cmd->heredoc);
-	cmd->heredoc = ft_strdup(delimiter);
-	return (cmd->heredoc != NULL);
-}
 
 int	test_file_access(char *file, int flags)
 {
