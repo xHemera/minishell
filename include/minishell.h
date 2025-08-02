@@ -1,4 +1,3 @@
-int redirect_heredoc_input(void);
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -126,6 +125,7 @@ int		exec_cmd(t_cmd *cmd, t_env **env);
 int		exec_child(t_cmd *cmd, char **envp, t_env *env);
 char	*get_path(t_cmd *cmd, t_env *env);
 int		redirect_input(t_cmd *cmd);
+int 	redirect_heredoc_input(void);
 int		redirect_output(t_cmd *cmd);
 
 // exec_pipeline.c & exec_pipeline_process.c
