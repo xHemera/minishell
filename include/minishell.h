@@ -70,7 +70,7 @@ typedef struct s_shell
 /*                           GLOBAL VARIABLES                                */
 /* ************************************************************************** */
 
-extern volatile sig_atomic_t g_status;
+extern int g_signal;
 
 /* ************************************************************************** */
 /*                            FUNCTION PROTOTYPES                            */

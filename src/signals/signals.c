@@ -12,15 +12,14 @@
 
 #include "minishell.h"
 
+int g_status = 0;
+
 void handle_sigint(int sig)
 {
     (void)sig;
     g_status = 130;
-    write(1, "\n", 1);
-    rl_on_new_line();
-    rl_replace_line("", 0);
-    rl_redisplay();
 }
+
 void	handle_sigquit(int sig)
 {
 	(void)sig;
@@ -37,5 +36,3 @@ void	setup_signals_child(void)
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 }
-
-/* setup_signals_heredoc removed */
