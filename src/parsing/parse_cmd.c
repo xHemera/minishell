@@ -17,22 +17,22 @@ static int	parse_tokens_with_expansion(t_cmd *cmd, char **tokens, t_env *env)
 	int		i;
 
 	i = 0;
-   while (tokens[i])
-   {
-	   if (is_redirect(tokens[i]))
-	   {
-		   if (!handle_redirect(cmd, tokens, &i))
-		   {
-			   // Si une redirection échoue, on arrête tout
-			   return (0);
-		   }
-		   continue ;
-	   }
-	   if (!handle_token(cmd, tokens[i], i == 0, env))
-		   return (0);
-	   i++;
-   }
-   return (1);
+	while (tokens[i])
+	{
+		if (is_redirect(tokens[i]))
+		{
+			if (!handle_redirect(cmd, tokens, &i))
+			{
+				// Si une redirection échoue, on arrête tout
+				return (0);
+			}
+			continue ;
+		}
+		if (!handle_token(cmd, tokens[i], i == 0, env))
+	   		return (0);
+		i++;
+	}
+	return (1);
 }
 
 t_cmd	*parse_segment_with_env(char *segment, t_env *env)

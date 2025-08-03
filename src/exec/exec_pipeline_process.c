@@ -41,6 +41,11 @@ void	handle_child_process(t_cmd *cmd, int pipe_fd[2], int in_fd,
 		dup2(pipe_fd[1], STDOUT_FILENO);
 		close(pipe_fd[1]);
 	}
+	else
+	{
+		close(pipe_fd[0]);
+		close(pipe_fd[1]);
+	}
 	if (cmd->is_builtin)
 	{
 		free_split(envp);

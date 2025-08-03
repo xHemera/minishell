@@ -30,7 +30,6 @@ SRCS = main.c \
 	$(SRC_DIR)/exec/exec_pipeline_redirect.c \
 	$(SRC_DIR)/exec/minishell_loop.c \
 	$(SRC_DIR)/exec/parse_and_exec.c \
-	$(SRC_DIR)/exec/redirect_handler.c \
 	$(SRC_DIR)/parsing/cmd_utils.c \
 	$(SRC_DIR)/parsing/cmd_list_utils.c \
 	$(SRC_DIR)/parsing/env_utils.c \

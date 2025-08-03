@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+extern int g_signal;
+
 static int	process_pipeline_command(t_cmd *cmd, int pipe_fd[2], int *in_fd,
 	t_env **env)
 {
@@ -49,8 +51,14 @@ int	exec_pipeline(t_cmd *cmd_list, t_env **env)
 		if (pid == -1)
 			return (1);
 		last_pid = pid;
+		if (cmd_list->next)
+		{
+			close(pipe_fd[1]);
+		}
 		cmd_list = cmd_list->next;
 	}
+	if (in_fd != STDIN_FILENO)
+		close(in_fd);
 	// Ignore SIGINT pendant l'attente des enfants
 	signal(SIGINT, SIG_IGN);
 	status = wait_for_children(last_pid);

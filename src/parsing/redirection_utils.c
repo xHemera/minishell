@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+extern int g_signal;
+
 int	handle_input_redirect(t_cmd *cmd, char *token, char *next)
 {
 	char	*clean_next;
