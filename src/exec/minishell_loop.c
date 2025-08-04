@@ -14,7 +14,7 @@
 
 extern int g_signal;
 
-void	minishell_loop(t_env **env)
+int minishell_loop(t_env **env)
 {
 	char	*line;
 
@@ -32,7 +32,7 @@ void	minishell_loop(t_env **env)
 		if (!line)
 		{
 			ft_putstr_fd("exit\n", 1);
-			cleanup_and_exit(0);
+			cleanup_and_exit(g_signal);
 		}
 		if (*line)
 		{
@@ -41,4 +41,5 @@ void	minishell_loop(t_env **env)
 		}
 		free(line);
 	}
+	return (g_signal);
 }

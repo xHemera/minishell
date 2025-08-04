@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+extern int g_signal;
+
 static int	handle_syntax_errors(char *line)
 {
 	if (has_unclosed_quotes(line))
@@ -24,7 +26,7 @@ static int	handle_syntax_errors(char *line)
 	return (0);
 }
 
-static void	execute_command_list(t_cmd *cmd_list, t_env **env)
+static void execute_command_list(t_cmd *cmd_list, t_env **env)
 {
 	// Skip execution if command is heredoc-only (name is empty or NULL)
 	if ((!cmd_list->name) || (cmd_list->name[0] == '\0')) {
@@ -32,16 +34,18 @@ static void	execute_command_list(t_cmd *cmd_list, t_env **env)
 		return;
 	}
 	if (!cmd_list->next)
-		exec_cmd(cmd_list, env);
+		g_signal =exec_cmd(cmd_list, env);
 	else
-		exec_pipeline(cmd_list, env);
+		g_signal =exec_pipeline(cmd_list, env);
 }
 
 void	parse_and_exec(char *line, t_env **env)
 {
 	char	**segments;
 	t_cmd	*cmd_list;
+	int exit_code;
 
+	exit_code = 0;
 	if (handle_syntax_errors(line))
 		return ;
 	segments = split_pipe_aware(line);

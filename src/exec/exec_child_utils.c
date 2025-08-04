@@ -15,8 +15,8 @@
 int redirect_input(t_cmd *cmd)
 {
 	int fd;
-
-	   if (cmd->heredoc)
+	
+	if (cmd->heredoc)
 		return redirect_heredoc_input();
 	if (!cmd->input_file)
 		return (0);
@@ -26,7 +26,12 @@ int redirect_input(t_cmd *cmd)
 		perror(cmd->input_file);
 		return (1);
 	}
-	dup2(fd, STDIN_FILENO);
+	if (dup2(fd, STDIN_FILENO) == -1)
+	{
+		perror("dup2");
+		close(fd);
+		return (1);
+	}
 	close(fd);
 	return (0);
 }

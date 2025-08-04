@@ -17,6 +17,7 @@ extern int g_signal;
 int	main(int argc, char **argv, char **envp)
 {
 	t_env	*env;
+	int exit_code;
 
 	(void)argc;
 	(void)argv;
@@ -25,7 +26,7 @@ int	main(int argc, char **argv, char **envp)
 	env = env_init(envp);
 	if (!env)
 		return (1);
-	minishell_loop(&env);
+	exit_code = minishell_loop(&env);
 	free_env(&env);
-	return (0);
+	return (exit_code);
 }

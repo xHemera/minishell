@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+extern int g_signal;
+
 int	setup_pipe(int pipe_fd[2])
 {
 	if (pipe(pipe_fd) == -1)
@@ -80,5 +82,6 @@ int	wait_for_children(int last_pid)
 		}
 		pid = wait(&status);
 	}
+	g_signal = last_status;
 	return (last_status);
 }

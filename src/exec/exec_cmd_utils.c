@@ -67,9 +67,16 @@ void	execute_command(t_cmd *cmd, char **envp, t_env *env)
 		if (path)
 		{
 			if (execve(path, cmd->args, envp) == -1)
+			{
 				handle_execution_error(cmd->name);
+				exit(126);
+			}
 		}
 		else
+		{
 			handle_command_not_found(cmd->name);
+			exit(127);
+		}
 	}
+	exit(0);
 }

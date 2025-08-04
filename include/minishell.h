@@ -141,7 +141,8 @@ void	handle_direct_execution(t_cmd *cmd, char **envp);
 // heredoc_utils.c
 
 // minishell_loop.c
-void	minishell_loop(t_env **env);
+//void	minishell_loop(t_env **env);
+int		minishell_loop(t_env **env);
 
 // parse_and_exec.c
 void	parse_and_exec(char *line, t_env **env);
