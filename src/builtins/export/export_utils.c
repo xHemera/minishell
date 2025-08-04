@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+extern int g_signal;
+
 int	is_valid_identifier(char *str)
 {
 	int	i;
@@ -35,6 +37,7 @@ int	handle_invalid_identifier(char *invalid_arg)
 	ft_putstr_fd("minishell: export: `", 2);
 	ft_putstr_fd(invalid_arg, 2);
 	ft_putstr_fd("': not a valid identifier\n", 2);
+	g_signal = 1;
 	return (1);
 }
 

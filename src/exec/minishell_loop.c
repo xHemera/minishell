@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-extern int g_status;
+extern int g_signal;
 
 void	minishell_loop(t_env **env)
 {
@@ -20,13 +20,13 @@ void	minishell_loop(t_env **env)
 
 	while (1)
 	{
-		if (g_status == 130)
+		if (g_signal == 130)
 		{
 			write(1, "\n", 1);
 			rl_on_new_line();
 			rl_replace_line("", 0);
 			rl_redisplay();
-			g_status = 0;
+			g_signal = 0;
 		}
 		line = readline("minishell> ");
 		if (!line)

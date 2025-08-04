@@ -21,28 +21,49 @@ int	handle_input_redirect(t_cmd *cmd, char *token, char *next)
 
    if (!ft_strncmp(token, "<", 2))
    {
-	   clean_next = remove_quotes(next);
-	   if (!clean_next)
-		   return (0);
-	   result = test_file_access(clean_next, O_RDONLY);
-	   if (result)
-		   result = set_input_file(cmd, clean_next);
-	   free(clean_next);
-	   return (result);
-   }
-   else if (!ft_strncmp(token, "<<", 3))
-   {
 		clean_next = remove_quotes(next);
 		if (!clean_next)
+		{
+			g_signal = 1;
 			return (0);
+		}
+		result = test_file_access(clean_next, O_RDONLY);
+		if (!result)
+		{
+			g_signal = 1;
+			free(clean_next);
+			return (0);
+		}
+		if (!set_input_file(cmd, clean_next))
+		{
+			perror(clean_next);
+			g_signal = 1;
+			free(clean_next);
+			return (0);
+		}
+		free(clean_next);
+		return (result);
+	}
+	else if (!ft_strncmp(token, "<<", 3))
+	{
+		clean_next = remove_quotes(next);
+		if (!clean_next)
+		{
+			g_signal = 1;
+			return (0);
+		}
 		if (cmd->heredoc)
 			free(cmd->heredoc);
 		cmd->heredoc = ft_strdup(clean_next);
 		free(clean_next);
-		if (handle_heredoc(cmd) != 0)
+		if (!cmd->heredoc || handle_heredoc(cmd) != 0)
+		{
+			g_signal = 1;
 			return (0);
+		}
 		return (1);
    }
+   g_signal = 1;
    return (0);
 }
 
@@ -54,19 +75,30 @@ int	handle_output_redirect(t_cmd *cmd, char *token, char *next)
 
 	clean_next = remove_quotes(next);
 	if (!clean_next)
+	{
+		g_signal = 1;
 		return (0);
+	}
 	flags = O_WRONLY | O_CREAT;
 	if (!ft_strncmp(token, ">>", 3))
 		flags |= O_APPEND;
 	else
 		flags |= O_TRUNC;
 	result = test_file_access(clean_next, flags);
-	if (result)
+	if (!result)
 	{
-		if (!ft_strncmp(token, ">", 2))
-			result = set_output_file(cmd, clean_next, 0);
-		else if (!ft_strncmp(token, ">>", 3))
-			result = set_output_file(cmd, clean_next, 1);
+		g_signal = 1;
+		free(clean_next);
+		return (0);
+	}
+	if (!ft_strncmp(token, ">", 2))
+		result = set_output_file(cmd, clean_next, 0);
+	else if (!ft_strncmp(token, ">>", 3))
+		result = set_output_file(cmd, clean_next, 1);
+	if (!result)
+	{
+		perror(clean_next);
+		g_signal = 1;
 	}
 	free(clean_next);
 	return (result);

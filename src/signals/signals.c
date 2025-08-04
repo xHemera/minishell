@@ -12,12 +12,12 @@
 
 #include "minishell.h"
 
-int g_status = 0;
+int g_signal;
 
 void handle_sigint(int sig)
 {
     (void)sig;
-    g_status = 130;
+    g_signal = 130;
 }
 
 void	handle_sigquit(int sig)

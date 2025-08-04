@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int g_signal = 0;
+extern int g_signal;
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -20,6 +20,7 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
+	g_signal = 0;
 	setup_signals();
 	env = env_init(envp);
 	if (!env)
