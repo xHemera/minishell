@@ -26,34 +26,35 @@ static int	handle_syntax_errors(char *line)
 	return (0);
 }
 
-static void execute_command_list(t_cmd *cmd_list, t_env **env)
+static int execute_command_list(t_cmd *cmd_list, t_env **env)
 {
-	// Skip execution if command is heredoc-only (name is empty or NULL)
-	if ((!cmd_list->name) || (cmd_list->name[0] == '\0')) {
-		// Still clean up, but do not execute
-		return;
-	}
+	if ((!cmd_list->name) || (cmd_list->name[0] == '\0'))
+		return (0);
 	if (!cmd_list->next)
-		g_signal =exec_cmd(cmd_list, env);
+		return (exec_cmd(cmd_list, env));
 	else
-		g_signal =exec_pipeline(cmd_list, env);
+		return (exec_pipeline(cmd_list, env));
 }
 
-void	parse_and_exec(char *line, t_env **env)
+void	parse_and_exec(char *line, t_shell *shell)
 {
 	char	**segments;
 	t_cmd	*cmd_list;
-	int exit_code;
 
-	exit_code = 0;
 	if (handle_syntax_errors(line))
+	{
+		shell->last_exit_code = 258;
 		return ;
+	}
 	segments = split_pipe_aware(line);
 	if (!segments)
+	{
+		shell->last_exit_code = 1;
 		return ;
-	cmd_list = build_cmd_list(segments, *env);
+	}
+	cmd_list = build_cmd_list(segments, shell->env);
 	if (cmd_list)
-		execute_command_list(cmd_list, env);
+		shell->last_exit_code = execute_command_list(cmd_list, &shell->env);
 	free_cmd_list(cmd_list);
 	free_split(segments);
 }

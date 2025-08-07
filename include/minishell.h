@@ -64,6 +64,7 @@ typedef struct s_shell
 {
 	t_env	*env;
 	t_cmd	*cmd;
+	int		last_exit_code;
 }	t_shell;
 
 /* ************************************************************************** */
@@ -142,10 +143,11 @@ void	handle_direct_execution(t_cmd *cmd, char **envp);
 
 // minishell_loop.c
 //void	minishell_loop(t_env **env);
-int		minishell_loop(t_env **env);
+int		minishell_loop(t_shell *shell);
 
 // parse_and_exec.c
-void	parse_and_exec(char *line, t_env **env);
+void	parse_and_exec(char *line, t_shell *shell);
+//void	parse_and_exec(char *line, t_env **env);
 
 /* -------------------------------- PARSING --------------------------------- */
 

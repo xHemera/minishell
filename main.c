@@ -16,17 +16,18 @@ extern int g_signal;
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_env	*env;
-	int exit_code;
+	t_shell shell;
 
 	(void)argc;
 	(void)argv;
 	g_signal = 0;
 	setup_signals();
-	env = env_init(envp);
-	if (!env)
+	shell.env = env_init(envp);
+	shell.cmd = NULL;
+	shell.last_exit_code = 0;
+	if (!shell.env)
 		return (1);
-	exit_code = minishell_loop(&env);
-	free_env(&env);
-	return (exit_code);
+	minishell_loop(&shell);
+	free_env(&shell.env);
+	return (shell.last_exit_code);
 }

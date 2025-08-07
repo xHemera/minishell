@@ -36,22 +36,32 @@ void	handle_direct_execution(t_cmd *cmd, char **envp)
 {
 	struct stat	file_stat;
 
-	if (access(cmd->name, F_OK) == 0)
+	if (access(cmd->name, F_OK) != 0)
 	{
-		if (stat(cmd->name, &file_stat) == 0)
-		{
-			if (S_ISDIR(file_stat.st_mode))
-				handle_directory_error(cmd->name);
-			if (access(cmd->name, X_OK) != 0)
-				exit(0);
-			if (execve(cmd->name, cmd->args, envp) == -1)
-				handle_execution_error(cmd->name);
-		}
-		exit(0);
+		handle_execution_error(cmd->name); // message : No such file or directory
+		exit(127);
 	}
-	else
-		handle_execution_error(cmd->name);
+	if (stat(cmd->name, &file_stat) == 0)
+	{
+		if (S_ISDIR(file_stat.st_mode))
+		{
+			handle_directory_error(cmd->name);
+			exit(126);
+		}
+		if (access(cmd->name, X_OK) != 0)
+		{
+			handle_directory_error(cmd->name);
+			exit(126);
+		}
+		if (execve(cmd->name, cmd->args, envp) == -1)
+		{
+			handle_execution_error(cmd->name);
+			exit(126);
+		}
+	}
+	exit(127);
 }
+
 
 void	execute_command(t_cmd *cmd, char **envp, t_env *env)
 {
