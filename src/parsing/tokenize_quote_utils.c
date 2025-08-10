@@ -21,6 +21,17 @@ void	handle_quote_section(const char *str, int *i, char quote)
 		(*i)++;
 }
 
+static void	handle_quote_token(const char *str, int *i, int *count,
+	int *in_token)
+{
+	handle_quote_section(str, i, str[*i]);
+	if (*in_token)
+	{
+		(*count)++;
+		*in_token = 0;
+	}
+}
+
 void	handle_token_separator(const char *str, int *i, int *count,
 	int *in_token)
 {
@@ -44,7 +55,7 @@ void	handle_token_separator(const char *str, int *i, int *count,
 		if (!*in_token)
 			*in_token = 1;
 		if (str[*i] == '\'' || str[*i] == '"')
-			handle_quote_section(str, i, str[*i]);
+			handle_quote_token(str, i, count, in_token);
 	}
 }
 

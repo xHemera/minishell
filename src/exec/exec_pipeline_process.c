@@ -12,8 +12,6 @@
 
 #include "minishell.h"
 
-extern int g_signal;
-
 int	setup_pipe(int pipe_fd[2])
 {
 	if (pipe(pipe_fd) == -1)
@@ -24,14 +22,8 @@ int	setup_pipe(int pipe_fd[2])
 	return (1);
 }
 
-void	handle_child_process(t_cmd *cmd, int pipe_fd[2], int in_fd,
-	t_env **env)
+static void	setup_child_pipes(t_cmd *cmd, int pipe_fd[2], int in_fd)
 {
-	char	**envp;
-
-	envp = env_to_array(*env);
-	if (!envp)
-		exit(1);
 	if (in_fd != STDIN_FILENO)
 	{
 		dup2(in_fd, STDIN_FILENO);
@@ -48,10 +40,26 @@ void	handle_child_process(t_cmd *cmd, int pipe_fd[2], int in_fd,
 		close(pipe_fd[0]);
 		close(pipe_fd[1]);
 	}
+}
+
+void	handle_child_process(t_cmd *cmd, int pipe_fd[2], int in_fd,
+	t_env **env)
+{
+	char	**envp;
+
+	envp = env_to_array(*env);
+	if (!envp)
+		exit(1);
+	setup_child_pipes(cmd, pipe_fd, in_fd);
+	if (cmd->redirection_error)
+	{
+		free_split(envp);
+		exit(1);
+	}
 	if (cmd->is_builtin)
 	{
 		free_split(envp);
-		exit(exec_builtin(cmd, *env));
+		exit(exec_builtin(cmd, *env, cmd->last_exit_code));
 	}
 	exec_child(cmd, envp, *env);
 }

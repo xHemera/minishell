@@ -19,14 +19,16 @@ t_cmd	*cmd_new(void)
 	cmd = malloc(sizeof(t_cmd));
 	if (!cmd)
 		return (NULL);
-   cmd->name = NULL;
-   cmd->args = NULL;
-   cmd->input_file = NULL;
-   cmd->output_file = NULL;
-   cmd->append = 0;
-   cmd->heredoc = NULL;
-   cmd->is_builtin = 0;
-   cmd->next = NULL;
+	cmd->name = NULL;
+	cmd->args = NULL;
+	cmd->input_file = NULL;
+	cmd->output_file = NULL;
+	cmd->append = 0;
+	cmd->heredoc = NULL;
+	cmd->is_builtin = 0;
+	cmd->last_exit_code = 0;
+	cmd->redirection_error = 0;
+	cmd->next = NULL;
 	return (cmd);
 }
 

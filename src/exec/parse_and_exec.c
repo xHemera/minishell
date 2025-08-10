@@ -12,8 +12,6 @@
 
 #include "minishell.h"
 
-extern int g_signal;
-
 static int	handle_syntax_errors(char *line)
 {
 	if (has_unclosed_quotes(line))
@@ -26,7 +24,7 @@ static int	handle_syntax_errors(char *line)
 	return (0);
 }
 
-static int execute_command_list(t_cmd *cmd_list, t_env **env)
+static int	execute_command_list(t_cmd *cmd_list, t_env **env)
 {
 	if ((!cmd_list->name) || (cmd_list->name[0] == '\0'))
 		return (0);
@@ -52,9 +50,11 @@ void	parse_and_exec(char *line, t_shell *shell)
 		shell->last_exit_code = 1;
 		return ;
 	}
-	cmd_list = build_cmd_list(segments, shell->env);
+	cmd_list = build_cmd_list(segments, shell->env, shell->last_exit_code);
 	if (cmd_list)
+	{
 		shell->last_exit_code = execute_command_list(cmd_list, &shell->env);
+	}
 	free_cmd_list(cmd_list);
 	free_split(segments);
 }

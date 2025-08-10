@@ -15,6 +15,8 @@
 static void	setup_child_process(t_cmd *cmd)
 {
 	setup_signals_child();
+	if (cmd->redirection_error)
+		exit(1);
 	if (redirect_input(cmd) != 0)
 		exit(1);
 	if (redirect_output(cmd) != 0)

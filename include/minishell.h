@@ -42,7 +42,8 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
-typedef struct s_token {
+typedef struct s_token
+{
 	struct s_token	*prev;
 	char			*value;
 	struct s_token	*next;
@@ -57,6 +58,8 @@ typedef struct s_cmd
 	int				append;
 	char			*heredoc;
 	bool			is_builtin;
+	int				last_exit_code;
+	int				redirection_error;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -71,7 +74,7 @@ typedef struct s_shell
 /*                           GLOBAL VARIABLES                                */
 /* ************************************************************************** */
 
-extern int g_signal;
+extern int	g_signal;
 
 /* ************************************************************************** */
 /*                            FUNCTION PROTOTYPES                            */
@@ -94,7 +97,7 @@ int		ft_echo(char **argv, int i, int j, int newline);
 int		ft_env(t_env *envp);
 
 // exit.c
-int		ft_exit(char **args);
+int		ft_exit(char **args, int last_exit_code);
 
 // export.c
 int		ft_export(t_cmd *cmd, t_env *envp, int argc);
@@ -108,7 +111,7 @@ int		ft_unset(t_cmd *cmd, t_env *envp);
 /* --------------------------------- EXEC ---------------------------------- */
 
 // exec_builtins.c
-int		exec_builtin(t_cmd *cmd, t_env *envp);
+int		exec_builtin(t_cmd *cmd, t_env *envp, int last_exit_code);
 int		is_builtin(char *cmd_name);
 int		is_str_builtin(const char *cmd, const char *name, size_t len);
 
@@ -117,11 +120,17 @@ int		exec_external(t_cmd *cmd, t_env *env);
 void	execute_command(t_cmd *cmd, char **envp, t_env *env);
 int		exec_cmd(t_cmd *cmd, t_env **env);
 
+// exec_cmd_utils.c & exec_cmd_utils2.c
+void	handle_direct_execution(t_cmd *cmd, char **envp);
+void	handle_command_not_found(char *cmd_name);
+void	handle_directory_error(char *cmd_name);
+void	handle_execution_error(char *cmd_name);
+
 // exec_child.c & exec_child_utils.c
 int		exec_child(t_cmd *cmd, char **envp, t_env *env);
 char	*get_path(t_cmd *cmd, t_env *env);
 int		redirect_input(t_cmd *cmd);
-int 	redirect_heredoc_input(void);
+int		redirect_heredoc_input(void);
 int		redirect_output(t_cmd *cmd);
 
 // exec_pipeline.c & exec_pipeline_process.c
@@ -152,17 +161,17 @@ void	parse_and_exec(char *line, t_shell *shell);
 /* -------------------------------- PARSING --------------------------------- */
 
 t_cmd	*cmd_new(void);
-int	cmd_add_arg(t_cmd *cmd, char *arg);
+int		cmd_add_arg(t_cmd *cmd, char *arg);
 void	cmd_clear(t_cmd **head);
 
 // parse_cmd_utils.c
-int setup_empty_cmd(t_cmd *cmd);
+int		setup_empty_cmd(t_cmd *cmd);
 t_cmd	*cmd_new(void);
 int		cmd_add_arg(t_cmd *cmd, char *arg);
 void	cmd_clear(t_cmd **head);
 
 // cmd_list_utils.c
-t_cmd	*build_cmd_list(char **segments, t_env *env);
+t_cmd	*build_cmd_list(char **segments, t_env *env, int last_exit_code);
 
 // syntax_checker.c
 int		has_syntax_error(char *line);
@@ -191,7 +200,7 @@ int		ft_is_valid_var_char(char c, int first);
 
 // parse_cmd.c
 t_cmd	*parse_segment(char *segment);
-t_cmd	*parse_segment_with_env(char *segment, t_env *env);
+t_cmd	*parse_segment_with_env(char *segment, t_env *env, int last_exit_code);
 int		handle_token(t_cmd *cmd, char *token, int is_first, t_env *env);
 
 // parse_helpers.c
@@ -212,6 +221,10 @@ int		set_output_file(t_cmd *cmd, char *file, int append);
 int		set_heredoc(t_cmd *cmd, char *delimiter);
 int		test_file_access(char *file, int flags);
 
+// redirection_utils2.c
+int		setup_output_flags(char *token);
+int		set_output_redirect(t_cmd *cmd, char *token, char *clean_next);
+
 // split_pipe_aware.c
 char	**split_pipe_aware(const char *str);
 
@@ -229,8 +242,8 @@ int		count_tokens(const char *str);
 char	*copy_token(const char *str, int start, int end);
 
 //heredoc
-void free_heredoc_file(t_cmd *cmd);
-int handle_heredoc(t_cmd *cmd);
+void	free_heredoc_file(t_cmd *cmd);
+int		handle_heredoc(t_cmd *cmd);
 
 /* ----------------------------- TOKENIZE ------------------------------ */
 int		is_token_separator(char c);

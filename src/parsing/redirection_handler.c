@@ -22,10 +22,17 @@ int	handle_redirect(t_cmd *cmd, char **tokens, int *i)
 	next = tokens[*i + 1];
 	if (!next)
 		return (0);
+	if (cmd->redirection_error)
+	{
+		(*i) += 2;
+		return (1);
+	}
 	if (token[0] == '<')
 		result = handle_input_redirect(cmd, token, next);
 	else
 		result = handle_output_redirect(cmd, token, next);
-   (*i) += 2; // Toujours avancer de 2, succès ou échec
-   return (result);
+	(*i) += 2;
+	if (!result)
+		cmd->redirection_error = 1;
+	return (1);
 }

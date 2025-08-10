@@ -12,11 +12,9 @@
 
 #include "minishell.h"
 
-extern int g_signal;
-
 int	main(int argc, char **argv, char **envp)
 {
-	t_shell shell;
+	t_shell	shell;
 
 	(void)argc;
 	(void)argv;

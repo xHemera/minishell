@@ -35,8 +35,9 @@ static void	execute_file(t_cmd *cmd, char **envp)
 	execve(cmd->name, cmd->args, envp);
 	if (errno == ENOEXEC)
 	{
+		perror(cmd->name);
 		free_split(envp);
-		exit(0);
+		exit(2);
 	}
 	perror("execve");
 	free_split(envp);

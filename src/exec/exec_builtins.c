@@ -12,6 +12,38 @@
 
 #include "minishell.h"
 
+static int	save_fds(int *stdin_backup, int *stdout_backup)
+{
+	*stdin_backup = dup(STDIN_FILENO);
+	*stdout_backup = dup(STDOUT_FILENO);
+	if (*stdin_backup == -1 || *stdout_backup == -1)
+		return (1);
+	return (0);
+}
+
+static void	restore_fds(int stdin_backup, int stdout_backup)
+{
+	dup2(stdin_backup, STDIN_FILENO);
+	dup2(stdout_backup, STDOUT_FILENO);
+	close(stdin_backup);
+	close(stdout_backup);
+}
+
+static int	setup_builtin_redirects(t_cmd *cmd)
+{
+	if (cmd->input_file)
+	{
+		if (redirect_input(cmd) != 0)
+			return (1);
+	}
+	if (cmd->output_file)
+	{
+		if (redirect_output(cmd) != 0)
+			return (1);
+	}
+	return (0);
+}
+
 static int	argc_super(t_cmd *cmd)
 {
 	int	i;
@@ -41,30 +73,49 @@ int	is_builtin(char *cmd_name)
 		|| is_str_builtin(cmd_name, "exit", 4));
 }
 
-int	exec_builtin(t_cmd *cmd, t_env *envp)
+int	exec_builtin(t_cmd *cmd, t_env *envp, int last_exit_code)
 {
+	int	stdin_backup;
+	int	stdout_backup;
+	int	result;
+
 	if (!cmd || !cmd->name)
 		return (1);
+	if (save_fds(&stdin_backup, &stdout_backup) != 0)
+		return (1);
+	if (setup_builtin_redirects(cmd) != 0)
+	{
+		restore_fds(stdin_backup, stdout_backup);
+		return (1);
+	}
+	if (cmd->redirection_error)
+	{
+		restore_fds(stdin_backup, stdout_backup);
+		return (1);
+	}
 	if (ft_strncmp(cmd->name, "pwd", 3) == 0
 		&& (cmd->name[3] == '\0' || cmd->name[3] == ' '))
-		return (ft_pwd());
-	if (ft_strncmp(cmd->name, "cd", 2) == 0
+		result = ft_pwd();
+	else if (ft_strncmp(cmd->name, "cd", 2) == 0
 		&& (cmd->name[2] == '\0' || cmd->name[2] == ' '))
-		return (ft_cd(cmd->args, envp));
-	if (ft_strncmp(cmd->name, "unset", 5) == 0
+		result = ft_cd(cmd->args, envp);
+	else if (ft_strncmp(cmd->name, "unset", 5) == 0
 		&& (cmd->name[5] == '\0' || cmd->name[5] == ' '))
-		return (ft_unset(cmd, envp));
-	if (ft_strncmp(cmd->name, "exit", 4) == 0
+		result = ft_unset(cmd, envp);
+	else if (ft_strncmp(cmd->name, "exit", 4) == 0
 		&& (cmd->name[4] == '\0' || cmd->name[4] == ' '))
-		return (ft_exit(cmd->args));
-	if (ft_strncmp(cmd->name, "echo", 4) == 0
+		result = ft_exit(cmd->args, last_exit_code);
+	else if (ft_strncmp(cmd->name, "echo", 4) == 0
 		&& (cmd->name[4] == '\0' || cmd->name[4] == ' '))
-		return (ft_echo(cmd->args, 1, 2, 1));
-	if (ft_strncmp(cmd->name, "export", 6) == 0
+		result = ft_echo(cmd->args, 1, 2, 1);
+	else if (ft_strncmp(cmd->name, "export", 6) == 0
 		&& (cmd->name[6] == '\0' || cmd->name[6] == ' '))
-		return (ft_export(cmd, envp, argc_super(cmd)));
-	if (ft_strncmp(cmd->name, "env", 3) == 0
+		result = ft_export(cmd, envp, argc_super(cmd));
+	else if (ft_strncmp(cmd->name, "env", 3) == 0
 		&& (cmd->name[3] == '\0' || cmd->name[3] == ' '))
-		return (ft_env(envp));
-	return (1);
+		result = ft_env(envp);
+	else
+		result = 1;
+	restore_fds(stdin_backup, stdout_backup);
+	return (result);
 }

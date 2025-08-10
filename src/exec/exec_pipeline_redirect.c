@@ -30,5 +30,5 @@ void	setup_child_redirections(t_cmd *cmd, int pipe_fd[2], int in_fd)
 void	handle_child_builtin(t_cmd *cmd, char **envp, t_env *env)
 {
 	free_split(envp);
-	exit(exec_builtin(cmd, env));
+	exit(exec_builtin(cmd, env, cmd->last_exit_code));
 }

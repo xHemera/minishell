@@ -12,12 +12,12 @@
 
 #include "minishell.h"
 
-int redirect_input(t_cmd *cmd)
+int	redirect_input(t_cmd *cmd)
 {
-	int fd;
-	
+	int	fd;
+
 	if (cmd->heredoc)
-		return redirect_heredoc_input();
+		return (redirect_heredoc_input());
 	if (!cmd->input_file)
 		return (0);
 	fd = open(cmd->input_file, O_RDONLY);

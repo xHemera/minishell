@@ -12,8 +12,6 @@
 
 #include "minishell.h"
 
-extern int g_signal;
-
 int	is_valid_identifier(char *str)
 {
 	int	i;

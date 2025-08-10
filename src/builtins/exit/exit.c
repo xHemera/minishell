@@ -30,12 +30,12 @@ static int	is_valid_number(char *str)
 	return (1);
 }
 
-int	ft_exit(char **args)
+int	ft_exit(char **args, int last_exit_code)
 {
 	int	exit_code;
 	int	arg_count;
 
-	exit_code = 0;
+	exit_code = last_exit_code;
 	arg_count = 0;
 	while (args[arg_count])
 		arg_count++;

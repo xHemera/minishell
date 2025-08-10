@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 static char	get_current_quote(char *str, int pos)
 {
 	int		i;

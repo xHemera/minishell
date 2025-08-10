@@ -58,10 +58,10 @@ void	free_cmd(t_cmd *cmd)
 		}
 		free(cmd->args);
 	}
-   free(cmd->input_file);
-   free(cmd->output_file);
-   free_heredoc_file(cmd);
-   free(cmd);
+	free(cmd->input_file);
+	free(cmd->output_file);
+	free_heredoc_file(cmd);
+	free(cmd);
 }
 
 void	free_cmd_list(t_cmd *cmd)

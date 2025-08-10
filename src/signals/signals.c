@@ -12,17 +12,18 @@
 
 #include "minishell.h"
 
-int g_signal;
+int	g_signal;
 
-void handle_sigint(int sig)
+void	handle_sigint(int sig)
 {
-    (void)sig;
-    g_signal = 130;
-    write(1, "\n", 1);
-    rl_on_new_line();
-    rl_replace_line("", 0);
-    rl_redisplay();
+	(void)sig;
+	g_signal = 130;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
+
 void	handle_sigquit(int sig)
 {
 	(void)sig;

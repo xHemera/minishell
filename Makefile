@@ -22,6 +22,7 @@ SRCS = main.c \
 	$(SRC_DIR)/exec/exec_path_utils.c \
 	$(SRC_DIR)/exec/exec_cmd.c \
 	$(SRC_DIR)/exec/exec_cmd_utils.c \
+	$(SRC_DIR)/exec/exec_cmd_utils2.c \
 	$(SRC_DIR)/exec/exec_cmd_process.c \
 	$(SRC_DIR)/exec/exec_pipeline_utils.c \
 	$(SRC_DIR)/exec/exec_pipeline.c \
@@ -45,6 +46,7 @@ SRCS = main.c \
 	$(SRC_DIR)/parsing/quote_handler.c \
 	$(SRC_DIR)/parsing/redirection_handler.c \
 	$(SRC_DIR)/parsing/redirection_utils.c \
+	$(SRC_DIR)/parsing/redirection_utils2.c \
 	$(SRC_DIR)/parsing/redirection_file_utils.c \
 	$(SRC_DIR)/parsing/split_pipe_aware.c \
 	$(SRC_DIR)/parsing/syntax_checker.c \

@@ -12,11 +12,11 @@
 
 #include "minishell.h"
 
-char	*get_expanded_token(char *token, t_env *env)
+char	*get_expanded_token(char *token, t_env *env, int last_exit_code)
 {
 	char	*expanded_token;
 
-	expanded_token = ft_expand_variables_quotes(token, env, 0);
+	expanded_token = ft_expand_variables_quotes(token, env, last_exit_code);
 	if (!expanded_token)
 	{
 		expanded_token = ft_strdup(token);
@@ -26,7 +26,7 @@ char	*get_expanded_token(char *token, t_env *env)
 	return (expanded_token);
 }
 
-int setup_empty_cmd(t_cmd *cmd)
+int	setup_empty_cmd(t_cmd *cmd)
 {
 	cmd->name = ft_strdup("");
 	if (!cmd->name)
@@ -53,9 +53,9 @@ int setup_empty_cmd(t_cmd *cmd)
 
 static int	handle_first_token(t_cmd *cmd, char *expanded_token)
 {
-	cmd->is_builtin = is_builtin(expanded_token);
 	if (expanded_token[0] == '\0')
-		return (setup_empty_cmd(cmd));
+		return (1);
+	cmd->is_builtin = is_builtin(expanded_token);
 	return (add_arg_or_name(cmd, expanded_token));
 }
 
@@ -64,9 +64,14 @@ int	handle_token(t_cmd *cmd, char *token, int is_first, t_env *env)
 	char	*expanded_token;
 	int		result;
 
-	expanded_token = get_expanded_token(token, env);
+	expanded_token = get_expanded_token(token, env, cmd->last_exit_code);
 	if (!expanded_token)
 		return (0);
+	if (expanded_token[0] == '\0')
+	{
+		free(expanded_token);
+		return (1);
+	}
 	if (is_first)
 		result = handle_first_token(cmd, expanded_token);
 	else
